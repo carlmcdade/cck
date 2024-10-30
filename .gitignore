@@ -1,3 +1,5 @@
 
 cck
 *.md~
+*.inc~
+*.php~
