@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentType name="a_new_type" status="public">
+<DisplayName>A New Type</DisplayName>
+  <Fields>
+    <Field name='Username' type='Element_Textbox' weight="1">
+      <DisplayName>Username</DisplayName>
+      <Description>your login name</Description>
+      <Value>default</Value>
+      <Configuration>
+        <AllowMultiple>true</AllowMultiple>
+        <AllowExtraValue>true</AllowExtraValue>
+      </Configuration>
+    </Field>
+    <Field name='Useremail' type='Element_Select' weight="2">
+      <DisplayName>Email</DisplayName>
+      <Description>your email address</Description>
+      <Configuration>
+        <AllowMultiple>true</AllowMultiple>
+        <AllowExtraValue>true</AllowExtraValue>
+        <Options type="checkboxes">
+          <Option selected='true'>administrator</Option>
+          <Option>manager</Option>
+          <Option>authorized user</Option>
+          <Option>new user</Option>
+        </Options>
+      </Configuration>
+    </Field>
+  </Fields>
+</ContentType>

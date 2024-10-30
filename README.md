@@ -1,2 +1,111 @@
-# cck
- Content Connection Kit - php website framework
+Content Connection Kit
+========
+
+
+If you are a web developer that is tired of Wordpress and Drupal and want something that is object oriented and actually made to be modified then keep checking in here. Berlinto is coming.
+Features:
+
+    A very short learning curve, one that does not require books or hundreds of reading hours.
+    Easy to deploy. Deploying a CCK project is as easy as uploading it to the server because there is minimal use of database based core systems.
+    Easy to upgrade. Upgrading is simple and in most cases unnecessary because CCK is lightweight and is an architecture style not a bloated CMS or Framework.
+    Finding what you need and modification is easy. The Content Connection Kit's strength lies in it's code flexibilty, it is designed to be "hacked" by web programmers.
+    Programmers can actually design and build their own "core" systems without fear of dependancy hell.
+    Using third party classes and loosely coupled frameworks and libraries like Zend framework, Symfony components and EZ components is a snap.
+
+Demo: http://berlinto.com/cck
+
+All this makes the Content Connection Kit a very flexible and robust web architecture that can be used to build most any web application to your liking.
+Requirements:
+
+    PHP version 5.3 and above.
+    A web server that fully supports PHP version 5.3.
+    
+    Helpers:
+    
+    PFBC Form Builder
+    Geshi Syntax Highlighter
+
+Architecture:
+
+    _configuration
+        config.ini
+    _controllers
+        [module]
+            [module].class.inc
+            [module]_[type].class.inc
+            [module]_config.ini
+    _helpers
+    _models
+    _views
+        themes
+            [theme]
+                template.tpl.php
+    css
+    images
+    js
+    sass
+    bootstrap.php
+    index.php
+    web.config
+    .htaccess
+
+Configuration:
+
+    name = "Content Connection Kit"
+    description = "Web Architecture for Web Developers"
+    version = "1.x"
+
+
+    [paths]
+
+    controllers = "_controllers"
+    models = "_models"
+    views = "_views"
+    helpers = "_helpers"
+
+    [modules]
+
+    module[] = "blog"
+    module[] = "portfolio"
+    module[] = "forum"
+    module[] = "content"
+    module[] = "contact"
+
+
+    [hooks] 
+
+    hook[] = "hook_links"
+    hook[] = "hook_forms"
+    hook[] = "hook_content"
+    hook[] = "hook_blocks"
+    hook[] = "hook_access"
+    hook[] = "hook_admin_links"
+    
+    [themes] 
+
+    theme[] = "theme_a"
+    theme[] = "theme_b"
+    theme[] = "theme_c"
+    theme[] = "theme_d"
+    
+TODO:
+
+<ul>
+<li> Complete Content Class </li>
+<li> Complete Blog Class</li>
+</ul>
+
+You can take a look at the Development Demo of the Content Connetion Kit which is live site that shows the result of the working code. Of course later on there will be a Git Hub repository where you can dowload the code.
+The CCK project is owned and operated by Carl McDade, Berlinto © 2012 — Carl McDade — All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.

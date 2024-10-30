@@ -1,0 +1,1 @@
+<a class="dropdown-item" href="<?php echo (isset($host) ? $host : '..') . '/'; ?><?php echo (!empty($directory) ? $directory . '/?': INSTALLDIR . '/?'); ?><?php echo (isset($path) ? $path : ''); ?>"><?php echo (isset($text) ? $text : 'link'); ?></a>

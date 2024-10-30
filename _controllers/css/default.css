@@ -1,0 +1,332 @@
+/* About Default Styles
+ * ---------------------
+ * default.css is used to establish general rules, browser reset, or admin user interface styles.
+ * Browser Reset
+ * -------------
+ * For a more complete reset, go to http://developer.yahoo.com/yui/reset/ */
+/* line 8, ../sass/default.sass */
+/***** Global *****/
+/* Body */
+	body {
+		background: #F5F4EF url('../images/bg.png');
+		color: #000305;
+		font-size: 87.5%; /* Base font size: 14px */
+		font-family: 'Trebuchet MS', Trebuchet, 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+		line-height: 1.429;
+		margin: 0;
+		padding: 0;
+		text-align: left;
+	}
+ 
+/* Headings */
+h2 {font-size: 1.571em}	/* 22px */
+h3 {font-size: 1.429em}	/* 20px */
+h4 {font-size: 1.286em}	/* 18px */
+h5 {font-size: 1.143em}	/* 16px */
+h6 {font-size: 1em}	/* 14px */
+ 
+h2, h3, h4, h5, h6 {
+	font-weight: 400;
+	line-height: 1.1;
+	margin-bottom: .8em;
+}
+ 
+/* Anchors */
+a {outline: 0;}
+a img {border: 0px; text-decoration: none;}
+a:link, a:visited {
+	color: #C74350;
+	padding: 0 1px;
+}
+a:hover, a:active {
+	background-color: #C74350;
+	color: #fff;
+	text-decoration: none;
+	/*text-shadow: 1px 1px 1px #333;*/
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+ 
+/* Paragraphs */
+p {margin-bottom: 1.143em;}
+* p:last-child {margin-bottom: 0;}
+ 
+strong, b {font-weight: bold;}
+em, i {font-style: italic;}
+ 
+::-moz-selection {background: #F6CF74; color: #fff;}
+::selection {background: #F6CF74; color: #fff;}
+ 
+/* Lists */
+ul {
+	list-style: outside disc;
+	margin: 1em 0 1.5em 1.5em;
+}
+ 
+ol {
+	list-style: outside decimal;
+	margin: 1em 0 1.5em 1.5em;
+}
+ 
+dl {margin: 0 0 1.5em 0;}
+dt {font-weight: bold;}
+dd {margin-left: 1.5em;}
+ 
+/* Quotes */
+blockquote {font-style: italic;}
+cite {}
+ 
+q {}
+ 
+/* Tables */
+table {margin: .5em auto 1.5em auto; width: 98%;}
+ 
+	/* Thead */
+	thead th {padding: .5em .4em; text-align: left;}
+	thead td {}
+ 
+	/* Tbody */
+	tbody td {padding: .5em .4em;}
+	tbody th {}
+ 
+	tbody .alt td {}
+	tbody .alt th {}
+ 
+	/* Tfoot */
+	tfoot th {}
+	tfoot td {}
+
+/* HTML5 tags */
+
+header, section, footer,
+aside, nav, article, figure
+{
+	display: block;
+}
+	
+/*  Main Navigation  */
+
+#main-menu
+
+{
+	background: #000305;
+	font-size: 1.143em;
+	height: 40px;
+	line-height: 30px;
+	margin: 0 auto 2em auto;
+	padding: 10px 0 0 0;
+	text-align: center;
+	width: 800px;		
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+#sub-menu
+{
+	background: #999;
+	font-size: 1.143em;
+	height: 40px;
+	line-height: 28px;
+	margin: 0 auto 2em auto;
+	padding: 0;
+	width: 800px;		
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+#main-menu li,
+#sub-menu li
+{
+	display: inline-block;
+	margin-left: 6px;
+	margin-right: 6px;
+	
+}
+
+#main-menu li a
+{
+	color: #C74350;
+	text-decoration:none;
+	border: 1px solid #C74350;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	padding: 0 4px;	
+}
+
+#main-menu li a:hover
+{
+	background: #FFFFFF;
+	
+}
+
+#sub-menu li a
+{
+	color: #FFFFFF;
+	text-decoration:none;
+	border: 1px solid #FFFFFF;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	padding: 0 4px;	
+}
+
+.sub-menus
+{
+	margin: 0 0 0 0;
+	padding: 5px 0 0 8px;
+}
+
+
+/*  Admin Navigation  */
+
+#admin-section
+{
+	background: #000305;
+	font-size: 0.93em;
+	min-height: 200px;
+	margin: 0 auto 2em auto;
+	padding: 0 0 0 40px;
+	width: 760px;	
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
+
+#admin-menu li
+{
+	display: inline-block;
+	margin-left: 6px;
+	margin-right: 6px;
+	
+}
+
+.sections
+{
+	width: 226px;
+	float: left;
+	margin-right: 20px;
+}
+
+.sections h1.section-title
+{
+	background: #FFFFFF;
+	text-align: center;
+	text-transform: capitalize;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+.sections li
+{
+	display: block;
+	margin-left: 6px;
+	margin-right: 6px;
+	
+}
+
+/* Body */
+
+
+#content,
+#content-title,
+#post-info
+{
+	background: #FFFFFF;
+	margin: 0 auto 2em auto;
+	font-size: 0.93em;
+	overflow: hidden;
+	padding: 20px 20px;
+	width: 760px;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
+
+#content-title span
+{
+	background: #C74350;
+	margin: 0 auto 2em auto;
+	padding: 4px 14px;
+	font-size: 18px;
+	border-radius: 15px;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+}
+
+#page-title
+{
+	background: #C74350;
+	margin: 0 auto 2em auto;
+	overflow: hidden;
+	padding: 20px 20px;
+	width: 760px;	
+	-webkit-border-bottom-right-radius: 10px;
+	-webkit-border-bottom-left-radius: 10px;
+	-moz-border-radius-bottomright: 10px;
+	-moz-border-radius-bottomleft: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+}
+
+#post-info
+{
+	
+	font-size: 0.93em;
+	color: #999;
+	overflow: hidden;
+	
+}
+
+/*   table list */
+
+.table-list li
+{
+	display: inline-block;
+	width: 100px;
+	padding: 0 10px;
+	margin: 0 0 10px 0;
+}
+
+.block-footer
+{
+	font-size: 0.9em;
+	text-align: right;
+}
+
+.block-footer a
+{
+	text-decoration: none;
+	font-style:italic;
+	color: #999999;
+}
+
+.fb-integration
+{
+	background: #eaeaea;
+	margin: 0 auto 2em auto;
+	overflow: hidden;
+	padding: 10px 10px;
+	width: 260px;	
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	float:right;
+}
+
+.fb-message
+{
+	background: #e6e6e6;
+	border-bottom: 1px solid #999999;
+}
+
+.fb-story
+{
+	background: #d5d5d5;
+	border-bottom: 1px solid #999999;
+	padding-left: 6px;
+}

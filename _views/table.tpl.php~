@@ -1,0 +1,34 @@
+<?php 
+$output = '<table id="table-'. (isset($id) ? $id : '') .'" border="1" class="table-list">';
+$output .= '<tr>';
+// table header
+foreach ($header as $th => $column)
+{
+	$output .= '<td id="th-' . $th . '" class="table-columns table-cells">' .  $column . '</td>' . "\n";	
+}
+$output .= '</tr>' . "\n";
+if(!empty($rows))
+{
+	// table rows
+	foreach ($rows as $tr => $row)
+	{
+		$output .= '<tr id="tr-'. (isset($id) ? $id : '') . '-' . $tr . '" class="table-cells">';
+		// table cells per row
+		foreach($header as $td => $cell)
+		{
+			if(isset($row[$td]))
+			{
+				$output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">' . $row[$td] . '</td>' . "\n";
+			}
+			else
+			{
+				$output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells"></td>' . "\n";
+			}
+		}
+		$output .= '</tr>' . "\n";
+	}
+
+}
+$output .= '</table>';
+print $output;
+?>

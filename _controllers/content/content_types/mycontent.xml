@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<content_type name="mycontent" status="public">
+<DisplayName>mycontent</DisplayName>
+  <Fields>
+    <Field name='a_field' type='Element_Textbox'>
+      <DisplayName>A field</DisplayName>
+      <Description>your login name</Description>
+      <Weight>1</Weight>
+    </Field>
+  </Fields>
+</content_type>

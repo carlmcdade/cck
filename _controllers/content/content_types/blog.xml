@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- to use this document you  should understand XML. Otherwise use the User interface
+ to configure the document -->
+<ContentType name="BlogUser" parentType="ListItem">
+  <DisplayName>Blog</DisplayName>
+  <Description>Blog is a leaf content type</Description>
+  <Icon>Blog</Icon>
+  <Fields>
+    <Field name='Username' type='Element_Textbox'>
+      <DisplayName>Username</DisplayName>
+      <Description>your login name</Description>
+      <Weight>1</Weight>
+    </Field>
+    <Field name='Realname' type='Element_Textbox'>
+      <DisplayName>Real name</DisplayName>
+      <Description>Your real name. Will not be shown to others.</Description>
+      <Weight>2</Weight>
+    </Field>
+    <Field name='Role' type='Element_Select'>
+      <DisplayName>Access Roles</DisplayName>
+      <Description>Select one</Description>
+      <Configuration>
+        <AllowMultiple>true</AllowMultiple>
+        <AllowExtraValue>true</AllowExtraValue>
+        <Options>
+          <Option selected='true'>administrator</Option>
+          <Option>manager</Option>
+          <Option>authorized user</Option>
+          <Option>new user</Option>
+        </Options>
+      </Configuration>
+      <Weight>3</Weight>
+    </Field>  
+  </Fields>
+  <Forms>
+  	<Form>
+	 <Name>BlogAdd</Name>	
+	 <Action><![CDATA[../index.php?admin/content/content_type_save/type=blog]]></Action>
+	  <Method>post</Method>
+	  <Ajax>false</Ajax>
+	  <Weight>0</Weight>
+  	</Form>
+  </Forms>
+</ContentType>

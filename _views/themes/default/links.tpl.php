@@ -1,0 +1,1 @@
+<?php print '<a href="' . $path . '">' . $text . '</a>'; ?>

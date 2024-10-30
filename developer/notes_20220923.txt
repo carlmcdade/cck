@@ -1,0 +1,6 @@
+Dt
+
+srt over creating the basic web site frame work with PHP7
+1 get bbotstrapping correct
+get cssjavascript navigation frameworkclear and in place for 3 screen sizes
+pc , 7" tablet, smartphone locked in vertical orientation or locked in horzontal, no auto switch. 
