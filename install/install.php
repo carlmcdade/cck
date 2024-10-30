@@ -14,8 +14,8 @@ if(file_exists($db_location)==TRUE)
 { echo "file already found";
 }else{
 	$db = new SQLite3($db_location);
-$db->exec('CREATE TABLE content_types (bar TEXT)');
-$db->exec("INSERT INTO content_types (bar) VALUES ('this is a content type')");
+$db->exec('CREATE TABLE content_types (id INT)(name TEXT)');
+$db->exec("INSERT INTO content_types (name) VALUES ('this is a content type')");
 $result = $db->query('SELECT * FROM content_types');
 var_dump($result->fetchArray());
 };

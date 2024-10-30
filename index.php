@@ -27,9 +27,20 @@ if (file_exists(INI_FILENAME))
 
 }
 
+// stop recursive reset
+
+if(isset($ini_settings['url']['install_dir']))
+{
+    $where = '';
+
+}else { 
+
+    $where = $ini_settings['url']['install_dir'] .'/';
+}
+
 
 // Set the front page by redirection
-if (!$_SERVER['QUERY_STRING']) header('location:' . $ini_settings['url']['frontpage']);
+if (!$_SERVER['QUERY_STRING']) header('location:' . $where . $ini_settings['url']['frontpage']);
 
 // Start system and respond to calls
 $cck = new CCK();
