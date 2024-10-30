@@ -70,6 +70,7 @@ class CCK
             $this->_modules_list = $this->ini_settings['modules'];
             $this->hooks_list = $this->ini_settings['hooks'];
             
+            
         }
 		
 	}
@@ -353,7 +354,7 @@ class CCK
 	
 	function _view($view, $variables, $template = true, $output = NULL)
 	{
-		global $cck;
+		global $cck,$ini_settings;
 		
 		// add in some globally used template variables
 		$menu = $cck->_hooks('hook_links');
@@ -371,7 +372,7 @@ class CCK
     	if(is_array($variables))
     	{
     		// Load variables here because they become part of the module not the theme template.php file.
-    		$output .= $cck->_template($template_path, $variables);
+    		
     		$variables['pageTitle'] = (isset($variables['pageTitle']) ? $variables['pageTitle'] : 'empty in template call');
     	    $variables['contentTitle'] = (isset($variables['contentTitle']) ? $variables['contentTitle'] : 'empty in template call');
     	    $variables['dbTable'] = (isset($variables['dbTable']) ? $variables['dbTable'] : 'empty in template call');
@@ -384,6 +385,12 @@ class CCK
     	    $variables['userAccess'] = array('userId' => '','groupId' => '', 'permissionList' => '');
     	    $variables['moduleAccess'] = array('userId' => '','groupId' => '', 'permissionList' => '');
     	    $variables['urlAccess'] = array('userId' => '','groupId' => '', 'permissionList' => '');
+    	    $variables['installDir'] = $ini_settings['paths']['install_dir'];
+    	    $variables['imagesDir'] = $ini_settings['paths']['images_dir'];
+    	    $variables['cssDir'] = $ini_settings['paths']['css_dir'];
+    	    $variables['jsDir'] = $ini_settings['paths']['js_dir'];
+    	    
+    	    $output .= $cck->_template($template_path, $variables);
     	    //$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
     	    
     		//var_dump($variables); exit;
@@ -639,6 +646,7 @@ class CCK
 	function _menu_links($menu, $template = NULL, $variables, $separator = NULL, $index = NULL)
 	{
 		//
+		global $cck,$ini_settings;
 		
     	foreach($menu as $section => $group)
     	{	
@@ -661,6 +669,8 @@ class CCK
 	
 	function _module_links($menu, $attributes = array(), $variables)
 	{
+		
+		global $cck,$ini_settings;
 		$list = array();
 		//var_dump($variables);
 		//var_dump($attributes);
