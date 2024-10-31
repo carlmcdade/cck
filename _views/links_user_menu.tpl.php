@@ -1,8 +1,8 @@
 
 
-<div class="dropdown">
+<div class="dropdown mt-1">
   <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-    <?php print_r($menuTitle); ?>
+    <?php print_r($adminMenuTitle); ?>
   </button>
 
   <ul class="dropdown-menu">

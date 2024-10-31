@@ -19,6 +19,8 @@
  */
 namespace blog;
 
+use SQLite3;
+
 // classes used // classes used by the global $cck object from the globalspace
 
 class blog{
@@ -106,66 +108,45 @@ class blog{
     function blog_list()
     {
     	    
-    	    global $cck;  
-    	   
-    	     
-     	    
-    	    // get all links from each class controller
-    	    $menu = $cck->_hooks('hook_links');
-    	    
-    	    // get sublinks just for this module
-    	    $sub_menu = $cck->_hooks('hook_module_links');
-    	    $sub_menu_attributes = array('template'=>'links_sub_menu','index' => '');
-    	    
-    	    $variables['pageTitle'] = 'Blogs';
-    	    $variables['contentTitle'] = 'Blogs';
-    	    $variables['menuTitle'] = 'blog list';
-    	    $variables['dbTable'] = 'userlist';
-    	    $variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module], $sub_menu_attributes,$variables);
-    	    $variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables); // menu,tempalate, variables
-    	   
-    		 
-    	    
-    	
-        // Get the content column values
-        $connect = $cck->_dbconnect();
-        
-        // table header from database
-			$result = $connect->prepare("SELECT * FROM ". $variables['dbTable']. " LIMIT 0");
-			$result->execute();
-			$table_fields = $result->fetchAll();
-			
-			for ($i = 0; $i < $result->columnCount(); $i++) {
-			    $col = $result->getColumnMeta($i);
-			    $columns[] = $col['name'];
-			}
+    	        	global $cck;
+    	$database = $_SERVER['DOCUMENT_ROOT'].'/cck/databases/userlist.db';
+    	$table = array();
+    	$columns = array();
+    	$rows = array();
+   
+    	// get all links from each class controller
+    	$menu = $cck->_hooks('hook_links');    	
+    	$sub_menu = $cck->_hooks('hook_module_links');
+    	//var_dump($sub_menu); exit;
+    	$variables['menuTitle'] = 'Blog Users List';
+    	$variables['pageTitle'] = 'Blogs';
+    	$variables['contentTitle'] = $cck->_path_segment(1);
+    	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
+    	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
+    		array(
+    			'template'=>'links_sub_menu',
+    			'index' => $this->module
+    			) , $variables); 
+    	$db = new SQLite3($database);
 
+        $result = $db->query('SELECT * FROM userlist');
         
-    	$query = $connect->prepare("SELECT * FROM ". $variables['dbTable']."");
-    	$query->execute();
-    	$information = $query->fetchAll();
-    	
-    	// validate content
-			if(!empty($information))
-	    	{
-	    		//$header = $columns;
-	    		$rows = $information;
-	    		
-	    		// set table variables for view table template
+    	 while ($row = $result->fetchArray()) {
+               $rows[] = $row;
+         }
+          //SQLite3Result::numColumns();
+        for ($i = 0; $i < $result->numColumns(); $i++) {
+			    $col = $result->columnName($i);
+			    $columns[] = $col;
+			}
 				$table['header'] = $columns;
 				$table['rows'] = $rows; 
 				$output = $cck->_view('table', $table);
-	    	}
-	    	else
-	    	{
-		    	$output = 'Query incomplete or not found! <a href="../cck/?content/view/1">test content</a>';
-	    	}
+       
+        $variables['content'] = "connect to sqlite database: ". $output;
     	
-			
-			// final output variables for view page template  
-			$output .= print_r($cck->_path_segment(1),1);
-    	    $variables['content'] = $output;
-    	    print $cck->_view('default', $variables); 
+    	print $cck->_view('page_admin', $variables);
+
     }
 
     function blog_categories()
@@ -198,62 +179,46 @@ class blog{
     
     function blog_latest()
     {
-    	global $cck;
+    	global $cck, $ini_settings;
     	
+    	$database = $ini_settings['databases']['user_db'];
+    	$table = array();
+    	$columns = array();
+    	$rows = array();
+   
     	// get all links from each class controller
-    	$menu = $cck->_hooks('hook_links');
+    	$menu = $cck->_hooks('hook_links');    	
     	$sub_menu = $cck->_hooks('hook_module_links');
-    	$variables['seperators'] = array('|','-',';',':');
-    	$variables['pageTitle'] = 'Blog';
-    	$variables['menuTitle'] = 'Blog';
-    	$variables['contentTitle'] = 'Recent blog posts';
-    	$variables['dbTable'] = 'userlist';
-        
-    	
-    	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
-    	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module], array('template'=>'links_sub_menu','index' => $this->module), $variables); 
-    	
-        // Get the content column values
-        $connect = $cck->_dbconnect();
-        
-        // table header from database
-			$result = $connect->prepare("SELECT * FROM ". $variables['dbTable']. " LIMIT 0");
-			$result->execute();
-			$table_fields = $result->fetchAll();
-			
-			for ($i = 0; $i < $result->columnCount(); $i++) {
-			    $col = $result->getColumnMeta($i);
-			    $columns[] = $col['name'];
-			}
+    	//var_dump($sub_menu); exit;
+    	$variables['menuTitle'] = 'Blog Latest';
+    	$variables['pageTitle'] = 'Recent posts';
+    	$variables['contentTitle'] = $cck->_path_segment(1);
+    	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
+    	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
+    		array(
+    			'template'=>'links_sub_menu',
+    			'index' => $this->module
+    			) , $variables); 
+    	$db = new SQLite3($database);
 
+        $result = $db->query('SELECT * FROM userlist');
         
-    	$query = $connect->prepare("SELECT * FROM ". $variables['dbTable']."");
-    	$query->execute();
-    	$information = $query->fetchAll();
-    	
-    	// validate content
-			if(!empty($information))
-	    	{
-	    		//$header = $columns;
-	    		$rows = $information;
-	    		
-	    		// set table variables for view table template
+    	 while ($row = $result->fetchArray()) {
+               $rows[] = $row;
+         }
+          //SQLite3Result::numColumns();
+        for ($i = 0; $i < $result->numColumns(); $i++) {
+			    $col = $result->columnName($i);
+			    $columns[] = $col;
+			}
 				$table['header'] = $columns;
 				$table['rows'] = $rows; 
 				$output = $cck->_view('table', $table);
-	    	}
-	    	else
-	    	{
-		    	$output = 'Query incomplete or not found! <a href="../cck/?content/view/1">test content</a>';
-	    	}
+       
+        $variables['content'] = "connect to sqlite database: ". $output .$database;
     	
-    	// set table header  
-    	$output .= print_r($cck->_path_segment(1),1);
-        $variables['content'] = $output;
-        //var_dump($variables); exit;
-        
-        
-        print $cck->_view('default', $variables);
+    	print $cck->_view('page_admin', $variables);
+
     }
     
     function blog_post_view()

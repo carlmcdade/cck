@@ -1,8 +1,0 @@
-<a href="
-<?php echo (isset($host) ? $host : '..') . '/'; ?>
-<?php echo (!empty($directory) ? $directory . '/?': INSTALLDIR . '/?'); ?>
-<?php echo (isset($path) ? $path : ''); ?>" 
-id="<?php echo (isset($css_id) ? $css_id : ''); ?>" 
-class="<?php echo (isset($css_class) ? implode(' ', $css_class) : ''); ?>">
-<?php echo (isset($text) ? $text : 'link'); ?>
-</a>

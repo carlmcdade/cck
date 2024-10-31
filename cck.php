@@ -527,19 +527,19 @@ class CCK
 		//
 	}
 	
-	function _dbconnect()
+	function _dbconnect($databaseName = 'user_db')
 	{
-		$connect = $this->ini_settings['datasources'];
+		global $cck, $ini_settings;
+		
+		$database = $ini_settings['databases'][$databaseName];
 		//print_r($connect);
 		//
 		try
 		{			 
-			$hostname = $connect['hostname'];
-			$username = $connect['username'];
-			$pw = $connect['pwd'];
-			$dbname = $connect['resource'];
-			$pdo = new PDO ("mysql:host=$hostname;dbname=$dbname","$username","$pw");		
-			return $pdo;		
+
+            $db = new SQLite3($database);
+            return $db;
+	
 		}
 		catch (PDOException $e)
 		{

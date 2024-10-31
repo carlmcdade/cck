@@ -34,6 +34,11 @@
 		  echo $subNavigation;
 		}
 ?>
+
+<?php if(isset($adminNavigation)){
+		  echo $adminNavigation;
+		}
+?>
 </p>
     
       </div>
