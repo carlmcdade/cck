@@ -101,14 +101,14 @@ class admin extends SQLite3 {
     }
     
 
-    function main()
+    function main($output = NULL)
     {
         // get all links from each class controller
-    	global $cck; 
+    	global $cck, $ini_settings; 
     	// get all links from each class controller
     	$menu = $cck->_hooks('hook_links');    	
     	$sub_menu = $cck->_hooks('hook_module_links');
-    	//var_dump($sub_menu); exit;
+    	
     	$variables['menuTitle'] = 'Site Admin';
     	$variables['pageTitle'] = 'Site Admin';
     	$variables['contentTitle'] = 'site admin';
@@ -117,12 +117,16 @@ class admin extends SQLite3 {
     		array(
     			'template'=>'links_sub_menu',
     			'index' => $this->module
-    			) , $variables); 
+    			) , $variables);
     	
+    	foreach($ini_settings['modules'] as $key => $value)
+    	{
+    		$output .= "<br>\n" . $value; 
+    	}
     	
     	
                
-        $variables['content'] = "<div>" .'Administration links to all active controller modules.'."</div>";
+        $variables['content'] = "<div>" .'Administration links to all active controller modules'. $output ."</div>";
     	
     	print $cck->_view('page_admin', $variables);
     }
