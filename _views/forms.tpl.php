@@ -45,19 +45,7 @@
 	      </p>
         </div>
     <!-- /#content -->
-<div class="container my-5">
-      <h1>Hello, world!</h1>
-      <div class="col-lg-8 px-0">
-        <p class="fs-5">You've successfully loaded up the Content Connection Kit example. It includes <a href="https://getbootstrap.com/">Bootstrap 5</a> via the <a href="https://www.jsdelivr.com/package/npm/bootstrap">jsDelivr CDN</a>.</p>
-    <!-- this paragraph in defaut.tpl.php -->
-      </div>
-    </div>
-<?php
 
-require 'default_footer.tpl.php';  //echo 'default_header.tpl.php'; 
-    //exit;
-
-?>
 
 </body>
 </html>

@@ -44,6 +44,7 @@ define('INSTALLDIR',basename(__DIR__));
 */
 
 
+
 class CCK
 {
 
@@ -370,7 +371,15 @@ class CCK
     	{
     		trigger_error("Template {$view} not found in ". $template_path);
     		return false;
-    	}
+    	}	
+    	
+    	// check for empty content and give  default content from template default_content.tpl.php
+    	if(!isset($variables['content']) || empty($variables['content']))
+    		{
+    		    		$variables['content'] = file_get_contents('_views/default_content.tpl.php');
+
+    		
+    		}
     
     	if(is_array($variables))
     	{
@@ -402,6 +411,17 @@ class CCK
     	}   
     	return $output;
 	}
+	
+	function _default_content( $view, $file )
+    {
+        switch ( $view )
+    {
+           case 'archive': $view = 'archive/temp'; break;
+           case 'single' : $view = 'single';       break;
+    }
+
+           return $view;
+    }
 	
 	function _template($template_file, $variables)
 	{
@@ -532,17 +552,17 @@ class CCK
 		//
 	}
 	
-	function _dbconnect($databaseName = 'user_db')
+	function _dbconnect($databaseName = '')
 	{
 		global $cck, $ini_settings;
 		
-		$database = $ini_settings['databases'][$databaseName];
+		//$database = $ini_settings['databases'][$databaseName];
 		//print_r($connect);
 		//
 		try
 		{			 
 
-            $db = new SQLite3($database);
+            $db = new SQLite3($databaseName);
             return $db;
 	
 		}

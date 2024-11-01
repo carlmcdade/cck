@@ -19,6 +19,9 @@
  */
 
 namespace users;
+
+use SQLite3;
+
 class users{
 	
 	private $common;
@@ -108,9 +111,9 @@ class users{
 
     function users_profile()
     {
-    	global $cck;
+    	global $cck, $ini_settings;
     	
-    	$connect = $cck->_dbconnect();
+    	$connect = $cck->_dbconnect($ini_settings['databases']['user_db']);
     	
     	// get all links from each class controller
     	$menu = $cck->_hooks('hook_links');
@@ -144,7 +147,7 @@ class users{
     function users_control_panel()
     {
     	// set links
-    	global $cck;
+    	global $cck,$ini_settings;
     	
     	// get all links from each class controller
     	$menu = $cck->_hooks('hook_links');
@@ -162,7 +165,7 @@ class users{
     			)
     		, $variables); 
     	
-    	$variables['content'] = $cck->_menu_links($user_menu, 'links_admin_index_menu', $variables);  
+    	$variables['content'] = '';  
     	print $cck->_view('users', $variables);
     }
     
@@ -174,14 +177,21 @@ class users{
     function users_settings()
     {
     	// get all links from each class controller
-    	global $cck; 
+    	global $cck, $ini_settings; 
+    	
+    	
+    	$database = $ini_settings['databases']['user_db'];
+    	$table = array();
+    	$columns = array();
+    	$rows = array();
+   
     	
     	$menu = $cck->_hooks('hook_links');
     	$sub_menu = $cck->_hooks('hook_module_links');
     	$user_menu = $cck->_hooks('hook_user_links');
     	$variables['pageTitle'] = 'User';
     	$variables['contentTitle'] = 'User settings';
-        $variables['dbTable'] = 'userlist';
+        
         $variables['menuTitle'] = 'User Settings';
     	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
@@ -189,14 +199,33 @@ class users{
     			'template'=>'links_sub_menu',
     			'index' => $this->module
     			), $variables); 
+ 
+    	$db = new SQLite3($database);
     	
+        $userID = $cck->_path_segment(2);
+        if(!empty($userID))
+        {
+            $result = $db->query('SELECT * FROM userlist WHERE id='.$userID.'');
+        }
+        else
+        {
+        	$result = $db->query('SELECT * FROM userlist');
+        }
+        
+    	 while ($row = $result->fetchArray()) {
+               $rows[] = $row;
+         }
+          //SQLite3Result::numColumns();
+        for ($i = 0; $i < $result->numColumns(); $i++) {
+			    $col = $result->columnName($i);
+			    $columns[] = $col;
+			}
+				$table['header'] = $columns;
+				$table['rows'] = $rows; 
+				$output = $cck->_view('table', $table);
+       
     	
-    	// Get the content column values
-        $connect = $cck->_dbconnect();
-    	$query = $connect->query("SELECT * FROM ". $variables['dbTable']. " WHERE id = 1");
-    	$information = $query->fetchAll();
-    	
-    	$variables['content'] = '<table><tr><td>' . print_r($information) . '</td</tr></table>';
+    	$variables['content'] = $output;
         print $cck->_view('users', $variables);
     }
     
@@ -208,7 +237,7 @@ class users{
     function users_history()
     {
     	// get all links from each class controller
-    	global $cck; 
+    	global $cck, $ini_settings; 
     	
     	$menu = $cck->_hooks('hook_links');
     	$sub_menu = $cck->_hooks('hook_module_links');
@@ -223,11 +252,11 @@ class users{
     			'template'=>'links_sub_menu',
     			'index' => $this->module
     			), $variables); 
-    	
-    	
+// get user id from url
+    	 $userID = $cck->_query_segment(2);
     	// Get the content column values
-        $connect = $cck->_dbconnect();
-    	$query = $connect->query("SELECT * FROM ". $variables['dbTable']. " WHERE id = 1");
+        $connect = $cck->_dbconnect($ini_settings['databases']['user_db']);
+    	$query = $connect->query("SELECT * FROM ". $variables['dbTable']. " WHERE id = " . $userID . "");
     	$information = $query->fetchAll();
     	
     	$variables['content'] = '<table><tr><td>' . print_r($information) . '</td</tr></table></label>show users history and stats</label>';
