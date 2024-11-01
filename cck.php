@@ -25,10 +25,13 @@
  * situations
  *
 */
-
+define('CCK_ROOT', basename(__DIR__));
 define('DOCROOT', dirname(__FILE__));
+
 define('INI_FILENAME', DOCROOT . "/_configuration/config.ini");
 define('INSTALLDIR',basename(__DIR__));
+//echo '<pre>' . print_r($_SERVER). '</pre>'; exit;
+//define('URL_DIR', $_SERVER['REQUEST_URI']);
 
 
 /*
@@ -389,6 +392,8 @@ class CCK
     	    $variables['imagesDir'] = $ini_settings['paths']['images_dir'];
     	    $variables['cssDir'] = $ini_settings['paths']['css_dir'];
     	    $variables['jsDir'] = $ini_settings['paths']['js_dir'];
+    	    $variables['devSymlink'] = $ini_settings['paths']['dev_symlink'];
+    	    
     	    
     	    $output .= $cck->_template($template_path, $variables);
     	    //$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
@@ -766,14 +771,6 @@ function ber_render_template($template_file, $variables)
 	return ob_get_clean(); // End buffering and return its contents
 }
 
-function ber_set_header($variables)
-{	
-	ber_add_js('js/jquery.ajaxmanager.js');
-	ber_add_js('js/movico.js');
-	ber_add_css('css/style.css');
-	//
-}
-
 
 /**
 * A module-defined block content function.
@@ -880,35 +877,6 @@ function ber_url_query($parameter = NULL)
     }
 } 
 
-function ber_add_js()
-{
-}
 
-function ber_add_css()
-{
-}
-
-function ber_db_connect()
-{
-	
-	try
-	{
-		 
-		$hostname = "88.198.231.141";
-		$dbname = "development";
-		$username = "cck";
-		$pw = "Har8inGer";
-		$pdo = new PDO ("mysql:host=$hostname;dbname=$dbname","$username","$pw");
-		
-		return $pdo;
-	
-	}
-	catch (PDOException $e)
-	{
-		echo "Failed to get DB handle: " . $e->getMessage() . "\n";
-		exit;
-	}
-	
-}
 
 ?>

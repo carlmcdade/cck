@@ -8,7 +8,7 @@ ob_start();
  * @version 1.0
  * @license Apache 1.0
  *
- * @link http://berlinto.com
+ * @link http://hardcopy.free.nf
  * ==================================================================
  *
  *                        index.php
@@ -19,7 +19,7 @@ ob_start();
  *
  */
 
-define('CCK_ROOT', __DIR__);
+
 require_once('cck.php');
 if (file_exists(INI_FILENAME))
 {
@@ -27,16 +27,7 @@ if (file_exists(INI_FILENAME))
 
 }
 
-// stop recursive reset
 
-if(isset($ini_settings['url']['install_dir']))
-{
-    $where = '';
-
-}else { 
-
-    $where = $ini_settings['url']['install_dir'] .'/';
-}
 
 
 // Set the front page by redirection

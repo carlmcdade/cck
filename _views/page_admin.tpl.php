@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!-- <?php print_r ($_SERVER); ?>--><!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Content Connection Kit | <?php echo (isset($page_title) ? $page_title : ''); ?></title>
+<title>CCK | <?php echo (isset($pageTitle) ? $pageTitle : ''); ?></title>
 <meta name="description" content="CCK is a PHP framework for web developers to build on.">
 <meta name="keywords" content=" cck, drupal, wordpress, framework, cms, hosting, webhosting, server, php, servage">
 <meta name="viewport" content="width=device-width, initial-scale=1">

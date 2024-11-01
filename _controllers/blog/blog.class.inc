@@ -108,8 +108,9 @@ class blog{
     function blog_list()
     {
     	    
-    	        	global $cck;
-    	$database = $_SERVER['DOCUMENT_ROOT'].'/cck/databases/userlist.db';
+    	global $cck, $ini_settings;
+    	
+    	$database = $ini_settings['databases']['user_db'];
     	$table = array();
     	$columns = array();
     	$rows = array();
@@ -190,6 +191,7 @@ class blog{
     	$menu = $cck->_hooks('hook_links');    	
     	$sub_menu = $cck->_hooks('hook_module_links');
     	//var_dump($sub_menu); exit;
+    	$variables['iniSettings'] = $ini_settings;
     	$variables['menuTitle'] = 'Blog Latest';
     	$variables['pageTitle'] = 'Recent posts';
     	$variables['contentTitle'] = $cck->_path_segment(1);
@@ -215,7 +217,16 @@ class blog{
 				$table['rows'] = $rows; 
 				$output = $cck->_view('table', $table);
        
-        $variables['content'] = "connect to sqlite database: ". $output .$database;
+        $variables['content'] = "connect to sqlite database: ". 
+        $output .$database . '<br>::' . 
+        $_SERVER['REQUEST_URI'] .' <br>::' . 
+        $_SERVER['QUERY_STRING'] .' <br>::' .
+        $_SERVER['SCRIPT_FILENAME'] .' <br>::' .
+        $ini_settings['paths']['install_dir'] . '<br>::'.
+         CCK_ROOT. '<br>::' .
+         DOCROOT . '<br>::'.
+         	 $ini_settings['paths']['dev_symlink'];
+         
     	
     	print $cck->_view('page_admin', $variables);
 
