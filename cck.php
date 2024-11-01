@@ -557,20 +557,12 @@ class CCK
 		global $cck, $ini_settings;
 		
 		//$database = $ini_settings['databases'][$databaseName];
-		//print_r($connect);
-		//
-		try
-		{			 
+				 
 
             $db = new SQLite3($databaseName);
             return $db;
 	
-		}
-		catch (PDOException $e)
-		{
-			echo "Failed to get DB handle: " . $e->getMessage() . "\n";
-			exit;
-		}	
+			
 	}
 	
 	function _hooks($hook = NULL, $type = NULL)

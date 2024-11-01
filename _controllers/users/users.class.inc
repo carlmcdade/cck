@@ -113,7 +113,14 @@ class users{
     {
     	global $cck, $ini_settings;
     	
-    	$connect = $cck->_dbconnect($ini_settings['databases']['user_db']);
+    
+    	
+    	$database = $ini_settings['databases']['user_db'];
+    	$table = array();
+    	$columns = array();
+    	$rows = array();
+    	
+    	//$connect = $cck->_dbconnect($ini_settings['databases']['user_db']);
     	
     	// get all links from each class controller
     	$menu = $cck->_hooks('hook_links');
@@ -130,12 +137,27 @@ class users{
     			'index' => $this->module
     			)
     		, $variables);
-    	
+    	$db = new SQLite3($database);
+
+        $result = $db->query('SELECT * FROM userlist WHERE id=' . $cck->_path_segment(2). '');
+        
+    	 while ($row = $result->fetchArray()) {
+               $rows[] = $row;
+         }
+          //SQLite3Result::numColumns();
+        for ($i = 0; $i < $result->numColumns(); $i++) {
+			    $col = $result->columnName($i);
+			    $columns[] = $col;
+			}
+				$table['header'] = $columns;
+				$table['rows'] = $rows; 
+				$output = $cck->_view('table', $table);
+       
     	
     	// Get the content column values
       
     	
-    	$variables['content'] =  'User Id: ' .$cck->_path_segment(2);
+    	$variables['content'] =  'User Id: ' .$cck->_path_segment(2) . '<br>' . $output;
         print $cck->_view('users', $variables);         
     }
     
@@ -148,6 +170,13 @@ class users{
     {
     	// set links
     	global $cck,$ini_settings;
+    	
+    	
+    	$database = $ini_settings['databases']['user_db'];
+    	$table = array();
+    	$columns = array();
+    	$rows = array();
+   
     	
     	// get all links from each class controller
     	$menu = $cck->_hooks('hook_links');
@@ -223,6 +252,7 @@ class users{
 				$table['header'] = $columns;
 				$table['rows'] = $rows; 
 				$output = $cck->_view('table', $table);
+		
        
     	
     	$variables['content'] = $output;
@@ -239,6 +269,12 @@ class users{
     	// get all links from each class controller
     	global $cck, $ini_settings; 
     	
+    	$database = $ini_settings['databases']['user_db'];
+    	$table = array();
+    	$columns = array();
+    	$rows = array();
+   
+    	
     	$menu = $cck->_hooks('hook_links');
     	$sub_menu = $cck->_hooks('hook_module_links');
     	$variables = array();
@@ -252,14 +288,34 @@ class users{
     			'template'=>'links_sub_menu',
     			'index' => $this->module
     			), $variables); 
-// get user id from url
-    	 $userID = $cck->_query_segment(2);
-    	// Get the content column values
-        $connect = $cck->_dbconnect($ini_settings['databases']['user_db']);
-    	$query = $connect->query("SELECT * FROM ". $variables['dbTable']. " WHERE id = " . $userID . "");
-    	$information = $query->fetchAll();
+// get user id from url 
+    	$db = new SQLite3($database);
     	
-    	$variables['content'] = '<table><tr><td>' . print_r($information) . '</td</tr></table></label>show users history and stats</label>';
+        $userID = $cck->_path_segment(2);
+        if(!empty($userID))
+        {
+            $result = $db->query('SELECT * FROM userlist WHERE id='.$userID.'');
+        }
+        else
+        {
+        	$result = $db->query('SELECT * FROM userlist');
+        }
+        
+    	 while ($row = $result->fetchArray()) {
+               $rows[] = $row;
+         }
+          //SQLite3Result::numColumns();
+        for ($i = 0; $i < $result->numColumns(); $i++) {
+			    $col = $result->columnName($i);
+			    $columns[] = $col;
+			}
+				$table['header'] = $columns;
+				$table['rows'] = $rows; 
+				$output = $cck->_view('table', $table);
+       
+        
+    	
+    	$variables['content'] = $output;
     	print $cck->_view('users', $variables);
     }
     
