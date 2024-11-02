@@ -3,3 +3,4 @@ cck
 *.md~
 *.inc~
 *.php~
+.htaccess
