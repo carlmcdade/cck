@@ -19,10 +19,17 @@ if(!empty($rows))
 		{
 			if(isset($row[$td]))
 			{
-				if($td === 1||$td === 0 ){
-					$row[$td] = '<a role="button"  class="btn btn-primary" href="">' .$row[$td]. '</a>' ;
-
+				
+			    switch($td)
+			    {
+			    case "0":
+			    	   $row[$td] = '<a role="button"  class="btn btn-primary" href="?user/admin_blog">' .$row[$td]. '</a>' ;
+			    	break;
+			    case "1":
+			    	   $row[$td] = '<a role="button"  class="btn btn-primary" href="?user/users_blog">' .$row[$td]. '</a>' ;
+			    	break;
 			    }
+			    
 				$output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">' . $row[$td] . '</td>' . "\n";
 			}
 			else

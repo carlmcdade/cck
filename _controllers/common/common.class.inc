@@ -23,9 +23,9 @@
 class common{
 
     static private $_instance;
-    private $data = array();
-    private $ini_settings = array();
-    private $update = FALSE;
+    public $data = array();
+    public $ini_settings = array();
+    public $update = FALSE;
     public  $common;
     public  $default_main_menu = "links_main_menu";
     public  $default_admin_menu = "links_admin_menu";
@@ -41,7 +41,7 @@ class common{
     */
     
     
-    private function __construct()
+    function __construct()
     {
 
     	$this->moduleName = get_class($this);  

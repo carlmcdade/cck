@@ -400,8 +400,16 @@ class admin extends SQLite3 {
     	
     	$variables['contentTitle'] = $cck->_path_segment(1);
     	$db = new SQLite3($database);
-
-        $result = $db->query('SELECT * FROM userlist');
+    	
+        $userID = $cck->_path_segment(2);
+        if(!empty($userID))
+        {
+            $result = $db->query('SELECT * FROM userlist WHERE id='.$userID.'');
+        }
+        else
+        {
+        	$result = $db->query('SELECT * FROM userlist');
+        }
         
     	 while ($row = $result->fetchArray()) {
                $rows[] = $row;
@@ -413,9 +421,8 @@ class admin extends SQLite3 {
 			}
 				$table['header'] = $columns;
 				$table['rows'] = $rows; 
-				$output = $cck->_view('table_users', $table);
-       
-    	     $variables['content'] = $output;
+				$output = $cck->_view('table', $table);
+		$variables['content'] = $output;
         print $cck->_view('page_admin', $variables);
     }
 
@@ -441,23 +448,23 @@ class admin extends SQLite3 {
     	
     	$var[$link][1] = array( 
 					'text' => 'Your Profile', 
-					'path' => $this->module . '/user_profile'
+					'path' => 'users/user_profile'
 					);
 		$var[$link][2] = array(
 					'text' => 'Your Account', 
-					'path' => $this->module . '/user_account'
+					'path' => 'users/user_account'
 					);
 		$var[$link][3] = array(
 					'text' => 'Your Content', 
-					'path' => $this->module . '/user_blog'
+					'path' => 'users/user_blog'
 					);
 		$var[$link][4] = array(
 				'text' => 'User settings',
-				'path' => $this->module . '/user_settings'
+				'path' => 'users/user_settings'
 		);
 		$var[$link][5] = array(
 				'text' => 'Your Inbox',
-				'path' => $this->module . '/user_messages'
+				'path' => 'users/user_messages'
 		);
 			
     	
@@ -504,6 +511,98 @@ class admin extends SQLite3 {
        
     	     $variables['content'] = $output;
         print $cck->_view('page_admin', $variables);
+    }
+    
+    function admin_users_profile($userID = NULL)
+    {
+    	global $cck,$ini_settings;
+        // get all links from each class controller
+        $database = $ini_settings['databases']['user_db'];
+    	$table = array();
+    	$columns = array();
+    	$rows = array();
+    	$output ='';
+    	
+    	/// build admin navigation links that only are used by this module/method
+   
+        
+             	//$link = 'links';
+
+    	$link = 'links';
+    	
+    	$var = array();
+    	
+    	$var[$link][1] = array( 
+					'text' => 'Your Profile', 
+					'path' => 'users/user_profile'
+					);
+		$var[$link][2] = array(
+					'text' => 'Your Account', 
+					'path' => 'users/user_account'
+					);
+		$var[$link][3] = array(
+					'text' => 'Your Content', 
+					'path' => 'users/user_content'
+					);
+		$var[$link][4] = array(
+				'text' => 'User settings',
+				'path' => 'users/user_settings'
+		);
+		$var[$link][5] = array(
+				'text' => 'Your Inbox',
+				'path' => 'users/user_messages'
+		);
+			
+    	
+    	
+    	$menu = $cck->_hooks('hook_links');    	
+    	$sub_menu = $cck->_hooks('hook_module_links');
+    	$admin_menu = $var;
+
+    	//var_dump($sub_menu); exit;
+    	$variables['menuTitle'] = 'Site Admin';
+    	$variables['adminMenuTitle'] = 'User Admin';
+    	$variables['pageTitle'] = 'Site Admin';
+    	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
+    	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
+    		array(
+    			'template'=>'links_sub_menu',
+    			'index' => $this->module
+    			) , $variables); 
+    	
+    	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
+    			'template'=>'links_user_menu',
+    			'index' => $this->module
+    			) , $variables); 
+    	
+    	
+    	$variables['contentTitle'] = $cck->_path_segment(1);
+    	$db = new SQLite3($database);
+    	
+        $userID = $cck->_path_segment(2);
+        if(!empty($userID))
+        {
+            $result = $db->query('SELECT * FROM userlist WHERE id='.$userID.'');
+        }
+        else
+        {
+        	$result = $db->query('SELECT * FROM userlist');
+        }
+        
+    	 while ($row = $result->fetchArray()) {
+               $rows[] = $row;
+         }
+          //SQLite3Result::numColumns();
+        for ($i = 0; $i < $result->numColumns(); $i++) {
+			    $col = $result->columnName($i);
+			    $columns[] = $col;
+			}
+				$table['header'] = $columns;
+				$table['rows'] = $rows; 
+				$output = $cck->_view('table', $table);
+		
+        print $cck->_view('page_admin', $variables);
+    
     }
 }
 

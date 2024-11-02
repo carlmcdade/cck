@@ -217,8 +217,8 @@ class blog{
 				$table['rows'] = $rows; 
 				$output = $cck->_view('table', $table);
        
-        $variables['content'] = "connect to sqlite database: ". 
-        $output .$database . '<br>::' . 
+        $variables['content'] = "connect to sqlite database: ". $output;
+        /**$output .$database . '<br>::' . 
         $_SERVER['REQUEST_URI'] .' <br>::' . 
         $_SERVER['QUERY_STRING'] .' <br>::' .
         $_SERVER['SCRIPT_FILENAME'] .' <br>::' .
@@ -226,7 +226,7 @@ class blog{
          CCK_ROOT. '<br>::' .
          DOCROOT . '<br>::'.
          	 $ini_settings['paths']['dev_symlink'];
-         
+         */
     	
     	print $cck->_view('page_admin', $variables);
 

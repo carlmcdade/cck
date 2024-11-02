@@ -8,9 +8,9 @@
  * @copyright Carl McDade
  * @since 2011
  * @version 1.0
- * @license Apache 1.0
+ * @license MIT 1.0
  * 
- * @link http://fhqk.com/cck
+ * @link http://hardcopy.free.nf
  * ==================================================================
  * 
  *                       cck.php
@@ -230,8 +230,8 @@ class CCK
 		}
 		else
 		{
-			$class = strtolower(ber_pathpart(0));
-			$action = strtolower(ber_pathpart(1));
+			$class = strtolower($cck->_path_segment(0));
+			$action = strtolower($cck->_path_segment(1));
 		}		
 		
 		$menu = $cck->_hooks('hook_links');
@@ -284,6 +284,12 @@ class CCK
 				print $cck->_view('page_404', $variables);
 				exit('');
 			}
+		}elseif(class_exists($class) == FALSE || class_exists($namespace) == FALSE){
+		       	$output = 'The site address '.$class.' requested does not exist.'. $action ;
+				$variables['contentTitle'] = 'ERROR : ' . $cck->_path_segment(1);
+				$variables['content'] = $output;
+				print $cck->_view('page_404', $variables);
+				exit(''); 
 		}
 		else
 		{
