@@ -144,7 +144,7 @@ class blog{
 				$table['rows'] = $rows; 
 				$output = $cck->_view('table', $table);
        
-        $variables['content'] = "connect to sqlite database: ". $output;
+        $variables['content'] = "List of users with blogs: ". $output;
     	
     	print $cck->_view('page_admin', $variables);
 
@@ -173,8 +173,27 @@ class blog{
     			'index' => $this->module
     			)
     		, $variables); 
-        $output .= print_r($cck->_path_segment(0));
-    	$variables['content'] = 'Categories and taxonomy'. $output;
+         
+    	$db = new SQLite3($database);
+
+        $result = $db->query('SELECT * FROM categories');
+        
+    	 while ($row = $result->fetchArray()) {
+               $rows[] = $row;
+         }
+          //SQLite3Result::numColumns();
+        for ($i = 0; $i < $result->numColumns(); $i++) {
+			    $col = $result->columnName($i);
+			    $columns[] = $col;
+			}
+				$table['header'] = $columns;
+				$table['rows'] = $rows; 
+				$output = $cck->_view('table_categories', $table);
+    	
+    	
+               
+        $variables['content'] = 'categories admin panel' . $output;
+    	
     	print $cck->_view('default', $variables);
     }
     
@@ -217,7 +236,7 @@ class blog{
 				$table['rows'] = $rows; 
 				$output = $cck->_view('table', $table);
        
-        $variables['content'] = "connect to sqlite database: ". $output;
+        $variables['content'] = "Latest Content by users: ". $output;
         /**$output .$database . '<br>::' . 
         $_SERVER['REQUEST_URI'] .' <br>::' . 
         $_SERVER['QUERY_STRING'] .' <br>::' .

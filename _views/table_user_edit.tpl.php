@@ -1,5 +1,5 @@
 <?php 
-$output = '<table class="table">';
+$output = '<form><table class="table">';
 $output .= '<thead><tr>';
 // table header
 foreach ($header as $th => $column)
@@ -18,12 +18,7 @@ if(!empty($rows))
 		
 		foreach($header as $td => $cell)
 		{  
-			if($td == 0){
-			}
-			else{
-				
-				
-			}
+			
 			
 			if(isset($row[$td]))
 			{
@@ -33,20 +28,31 @@ if(!empty($rows))
 			    case "0":
 			    	   $id = $row[$td];
 
-			    	   $row[$td] = '<a role="button"  class="btn btn-primary" href="?users/user_control_panel/'. $id .'">' .$row[$td]. '</a>' ;
+			    	  // $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">'.$row[$td].'</td>' . "\n";
+
 
 			    	break;
 			    case "1":
-			    	   $row[$td] = '<a role="button"  class="btn btn-primary" href="?users/user_profile/'. $id .'">' .$row[$td]. '</a>' ;
+			    	   
+			    	   //$row[$td] = '<a role="button"  class="btn btn-primary" href="?admin/edit_profile/'. $id .'">' .$row[$td]. '</a>' ;
 			    	break;
 			    
 			        case "4":
 			    	   $row[$td] = substr($row[$td],0,40);
 			    	break;
+			    	default :
+			    	    $placeholder = $row[$td];
+			    	 break;
 			    }
 			
-			    
-				$output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">' . $row[$td] . '</td>' . "\n";
+			    if($td == 0){
+			         
+			    	 $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells"> <a role="button"  class="btn btn-primary" href="?admin/edit_user/'. $id .'">' .$row[$td]. '</a></td>' ;
+			    }
+			    else{	
+				     $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">  <input type="text" class="form-control" id="" placeholder="'. $row[$td].'"></td>' . "\n";
+			    }
+			
 			}
 			else
 			{
@@ -57,6 +63,6 @@ if(!empty($rows))
 	}
 
 }
-$output .= '</table>';
+$output .= '</table></form>';
 print $output;
 ?>

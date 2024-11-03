@@ -44,10 +44,10 @@ class users{
     function hook_access()
     {
     	$authorize = array(
-    			$this->module . '/users_profile' => array('users profile'),
-    			$this->module . '/users_settings' => array('users settings'),
-    			$this->module . '/users_control_panel' => array('users control panel'),
-    			$this->module . '/users_history' => array('users history'),
+    			$this->module . '/user_profile' => array('users profile'),
+    			$this->module . '/user_settings' => array('users settings'),
+    			$this->module . '/user_control_panel' => array('users control panel'),
+    			$this->module . '/user_history' => array('users history'),
     	);   
     	return $authorize;
     }
@@ -62,7 +62,7 @@ class users{
     	
     	$var[$link][1] = array(
         		'text' => 'My Account', 
-        		'path' => $this->module . '/users_control_panel',
+        		'path' => $this->module . '/user_control_panel',
         		'controller' => 'users',
         		'action' => 'users_control_panel',
         		'css_class' => array($this->module, 'main_item'),
@@ -79,28 +79,30 @@ class users{
     {
     	$link = 'links';
     	
-    	$var[$link][1] = array(
-					'text' => 'control panel', 
-					'path' => $this->module . '/users_control_panel'
+    	$var = array();
+    	
+    	$var[$link][1] = array( 
+					'text' => 'Your Profile', 
+					'path' => 'users/user_profile'
 					);
-    	$var[$link][2] = array( 
-					'text' => 'profile', 
-					'path' => $this->module . '/users_profile',
-					'alias' => 'index',
-					'controller' => $this->module,
-					'action' => 'users_profile',
-					'css_class' => array($this->module, 'main_item'),
-					'css_id' => $this->module 
-						);
+		$var[$link][2] = array(
+					'text' => 'Your Account', 
+					'path' => 'users/user_account'
+					);
 		$var[$link][3] = array(
-					'text' => 'settings', 
-					'path' => $this->module . '/users_settings'
+					'text' => 'Your Content', 
+					'path' => 'users/user_blog'
 					);
 		$var[$link][4] = array(
-				'text' => 'history',
-				'path' => $this->module . '/users_history'
-		);		
-        
+				'text' => 'User settings',
+				'path' => 'users/user_settings'
+		);
+		$var[$link][5] = array(
+				'text' => 'Your Inbox',
+				'path' => 'users/user_messages'
+		);
+			
+    	
         return $var;
     }
     
@@ -109,7 +111,7 @@ class users{
      * 
      */
 
-    function users_profile()
+    function user_profile()
     {
     	global $cck, $ini_settings;
     	
@@ -162,11 +164,12 @@ class users{
 				$output = $cck->_view('table_user_cp', $table);
        
     	
-    	// Get the content column values
+    	// check for user id no id means site owner
         $variables['userID'] = $cck->_path_segment(2);
         if (empty($cck->_path_segment(2))) {
             $variables['profileImage'] = 'default_user.jpeg';
             $variables['userHandle'] = 'Site Members';
+            $variables['userBio'] = $cck->_view('default_footer', $variables);
             
           }else{
           	  
@@ -174,6 +177,7 @@ class users{
           
           	$variables['profileImage'] =  $value ['image'];
             $variables['userHandle'] =  $value ['name'];
+            $variables['userBio'] = $value['bio'];
           }
         }
          
@@ -189,7 +193,7 @@ class users{
      * 
      */
     
-    function users_control_panel()
+    function user_control_panel()
     {
     	// set links
     	global $cck,$ini_settings;
@@ -206,16 +210,7 @@ class users{
     	$sub_menu = $cck->_hooks('hook_module_links');
     	$user_menu = $cck->_hooks('hook_user_links');
     	$variables = array();
-    	$variables['menuTitle'] = 'User'; 	
-    	$variables['pageTitle'] = 'User Control Panel';
-    	$variables['contentTitle'] = '';
-    	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu' , $variables);
-    	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
-    		array(
-    			'template'=>'links_sub_menu',
-    			'index' => $this->module
-    			)
-    		, $variables); 
+    	
 
     	$db = new SQLite3($database);
     	$userID = $cck->_path_segment(2);
@@ -237,10 +232,63 @@ class users{
 			    $col = $result->columnName($i);
 			    $columns[] = $col;
 			}
-				$table['header'] = $columns;
-				$table['rows'] = $rows; 
-				$output = $cck->_view('table_user_cp', $table);
+		$table['header'] = $columns;
+		$table['rows'] = $rows; 
+		$output = $cck->_view('table_user_cp', $table);
 		
+    	// Get the content column values
+        $variables['userID'] = $cck->_path_segment(2);
+        if (empty($cck->_path_segment(2)))
+        {
+            $variables['profileImage'] = 'default_user.jpeg';
+            $variables['userHandle'] = 'Site Members';
+            $variables['menuTitle'] = 'Site Members'; 	
+            
+            $link = 'links';
+    	
+    	$var = array();
+    	
+    	$var[$link][1] = array( 
+					'text' => 'User Profiles', 
+					'path' => 'users/user_profile'
+					);
+		$var[$link][2] = array(
+					'text' => 'User Accounts', 
+					'path' => 'users/user_account'
+					);
+		$var[$link][3] = array(
+					'text' => 'User Content', 
+					'path' => 'users/user_blog'
+					);
+		$var[$link][4] = array(
+				'text' => 'User Settings',
+				'path' => 'users/user_settings'
+		);
+		
+			
+    	
+        }else{
+          	  
+            foreach($rows as $key => $value)
+            {
+          
+          	    $variables['profileImage'] =  $value ['image'];
+                $variables['userHandle'] =  $value ['name'];
+                $variables['userBio'] = $value['bio'];
+                $variables['menuTitle'] = $value['name']; 	
+            }
+        }
+         
+		
+    	$variables['pageTitle'] = 'User Control Panel';
+    	$variables['contentTitle'] = '';
+    	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu' , $variables);
+    	$variables['subNavigation'] = $cck->_module_links($var,
+    		array(
+    			'template'=>'links_sub_menu',
+    			'index' => $this->module
+    			)
+    		, $variables); 
     	
     	$variables['content'] = $output;  
     	print $cck->_view('users', $variables);
@@ -251,7 +299,7 @@ class users{
      * 
      */
     
-    function users_settings()
+    function user_settings()
     {
     	// get all links from each class controller
     	global $cck, $ini_settings; 
@@ -313,7 +361,7 @@ class users{
      *
      */
     
-    function users_history()
+    function user_history()
     {
     	// get all links from each class controller
     	global $cck, $ini_settings; 
@@ -438,7 +486,61 @@ class users{
 				$table['header'] = $columns;
 				$table['rows'] = $rows; 
 				$output = $cck->_view('table_user_cp', $table);
+		// Get the content column values
+        $variables['userID'] = $cck->_path_segment(2);
+        if (empty($cck->_path_segment(2)))
+        {
+            $variables['profileImage'] = 'default_user.jpeg';
+            $variables['userHandle'] = 'Site Members';
+            $variables['menuTitle'] = 'Site Members'; 	
+            
+            $link = 'links';
+    	
+    	$var = array();
+    	
+    	$var[$link][1] = array( 
+					'text' => 'User Profiles', 
+					'path' => 'users/user_profile'
+					);
+		$var[$link][2] = array(
+					'text' => 'User Accounts', 
+					'path' => 'users/user_account'
+					);
+		$var[$link][3] = array(
+					'text' => 'User Content', 
+					'path' => 'users/user_blog'
+					);
+		$var[$link][4] = array(
+				'text' => 'User Settings',
+				'path' => 'users/user_settings'
+		);
 		
+			
+    	
+        }else{
+          	  
+            foreach($rows as $key => $value)
+            {
+          
+          	    $variables['profileImage'] =  $value ['image'];
+                $variables['userHandle'] =  $value ['name'];
+                $variables['userBio'] = $value['bio'];
+                $variables['menuTitle'] = $value['name']; 	
+            }
+        }
+         
+		
+    	$variables['pageTitle'] = 'User Account';
+    	$variables['contentTitle'] = '';
+    	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu' , $variables);
+    	$variables['subNavigation'] = $cck->_module_links($var,
+    		array(
+    			'template'=>'links_sub_menu',
+    			'index' => $this->module
+    			)
+    		, $variables); 
+    	
+        $variables['content'] = $output;
     	
     	print $cck->_view('page_profile', $variables);
     	

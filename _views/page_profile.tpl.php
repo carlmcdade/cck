@@ -58,6 +58,8 @@
              	 {
              	 	 $userID = 'shared';
              	 	 $profileImage = 'default_user.jpeg';
+             	 	 $userBio = '<p class="fs-5">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
+';
              	 }
              	 
              	 
@@ -71,8 +73,9 @@
   <img  height="200px" width="200px" class="align-self-start mr-3 img-thumbnail" src="images/user_profile/user_id_<?php echo $userID . '/' .$profileImage. ''; ?>" alt="Generic placeholder image">
   <div class="media-body col-lg-8 px-0">
     <h5 class="mt-0"><?php echo $userHandle; ?></h5>
-    <p class="fs-5">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-    <p class="fs-5">Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+    
+    <p class="fs-5"><?php echo $userBio; ?></p>
+
   </div>
 </div>
 <div class="container my-5">
