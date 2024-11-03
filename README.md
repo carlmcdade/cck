@@ -12,18 +12,14 @@ Features:
     Programmers can actually design and build their own "core" systems without fear of dependancy hell.
     Using third party classes and loosely coupled frameworks and libraries like Zend framework, Symfony components and EZ components is a snap.
 
-Demo: http://berlinto.com/cck
+Demo: http://hardcopy.free.nf
 
 All this makes the Content Connection Kit a very flexible and robust web architecture that can be used to build most any web application to your liking.
 Requirements:
 
-    PHP version 5.3 and above.
-    A web server that fully supports PHP version 5.3.
-    
-    Helpers:
-    
-    PFBC Form Builder
-    Geshi Syntax Highlighter
+    -PHP version 8
+    -sqlite3
+    -Bootstrap5 CSS
 
 Architecture:
 
