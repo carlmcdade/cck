@@ -82,24 +82,24 @@ class users{
     	$var = array();
     	
     	$var[$link][1] = array( 
-					'text' => 'Your Profile', 
-					'path' => 'users/user_profile'
+					'text' => 'Profiles', 
+					'path' => 'admin/user_profile'
 					);
 		$var[$link][2] = array(
-					'text' => 'Your Account', 
-					'path' => 'users/user_account'
+					'text' => 'Accounts', 
+					'path' => 'admin/user_account'
 					);
 		$var[$link][3] = array(
-					'text' => 'Your Content', 
-					'path' => 'users/user_blog'
+					'text' => 'Content', 
+					'path' => 'admin/user_blog'
 					);
 		$var[$link][4] = array(
-				'text' => 'User settings',
-				'path' => 'users/user_settings'
+				'text' => 'User Settings',
+				'path' => 'admin/user_settings'
 		);
 		$var[$link][5] = array(
-				'text' => 'Your Inbox',
-				'path' => 'users/user_messages'
+				'text' => 'User Messages',
+				'path' => 'admin/user_messages'
 		);
 			
     	
@@ -277,6 +277,29 @@ class users{
                 $variables['userBio'] = $value['bio'];
                 $variables['menuTitle'] = $value['name']; 	
             }
+                        
+            $link = 'links';
+    	
+    	$var = array();
+    	
+    	$var[$link][1] = array( 
+					'text' => 'Profile', 
+					'path' => 'users/user_profile/' . $userID
+					);
+		$var[$link][2] = array(
+					'text' => 'Accounts', 
+					'path' => 'users/user_account/' . $userID
+					);
+		$var[$link][3] = array(
+					'text' => 'Content', 
+					'path' => 'users/user_blog/' . $userID
+					);
+		$var[$link][4] = array(
+				'text' => 'Settings',
+				'path' => 'users/user_settings/' . $userID
+		);
+		
+			
         }
          
 		
@@ -719,6 +742,209 @@ class users{
     {
     	$variables['content'] = 'show users logout confirmation';
     	print $this->common->ber_view('users', $variables);
+    }
+    
+    function edit_user($userID = NULL)
+    {
+        global $cck,$ini_settings;
+        // get all links from each class controller
+        $database = $ini_settings['databases']['user_db'];
+    	$table = array();
+    	$columns = array();
+    	$rows = array();
+    	$output ='';
+    	
+    	/// build admin navigation links that only are used by this module/method
+   
+        
+             	//$link = 'links';
+        $userID = $cck->_path_segment(2);
+    	$link = 'links';
+    	
+    	$var = array();
+    	
+    	$var[$link][1] = array( 
+					'text' => 'Profile', 
+					'path' => 'admin/edit_profile/'.$userID
+					);
+		$var[$link][2] = array(
+					'text' => 'Account', 
+					'path' => 'admin/edit_user/'.$userID
+					);
+		$var[$link][3] = array(
+					'text' => 'Content', 
+					'path' => 'admin/edit_post/'.$userID
+					);
+		$var[$link][4] = array(
+				'text' => 'Settings',
+				'path' => 'admin/edit_user_settings/'.$userID
+		);
+		$var[$link][5] = array(
+				'text' => 'Inbox',
+				'path' => 'admin/edit_messages/' .$userID
+		);
+			
+    	
+    	
+    	$menu = $cck->_hooks('hook_links');    	
+    	$sub_menu = $cck->_hooks('hook_module_links');
+    	$admin_menu = $var;
+
+    	//var_dump($sub_menu); exit;
+    	$variables['menuTitle'] = 'Site Admin';
+    	$variables['adminMenuTitle'] = 'User Admin';
+    	$variables['pageTitle'] = 'Site Admin';
+    	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
+    	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
+    		array(
+    			'template'=>'links_sub_menu',
+    			'index' => $this->module
+    			) , $variables); 
+    	
+    	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
+    			'template'=>'links_user_menu',
+    			'index' => $this->module
+    			) , $variables); 
+    	
+    	
+    	$variables['contentTitle'] = $cck->_path_segment(1);
+    	$db = new SQLite3($database);
+    	
+        $userID = $cck->_path_segment(2);
+        if(!empty($userID))
+        {
+            $result = $db->query('SELECT * FROM userlist WHERE id='.$userID.'');
+        }
+        else
+        {
+        	$result = $db->query('SELECT * FROM userlist');
+        }
+        
+    	 while ($row = $result->fetchArray()) {
+               $rows[] = $row;
+         }
+          //SQLite3Result::numColumns();
+        for ($i = 0; $i < $result->numColumns(); $i++) {
+			    $col = $result->columnName($i);
+			    $columns[] = $col;
+			}
+				$table['header'] = $columns;
+				$table['rows'] = $rows; 
+				$output = $cck->_view('table_user_edit', $table);
+				
+		foreach($rows as $key => $value)			
+		{
+			$variables['userBio'] =  $value['bio'];
+			$variables['userName'] = $value['name'];
+			$variables['profileImage'] = $value['image'];
+			$variables['userID'] = $userID;
+		}
+				
+		$variables['content'] = $output;
+		
+        print $cck->_view('page_admin', $variables);
+        
+    }
+    function edit_profile($userID = NULL)
+    {
+        global $cck,$ini_settings;
+        // get all links from each class controller
+        $database = $ini_settings['databases']['user_db'];
+    	$table = array();
+    	$columns = array();
+    	$rows = array();
+    	$output ='';
+    	
+    	/// build admin navigation links that only are used by this module/method
+   
+        
+             	//$link = 'links';
+        $userID = $cck->_path_segment(2);
+    	$link = 'links';
+    	
+    	$var = array();
+    	
+    	$var[$link][1] = array( 
+					'text' => 'Profile', 
+					'path' => 'user/edit_profile/'.$userID
+					);
+		$var[$link][2] = array(
+					'text' => 'Account', 
+					'path' => 'user/edit_user/'.$userID
+					);
+		$var[$link][3] = array(
+					'text' => 'Content', 
+					'path' => 'user/edit_post/'.$userID
+					);
+		$var[$link][4] = array(
+				'text' => 'Settings',
+				'path' => 'user/edit_user_settings/'.$userID
+		);
+		$var[$link][5] = array(
+				'text' => 'Inbox',
+				'path' => 'user/edit_messages/' .$userID
+		);
+			
+    	
+    	
+    	$menu = $cck->_hooks('hook_links');    	
+    	$sub_menu = $cck->_hooks('hook_module_links');
+    	$admin_menu = $var;
+
+    	//var_dump($sub_menu); exit;
+    	$variables['menuTitle'] = 'Site Admin';
+    	$variables['adminMenuTitle'] = 'User Admin';
+    	$variables['pageTitle'] = 'Site Admin';
+    	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
+    	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
+    		array(
+    			'template'=>'links_sub_menu',
+    			'index' => $this->module
+    			) , $variables); 
+    	
+    	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
+    			'template'=>'links_user_menu',
+    			'index' => $this->module
+    			) , $variables); 
+    	
+    	
+    	$variables['contentTitle'] = $cck->_path_segment(1);
+    	$db = new SQLite3($database);
+    	
+        $userID = $cck->_path_segment(2);
+        if(!empty($userID))
+        {
+            $result = $db->query('SELECT * FROM userlist WHERE id='.$userID.'');
+        }
+        else
+        {
+        	$result = $db->query('SELECT * FROM userlist');
+        }
+        
+    	 while ($row = $result->fetchArray()) {
+               $rows[] = $row;
+         }
+          //SQLite3Result::numColumns();
+        for ($i = 0; $i < $result->numColumns(); $i++) {
+			    $col = $result->columnName($i);
+			    $columns[] = $col;
+			}
+				$table['header'] = $columns;
+				$table['rows'] = $rows; 
+				$output = $cck->_view('table_user_edit', $table);
+				
+		foreach($rows as $key => $value)			
+		{
+			$variables['userBio'] =  $value['bio'];
+			$variables['userName'] = $value['name'];
+			$variables['profileImage'] = $value['image'];
+			$variables['userID'] = $userID;
+		}
+				
+		$variables['content'] = $output;
+		
+        print $cck->_view('page_admin', $variables);
+        
     }
 }
 

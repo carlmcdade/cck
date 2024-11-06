@@ -104,6 +104,84 @@ class blog{
     	    	    );
     	    return $authorize;
     }
+    
+        function blog_user()
+    {
+    	global $cck, $ini_settings;
+    	
+    
+    	
+    	$database = $ini_settings['databases']['user_db'];
+    	$table = array();
+    	$columns = array();
+    	$rows = array();
+    	
+    	//$connect = $cck->_dbconnect($ini_settings['databases']['user_db']);
+    	
+    	// get all links from each class controller
+    	$menu = $cck->_hooks('hook_links');
+    	$sub_menu = $cck->_hooks('hook_module_links');
+    	$variables = array();
+    	$variables['pageTitle'] = 'Blog';
+    	$variables['contentTitle'] = 'User Blog';
+    	$variables['menuTitle'] = 'Blog Panel';
+    	$variables['dbTable'] = 'userlist';
+    	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
+    	$variables['sub_navigation'] = $cck->_module_links($sub_menu[$this->module],
+    		array(
+    			'template'=>'links_sub_menu',
+    			'index' => $this->module
+    			)
+    		, $variables);
+    	$db = new SQLite3($database);
+    	$userID = $cck->_path_segment(2);
+        if(!empty($userID))
+        {
+            $result = $db->query('SELECT * FROM userlist WHERE id='.$userID.'');
+        }
+        else
+        {
+        	$result = $db->query('SELECT * FROM userlist');
+        }
+
+        
+    	 while ($row = $result->fetchArray()) {
+               $rows[] = $row;
+         }
+          //SQLite3Result::numColumns();
+        for ($i = 0; $i < $result->numColumns(); $i++) {
+			    $col = $result->columnName($i);
+			    $columns[] = $col;
+			}
+				$table['header'] = $columns;
+				$table['rows'] = $rows; 
+				$output = $cck->_view('table_blogs', $table);
+       
+    	
+    	// check for user id no id means site owner
+        $variables['userID'] = $cck->_path_segment(2);
+        if (empty($cck->_path_segment(2))) {
+            $variables['profileImage'] = 'default_user.jpeg';
+            $variables['userHandle'] = 'Site Members';
+            $variables['userBio'] = $cck->_view('default_footer', $variables);
+            
+          }else{
+          	  
+          foreach($rows as $key => $value){
+          
+          	$variables['profileImage'] =  $value ['image'];
+            $variables['userHandle'] =  $value ['name'];
+            $variables['userBio'] = $value['bio'];
+          }
+        }
+         
+         
+        
+    	
+    	$variables['content'] =  'User Id: ' .$variables['userID']. '- '. $variables['userHandle'] . '- ' .$variables['profileImage'].'<br>' . $output;
+        print $cck->_view('page_profile', $variables);         
+    }
+
 
     function blog_list()
     {
@@ -142,18 +220,38 @@ class blog{
 			}
 				$table['header'] = $columns;
 				$table['rows'] = $rows; 
-				$output = $cck->_view('table', $table);
+				$output = $cck->_view('table_blogs', $table);
+		// check for user id no id means site owner
+        $variables['userID'] = $cck->_path_segment(2);
+        if (empty($cck->_path_segment(2))) {
+            $variables['profileImage'] = 'default_user.jpeg';
+            $variables['userHandle'] = 'Site Members';
+            $variables['userBio'] = $cck->_view('default_content', $variables);
+            
+          }else{
+          	  
+          foreach($rows as $key => $value){
+          
+          	$variables['profileImage'] =  $value ['image'];
+            $variables['userHandle'] =  $value ['name'];
+            $variables['userBio'] = $value['bio'];
+          }
+        }
+         
        
         $variables['content'] = "List of users with blogs: ". $output;
     	
-    	print $cck->_view('page_admin', $variables);
+    	print $cck->_view('page_blog_latest', $variables);
 
     }
 
     function blog_categories()
     {
-        global $cck;
-        
+        global $cck,$ini_settings;
+        $database = $ini_settings['databases']['user_db'];
+    	$table = array();
+    	$columns = array();
+    	$rows = array();
     	
     	//some variables to load into the view will appear as $[variable name]
       	$output = '';
@@ -162,8 +260,8 @@ class blog{
     	$variables['seperators'] = array('|','-',';',':');
     	$variables['pageTitle'] = 'Categories';
     	$variables['menuTitle'] = 'Categories';
-    	$variables['contentTitle'] = 'Recent blog posts';
-    	$variables['dbTable'] = 'userlist';
+    	$variables['contentTitle'] = 'Blog Categories';
+    	$variables['dbTable'] = 'categories';
         
     	
     	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
@@ -234,7 +332,27 @@ class blog{
 			}
 				$table['header'] = $columns;
 				$table['rows'] = $rows; 
-				$output = $cck->_view('table', $table);
+				$output = $cck->_view('table_blogs', $table);
+		//$variables['userID'] = $cck->_path_segment(2);
+		$variables['profileImage'] = 'default_user.jpeg';
+		
+		// check for user id no id means site owner
+        $variables['userID'] = $cck->_path_segment(2);
+        if (empty($cck->_path_segment(2))) {
+            $variables['profileImage'] = 'default_user.jpeg';
+            $variables['userHandle'] = 'Site Members';
+            $variables['userBio'] = $cck->_view('default_content', $variables);
+            
+          }else{
+          	  
+          foreach($rows as $key => $value){
+          
+          	$variables['profileImage'] =  $value ['image'];
+            $variables['userHandle'] =  $value ['name'];
+            $variables['userBio'] = $value['bio'];
+          }
+        }
+         
        
         $variables['content'] = "Latest Content by users: ". $output;
         /**$output .$database . '<br>::' . 
@@ -246,10 +364,14 @@ class blog{
          DOCROOT . '<br>::'.
          	 $ini_settings['paths']['dev_symlink'];
          */
+         
+         
     	
-    	print $cck->_view('page_admin', $variables);
+    	print $cck->_view('page_blog_latest', $variables);
 
-    }
+    
+    	
+    
     
     function blog_post_view()
     {
@@ -308,5 +430,5 @@ class blog{
     	print 'blog post delete';
     }
 }
-
+}
 ?>

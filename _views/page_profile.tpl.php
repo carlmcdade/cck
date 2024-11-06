@@ -69,28 +69,27 @@
         </div>
       
 </div>
-<div class="media container my-5">
-  <img  height="200px" width="200px" class="align-self-start mr-3 img-thumbnail" src="images/user_profile/user_id_<?php echo $userID . '/' .$profileImage. ''; ?>" alt="Generic placeholder image">
-  <div class="media-body col-lg-8 px-0">
-    <h5 class="mt-0"><?php echo $userHandle; ?></h5>
-    
-    <p class="fs-5"><?php echo $userBio; ?></p>
-
-  </div>
-</div>
 <div class="container my-5">
-      <div class="col-lg-8 px-0">             
+  <div class="row col-lg-8 px-0">
+    <div class="col">
+     <!-- <img class="align-self-start mr-3 img-fluid" src="images/user_profile/user_id_<?php echo $userID . '/' .$profileImage. ''; ?>" alt="Generic placeholder image"> -->
+  
+    </div>
+    </div>
+    <div class="row col-lg-8 px-0">
+    <div class="col text-start border border-primary rounded ml-2 mr-2">
+    <img style="float:left; width:150px; height:150px;" class="align-self-start m-3 img-fluid" src="images/user_profile/user_id_<?php echo $userID . '/' .$profileImage. ''; ?>" alt="Generic placeholder image">   
+    <p class="fs-6 mt-2"><?php echo $userBio; ?></p>
+    </div>
+</div>
+
+      <div class="col-lg-8 px-0">
+          
+          <h4><?php echo (isset($userName) ? $userName : 'test'); ?></h4> 
 	      <p class="fs-5">
 	      <?php echo (isset($content) ? $content : ''); ?></p>
-        </div>
-    <!-- /#content -->
-<div class="container my-5">
-      <div class="col-lg-8 px-0">    
-        <p class="fs-5">You've successfully loaded up the Content Connection Kit example. It includes <a href="https://getbootstrap.com/">Bootstrap 5</a> via the <a href="https://www.jsdelivr.com/package/npm/bootstrap">jsDelivr CDN</a> 
-        <a href"https://github.com/carlmcdade/cck">the code</a> can be downloaded from <a href="https://github.com/carlmcdade/cck">GitHub</a> for your own website.
-        </p>   
-      </div>
-    </div>
+        </div>    <!-- /#content -->
+
 <?php
 
 if((require 'default_footer.tpl.php') == TRUE)

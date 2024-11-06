@@ -15,34 +15,42 @@
 <body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <div class="container my-5">
-
 <div class="col-lg-8 px-0">
-<h1><?php echo (isset($pageTitle) ? $pageTitle : ''); ?></h1>
-</div></div>
+   <h1>
+   <?php 
+        if($frontPage == $_SERVER['QUERY_STRING']){
+        	
+        }else{
+        
+          echo (isset($pageTitle) ? $pageTitle : ''); 
+        }
+   ?>
+   </h1>
+</div>
+</div>
 
-<div class="container my-5">
-
+      <div class="container my-5">
       <div class="col-lg-8 px-0">
        
        
 	      <p class="fs-5">
-<?php if(isset($mainNavigation)){
-		  echo $mainNavigation;
-		}
-?>
-<div class="btn-group">
+             <?php if(isset($mainNavigation)){
+		             echo $mainNavigation;
+		       }
+              ?>
+        <div class="btn-group">
 
-<?php if(isset($subNavigation)){
-		  echo $subNavigation;
-		}
-?>
+             <?php if(isset($subNavigation)){
+		             echo $subNavigation;
+		       }
+              ?>
 
 
-<?php if(isset($adminNavigation)){
-		  echo $adminNavigation;
-		}
-?>
-</div>
+         <?php if(isset($adminNavigation)){
+		            echo $adminNavigation;
+		   }
+          ?>
+         </div>
 </p>
 
     
@@ -50,7 +58,7 @@
     </div>
 <!-- /#banner -->
 
-<div class="container my-5">
+      <div class="container my-5">
       <div class="col-lg-8 px-0">
        
          <h1>
@@ -58,42 +66,33 @@
 
              $clearSpace = array("_", "-");
              $contentTitle = str_replace($clearSpace, " ", $contentTitle);
-             echo (isset($contentTitle) ? $contentTitle : ''); 
+             $frontCheck = '?'. $_SERVER['QUERY_STRING'];
+                     if($frontPage == $frontCheck){
+                     	 echo '';
+                     }else{
+                        echo (isset($contentTitle) ? $contentTitle : ''); 
+                     }
+
+             //echo (isset($contentTitle) ? $contentTitle : ''); 
 
          ?>
          </h1>
-        </div>
-      
-</div>
-<div class="container my-5">
-  <div class="row">
-    <div class="col">
-      <img class="align-self-start mr-3 img-fluid" src="images/user_profile/user_id_<?php echo $userID . '/' .$profileImage. ''; ?>" alt="Generic placeholder image">
-  
+       
+    
+   
+    <div class="col text-start border border-primary rounded">
+     <img style="float:left; width:150px; height:relative" class="align-self-start m-2 img-fluid" src="images/user_profile/user_id_<?php echo $userID . '/' .$profileImage. ''; ?>" alt="Generic placeholder image">
+      <p class="fs-6 mt-2"><?php echo $userBio; ?></p>
     </div>
-    </div><div class="row">
-    <div class="col text-start border border-primary">
-          
-    <p class="fs-6"><?php echo $userBio; ?></p>
-    </div>
-</div>
+    
 
-      <div class="col-lg-8 px-0">
+
           
           <h4><?php echo (isset($userName) ? $userName : 'test'); ?></h4> 
 	      <p class="fs-5">
 	      <?php echo (isset($content) ? $content : ''); ?></p>
-        </div>
+     </div></div>   
     <!-- /#content -->
-<div class="container my-5">
-      <div class="col-lg-8 px-0">
-      
-        <p class="fs-5">You've successfully loaded up the Content Connection Kit example. It includes <a href="https://getbootstrap.com/">Bootstrap 5</a> via the <a href="https://www.jsdelivr.com/package/npm/bootstrap">jsDelivr CDN</a> 
-        <a href"https://github.com/carlmcdade/cck">the code</a> can be downloaded from <a href="https://github.com/carlmcdade/cck">GitHub</a> for your own website.
-        </p>
-    
-      </div>
-    </div>
 <?php
 
 if((require 'default_footer.tpl.php') == TRUE)

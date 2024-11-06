@@ -33,11 +33,11 @@ if(!empty($rows))
 			    case "0":
 			    	   $id = $row[$td];
 
-			    	   $row[$td] = '<a role="button"  class="btn btn-primary" href="?users/user_control_panel/'. $id .'">' .$row[$td]. '</a>' ;
+			    	   $row[$td] = '<a role="button"  class="btn btn-primary" href="?users/edit_user/'. $id .'">' .$row[$td]. '</a>' ;
 
 			    	break;
 			    case "1":
-			    	   $row[$td] = '<a role="button"  class="btn btn-primary" href="?users/user_profile/'. $id .'">' .$row[$td]. '</a>' ;
+			    	   $row[$td] = '<a role="button"  class="btn btn-primary" href="?users/edit_profile/'. $id .'">' .$row[$td]. '</a>' ;
 			    	break;
 			    
 			        case "4":

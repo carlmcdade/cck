@@ -398,8 +398,11 @@ class CCK
     	    $variables['postActionUrl'] = (isset($variables['postActionUrl']) ? $variables['postActionUrl'] : 'empty in template call');
     	    $variables['templateName'] = $view;
     	    $variables['templatePath'] = $template_path;
-    	    $variables['userName'] = '';
-    	    $variables['dbTable'] = '';
+    	    $variables['userName'] = (isset($variables['userName']) ? $variables['userName'] : '');
+    	    $variables['userID'] = (isset($variables['userID']) ? $variables['userID'] : 'shared');
+            $variables['profileImage'] = (isset($variables['profileImage']) ? $variables['profileImage'] : 'default_user.jpeg');
+            $variables['userBio'] = (isset($variables['userBio']) ? $variables['userBio'] : file_get_contents('_views/default_content.tpl.php'));
+    	    $variables['dbTable'] = (isset($variables['dbTable']) ? $variables['dbTable'] : 'empty dtabase  table variable');
     	    $variables['userAccess'] = array('userId' => '','groupId' => '', 'permissionList' => '');
     	    $variables['moduleAccess'] = array('userId' => '','groupId' => '', 'permissionList' => '');
     	    $variables['urlAccess'] = array('userId' => '','groupId' => '', 'permissionList' => '');
@@ -408,7 +411,9 @@ class CCK
     	    $variables['cssDir'] = $ini_settings['paths']['css_dir'];
     	    $variables['jsDir'] = $ini_settings['paths']['js_dir'];
     	    $variables['devSymlink'] = $ini_settings['paths']['dev_symlink'];
-    	    
+    	    $variables['frontPage'] = $ini_settings['url']['frontpage'];
+    	    $variablea['siteName']= $ini_settings['site']['site_name'];
+     	    
     	    
     	    $output .= $cck->_template($template_path, $variables);
     	    //$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
@@ -432,6 +437,8 @@ class CCK
 	function _template($template_file, $variables)
 	{
 		//
+		$template_path = DOCROOT . '/_views' . '/' . $template_file . '.tpl.php';
+
 		ob_start();
 		extract($variables, EXTR_SKIP); // Extract the variables to a local namespace
 		include $template_file; // Include the template file

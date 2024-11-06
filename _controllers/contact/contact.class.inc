@@ -159,7 +159,7 @@ class contact {
     	$admin_menu = $var;
 
     	//var_dump($sub_menu); exit;
-    	$variables['menuTitle'] = 'Site Admin';
+    	$variables['menuTitle'] = 'Contact';
     	$variables['adminMenuTitle'] = 'User Admin';
     	$variables['pageTitle'] = 'Site Admin';
     	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
