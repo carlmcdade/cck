@@ -369,7 +369,7 @@ class blog{
     	
     	print $cck->_view('page_blog_latest', $variables);
 
-    
+  }  
     	
     
     
@@ -378,35 +378,10 @@ class blog{
     	print 'blog post view';
     }
     
-    function blog_post_add()
-    {    	
-    	global $cck;
-    	
-    	// get all links from each class controller
-    	$menu = $cck->_hooks('hook_links');    	
-    	$sub_menu = $cck->_hooks('hook_module_links');
-    	$variables['menuTitle'] = 'Post add';
-    	$variables['pageTitle'] = 'Blog';
-    	$variables['contentTitle'] = 'Post add';
-    	$variables['navigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
-    	$variables['sub_navigation'] = $cck->_module_links($sub_menu[$this->module],
-    		array(
-    			'template'=>'links_sub_menu',
-    			'index' => $this->module
-    			) , $variables); 
-    	
-    	
-    	// set content
-    	$variables['content'] = 'blog post  - add the form for the contentype here';
-    	
-    	print $cck->_view('default', $variables);
-    	
-    }
-    
     function blog_post_edit()
     {
     	
-    	global $cck;
+    	global $cck,$ini_settings;
     	$output = 'blog post edit';
     	
     	// get all links from each class controller
@@ -425,10 +400,77 @@ class blog{
         print $cck->_view('default', $variables);
     }
     
+    
+    function blog_post_add()
+    {
+        global $cck,$ini_settings;
+        $database = $ini_settings['databases']['user_db'];
+    	$table = array();
+    	$columns = array();
+    	$rows = array();
+    	
+    	//some variables to load into the view will appear as $[variable name]
+      	$output = '';
+    	$menu = $cck->_hooks('hook_links');
+    	$sub_menu = $cck->_hooks('hook_module_links');
+    	$variables['seperators'] = array('|','-',';',':');
+    	$variables['pageTitle'] = 'Content';
+    	$variables['menuTitle'] = 'Content';
+    	$variables['contentTitle'] = 'Content Types';
+    	$variables['dbTable'] = 'content_types';
+        
+    	
+    	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
+    	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
+    		array(
+    			'template'=>'links_sub_menu',
+    			'index' => $this->module
+    			)
+    		, $variables); 
+         
+    	$db = new SQLite3($database);
+
+    	    	
+        $userID = $cck->_path_segment(2);
+        if(!empty($typeID))
+        {
+            $result = $db->query('SELECT * FROM content_types WHERE id='.$typeID.'');
+        }
+        else
+        {
+        	$result = $db->query('SELECT * FROM content_types');
+        }
+        
+    	 while ($row = $result->fetchArray()) {
+               $rows[] = $row;
+         }
+          //SQLite3Result::numColumns();
+        for ($i = 0; $i < 3; $i++) {
+			    $col = $result->columnName($i);
+			    $columns[] = $col;
+			}
+				$table['header'] = $columns;
+				$table['rows'] = $rows; 
+				$output = $cck->_view('table_content_add', $table);
+				
+		foreach($rows as $key => $value)			
+		{
+			$variables['userBio'] =  '';
+			$variables['userName'] = $value['name'];
+			$variables['profileImage'] = '';
+			$variables['userID'] = '';
+		}
+               
+        $variables['content'] = 'Content types' . $output;
+    	
+    	print $cck->_view('default', $variables);
+    }
+
+    
     function blog_post_delete()
     {
     	print 'blog post delete';
     }
-}
+
 }
 ?>

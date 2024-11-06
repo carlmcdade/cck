@@ -57,26 +57,23 @@ print('<!DOCTYPE html>
 
          ?>
          </h1>
-        </div>
-      
-</div>
-<div class="container my-5">
-
-      <div class="col-lg-8 px-0">
               
 	      <p class="fs-5"><?php if(isset($content))
 	      	                    { 
 	      	                    	echo $content;
 	      	                    } ?>
 	      </p>
-        </div>
-    <!-- /#content -->
-<?php
+	      
+	      <?php
 
 require 'default_footer.tpl.php';  //echo 'default_header.tpl.php'; 
     //exit;
 
 ?>
+        </div>
+        </div>
+    <!-- /#content -->
+
 
 </body>
 </html>

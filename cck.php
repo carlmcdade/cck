@@ -413,6 +413,8 @@ class CCK
     	    $variables['devSymlink'] = $ini_settings['paths']['dev_symlink'];
     	    $variables['frontPage'] = $ini_settings['url']['frontpage'];
     	    $variablea['siteName']= $ini_settings['site']['site_name'];
+    	    $variables['urlSection']= $cck->_path_segment(0);
+     	    
      	    
     	    
     	    $output .= $cck->_template($template_path, $variables);

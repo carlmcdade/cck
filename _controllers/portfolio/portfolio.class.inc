@@ -88,7 +88,7 @@ class portfolio {
     
     function list_all()
     {
-        global $cck;
+        global $cck,$ini_settings;
     	
     	// get all links from each class controller
     	$menu = $cck->_hooks('hook_links');

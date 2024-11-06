@@ -53,18 +53,19 @@
 <div class="container my-5">
       <div class="col-lg-8 px-0">
        
-         <h1>
+         
          <?php 
 
              $clearSpace = array("_", "-");
              $contentTitle = str_replace($clearSpace, " ", $contentTitle);
-             echo (isset($contentTitle) ? $contentTitle : ''); 
-
-         ?>
-         </h1>
-      
-    
-    <div class="col text-start border border-primary rounded-3">
+             $frontCheck = '?'. $_SERVER['QUERY_STRING'];
+                     if($frontPage == $frontCheck || $urlSection == 'admin'){
+                     	 echo '<h1>' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
+                     }else{
+                        echo '<h1>' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
+                        
+                        ?>
+                            <div class="col text-start border border-primary rounded-3">
      
       <img style="float:left; width:150px; height:relative;margin:1.5em;" class="align-self-start mr-3 img-fluid" src="images/user_profile/user_id_<?php echo $userID . '/' .$profileImage. ''; ?>" alt="Generic placeholder image">     
     <p class="fs-6"><?php echo $userBio; ?></p>
@@ -72,6 +73,11 @@
 
       </div>
           
+                   <?php  } ?>
+         
+      
+    
+
           <h4><?php echo (isset($userName) ? $userName : 'test'); ?></h4> 
 	      <p class="fs-5">
 	      <?php echo (isset($content) ? $content : ''); ?></p>
