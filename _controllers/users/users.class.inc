@@ -842,7 +842,7 @@ class users{
 				
 		$variables['content'] = $output;
 		
-        print $cck->_view('page_admin', $variables);
+        print $cck->_view('page_profile', $variables);
         
     }
     function edit_profile($userID = NULL)
@@ -943,7 +943,7 @@ class users{
 				
 		$variables['content'] = $output;
 		
-        print $cck->_view('page_admin', $variables);
+        print $cck->_view('page_profile', $variables);
         
     }
 }

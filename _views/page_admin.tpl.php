@@ -62,36 +62,21 @@
 
          ?>
          </h1>
-        </div>
       
-</div>
-<div class="container my-5">
-  <div class="row">
-    <div class="col">
-      <img class="align-self-start mr-3 img-fluid" src="images/user_profile/user_id_<?php echo $userID . '/' .$profileImage. ''; ?>" alt="Generic placeholder image">
-  
-    </div>
-    </div><div class="row">
-    <div class="col text-start border border-primary">
-          
+    
+    <div class="col text-start border border-primary rounded-3">
+     
+      <img style="float:left; width:150px; height:relative;margin:1.5em;" class="align-self-start mr-3 img-fluid" src="images/user_profile/user_id_<?php echo $userID . '/' .$profileImage. ''; ?>" alt="Generic placeholder image">     
     <p class="fs-6"><?php echo $userBio; ?></p>
-    </div>
-</div>
+    
 
-      <div class="col-lg-8 px-0">
+      </div>
           
           <h4><?php echo (isset($userName) ? $userName : 'test'); ?></h4> 
 	      <p class="fs-5">
 	      <?php echo (isset($content) ? $content : ''); ?></p>
-        </div>
+        
     <!-- /#content -->
-<div class="container my-5">
-      <div class="col-lg-8 px-0">
-      
-        <p class="fs-5">You've successfully loaded up the Content Connection Kit example. It includes <a href="https://getbootstrap.com/">Bootstrap 5</a> via the <a href="https://www.jsdelivr.com/package/npm/bootstrap">jsDelivr CDN</a> 
-        <a href"https://github.com/carlmcdade/cck">the code</a> can be downloaded from <a href="https://github.com/carlmcdade/cck">GitHub</a> for your own website.
-        </p>
-    
       </div>
     </div>
 <?php

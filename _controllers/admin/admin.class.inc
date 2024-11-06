@@ -703,7 +703,7 @@ class admin extends SQLite3 {
 				
 		$variables['content'] = $output;
 		
-        print $cck->_view('page_admin', $variables);
+        print $cck->_view('page_profile', $variables);
         
     }
     
@@ -807,7 +807,7 @@ class admin extends SQLite3 {
 				
 		$variables['content'] = $output;
 		
-        print $cck->_view('page_admin', $variables);
+        print $cck->_view('page_profile', $variables);
     
     }
     

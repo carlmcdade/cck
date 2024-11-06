@@ -66,29 +66,21 @@
 
          ?>
          </h1>
-        </div>
+       
       
-</div>
-<div class="container my-5">
-  <div class="row col-lg-8 px-0">
-    <div class="col">
-     <!-- <img class="align-self-start mr-3 img-fluid" src="images/user_profile/user_id_<?php echo $userID . '/' .$profileImage. ''; ?>" alt="Generic placeholder image"> -->
-  
-    </div>
-    </div>
-    <div class="row col-lg-8 px-0">
-    <div class="col text-start border border-primary rounded ml-2 mr-2">
-    <img style="float:left; width:150px; height:150px;" class="align-self-start m-3 img-fluid" src="images/user_profile/user_id_<?php echo $userID . '/' .$profileImage. ''; ?>" alt="Generic placeholder image">   
-    <p class="fs-6 mt-2"><?php echo $userBio; ?></p>
-    </div>
-</div>
+ 
 
-      <div class="col-lg-8 px-0">
+   
+    <div class="col border border-primary rounded ml-2 mr-2">
+    <img style="float:left; width:150px; height:150px;" class="align-self-start m-3 img-fluid" src="images/user_profile/user_id_<?php echo $userID . '/' .$profileImage. ''; ?>" alt="Generic placeholder image">   
+    <p  style="margin-right:.75em;margin-left:1em;" class="fs-6 mt-2 ml-2 mr-2"><?php echo $userBio; ?></p>
+    </div>
+
           
           <h4><?php echo (isset($userName) ? $userName : 'test'); ?></h4> 
 	      <p class="fs-5">
 	      <?php echo (isset($content) ? $content : ''); ?></p>
-        </div>    <!-- /#content -->
+         <!-- /#content -->
 
 <?php
 
@@ -98,7 +90,7 @@ if((require 'default_footer.tpl.php') == TRUE)
     //exit;
 }
 ?>
-
+</div></div>
 </body>
 
 </html> 
