@@ -83,23 +83,23 @@ class users{
     	
     	$var[$link][1] = array( 
 					'text' => 'Profiles', 
-					'path' => 'admin/user_profile'
+					'path' => 'admin/admin_user_profiles'
 					);
 		$var[$link][2] = array(
 					'text' => 'Accounts', 
-					'path' => 'admin/user_account'
+					'path' => 'admin/admin_user_accounts'
 					);
 		$var[$link][3] = array(
 					'text' => 'Content', 
-					'path' => 'admin/user_blog'
+					'path' => 'admin/admin_user_content'
 					);
 		$var[$link][4] = array(
 				'text' => 'User Settings',
-				'path' => 'admin/user_settings'
+				'path' => 'admin/admin_user_settings'
 		);
 		$var[$link][5] = array(
 				'text' => 'User Messages',
-				'path' => 'admin/user_messages'
+				'path' => 'admin/admin_user_messages'
 		);
 			
     	
@@ -765,23 +765,19 @@ class users{
     	
     	$var[$link][1] = array( 
 					'text' => 'Profile', 
-					'path' => 'admin/edit_profile/'.$userID
+					'path' => 'user/user_profile/'.$userID
 					);
 		$var[$link][2] = array(
 					'text' => 'Account', 
-					'path' => 'admin/edit_user/'.$userID
+					'path' => 'user/user_settings/'.$userID
 					);
 		$var[$link][3] = array(
 					'text' => 'Content', 
-					'path' => 'admin/edit_post/'.$userID
+					'path' => 'user/user_content/'.$userID
 					);
 		$var[$link][4] = array(
-				'text' => 'Settings',
-				'path' => 'admin/edit_user_settings/'.$userID
-		);
-		$var[$link][5] = array(
 				'text' => 'Inbox',
-				'path' => 'admin/edit_messages/' .$userID
+				'path' => 'user/user_messages/' .$userID
 		);
 			
     	

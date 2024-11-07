@@ -1,0 +1,7 @@
+Redirect 301 http://hardcopy.free.nf/?n=1 http://hardcopy.free.nf/
+
+DirectoryIndex index.php index.html
+
+ErrorDocument 403 http://hardcopy.free.nf/?errors/403/
+ErrorDocument 404 http://hardcopy.free.nf/?errors/404/
+ErrorDocument 500 http://errors.infinityfree.net/errors/500/
