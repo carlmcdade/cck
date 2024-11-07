@@ -263,23 +263,16 @@ class admin extends SQLite3 {
     			'template'=>'links_sub_menu',
     			'index' => $this->module
     			) , $variables); 
-    	$db = new SQLite3($database);
+    	$db = $ini_settings['databases'];
 
-        $result = $db->query('SELECT * FROM userlist');
-        
-    	 while ($row = $result->fetchArray()) {
-               $rows[] = $row;
-         }
-          //SQLite3Result::numColumns();
-        for ($i = 0; $i < $result->numColumns(); $i++) {
-			    $col = $result->columnName($i);
-			    $columns[] = $col;
-			}
-				$table['header'] = $columns;
-				$table['rows'] = $rows; 
+				$table['header'] = array('name', 'datasource');
+		        foreach($db as $alias => $name){
+				     $rows[]= array($alias,$name); 
+		        }
+		        $table['rows'] = $rows;
 				$output = $cck->_view('table', $table);
        
-        $variables['content'] = "connect to sqlite database: ". $output;
+        $variables['content'] = "Databases noted in config.ini file : ". $output;
     	
     	print $cck->_view('page_admin', $variables);
     }
@@ -315,26 +308,54 @@ class admin extends SQLite3 {
     
     function admin_config()
     {
-        // get all links from each class controller
-    	global $cck; 
+        
+         // get all links from each class controller
+    	global $cck, $ini_settings;
+    	$database = $ini_settings['databases']['user_db'];
+    	$table = array();
+    	$columns = array();
+    	$rows = array();
+   
     	// get all links from each class controller
     	$menu = $cck->_hooks('hook_links');    	
     	$sub_menu = $cck->_hooks('hook_module_links');
     	//var_dump($sub_menu); exit;
     	$variables['menuTitle'] = 'Site Admin';
-    	$variables['pageTitle'] = 'Site Configuration';
-    	$variables['contentTitle'] = 'site configuration';
+    	$variables['pageTitle'] = 'Site Admin';
+    	$variables['contentTitle'] = $cck->_path_segment(1);
     	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
     			'index' => $this->module
     			) , $variables); 
+        $counter= 0;
+        $sections = array_keys($ini_settings);
+        //var_dump($sections);
+                
+        foreach ($sections as $section => $name){
+				
+			//foreach($section as $name => $value){	
+			
+                $table['section'] = $name;
+		        foreach($ini_settings[$name] as $alias => $string){
+				     $rows[] = array($alias,$string, $name);
+
+				     
+		        }
+
+
+		        		        
+
+		}       
+		        $table['header'] = array('field', 'data','section');
+                 $table['rows'] = $rows;
+		
+		$output = $cck->_view('table_config_ini', $table);
+       
+        $variables['content'] = "Config.ini file : ". $output;
     	
-    	
-    	
-               
-        $variables['content'] = ' admin configuration files ';
+    
     	
     	print $cck->_view('page_admin', $variables);
     }

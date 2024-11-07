@@ -12,41 +12,9 @@
 namespace content;
 
 // classes used by the global $cck object from the globalspace
-use \PDO;
-use \PDOException;
-use \form;
-use \Element_HTML;
-use \Element_Textbox;
-use \Element_Password;
-use \Element_File;
-use \Element_Textarea;
-use \Element_Select;
-use \Element_Radio;
-use \Element_Checkbox;
-use \Element_Phone;
-use \Element_Search;
-use \Element_Url;
-use \Element_Email;
-use \Element_Date;
-use \Element_DateTime;
-use \Element_DateTimeLocal;
-use \Element_Month;
-use \Element_Week;
-use \Element_Time;
-use \Element_Number;
-use \Element_Range;
-use \Element_Color;
-use \Element_jQueryUIDate;
-use \Element_Checksort;
-use \Element_Sort;
-use \Element_TinyMCE;
-use \Element_CKEditor;
-use \Element_State;
-use \Element_Country;
-use \Element_YesNo;
-use \Element_Captcha;
-use \Element_Button;
+
 use \Common;
+use SQLite3;
 
 class content{
 	
@@ -102,13 +70,19 @@ class content{
     	   // get all links from each class controller
     	$menu = $cck->_hooks('hook_links');    	
     	$sub_menu = $cck->_hooks('hook_module_links');
+    	$variables['seperators'] = array('|','-',';',':');
+    	$variables['pageTitle'] = 'Content';
+    	$variables['menuTitle'] = 'Content';
+    	$variables['contentTitle'] = 'Content Types';
+    	$variables['dbTable'] = 'content_types';
+
     	
-    	$variables['navigation'] = $cck->_menu_links($menu, 'links_main_menu');
+    	$variables['navigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
     	$variables['sub_navigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
     			'index' => $this->module
-    			)); 
+    			) , $variables); 
     	   $variables['page_title'] = 'Content';
     	   $variables['content_title'] = 'Content list';
     	   $variables['content'] = $output;
@@ -117,21 +91,67 @@ class content{
     
     function content_add()
     {
-    	global $cck;   
-    	$output = 'A list of the types of content a user can add';
-    	// get all links from each class controller
-		$menu = $cck->_hooks('hook_links');    	
-		$sub_menu = $cck->_hooks('hook_module_links');
-			
-		$variables['navigation'] = $cck->_menu_links($menu, 'links_main_menu');
-		$variables['sub_navigation'] = $cck->_module_links($sub_menu[$this->module],
-			array(
-				'template'=>'links_sub_menu',
-				'index' => $this->module
-				)); 
-    	$variables['page_title'] = 'Content';
-    	$variables['content_title'] = 'Content add';
-    	$variables['content'] = $output;
+    	global $cck,$ini_settings;
+        
+    	$database = $ini_settings['databases']['user_db'];
+    	$table = array();
+    	$columns = array();
+    	$rows = array();
+    	
+    	//some variables to load into the view will appear as $[variable name]
+      	$output = '';
+    	$menu = $cck->_hooks('hook_links');
+    	$sub_menu = $cck->_hooks('hook_module_links');
+    	$variables['seperators'] = array('|','-',';',':');
+    	$variables['pageTitle'] = 'Content';
+    	$variables['menuTitle'] = 'Content';
+    	$variables['contentTitle'] = 'Content Types';
+    	$variables['dbTable'] = 'content_types';
+        
+    	
+    	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
+    	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
+    		array(
+    			'template'=>'links_sub_menu',
+    			'index' => $this->module
+    			)
+    		, $variables); 
+         
+    	$db = new SQLite3($database);
+
+    	    	
+        $userID = $cck->_path_segment(2);
+        if(!empty($typeID))
+        {
+            $result = $db->query('SELECT * FROM content_types WHERE id='.$typeID.'');
+        }
+        else
+        {
+        	$result = $db->query('SELECT * FROM content_types');
+        }
+        
+    	 while ($row = $result->fetchArray()) {
+               $rows[] = $row;
+         }
+          //SQLite3Result::numColumns();
+        for ($i = 0; $i < $result->numColumns(); $i++) {
+			    $col = $result->columnName($i);
+			    $columns[] = $col;
+			}
+				$table['header'] = $columns;
+				$table['rows'] = $rows; 
+				$output = $cck->_view('table_content_add', $table);
+				
+		foreach($rows as $key => $value)			
+		{
+			$variables['userBio'] =  '';
+			$variables['userName'] = $value['name'];
+			$variables['profileImage'] = '';
+			$variables['userID'] = '';
+		}
+               
+        $variables['content'] = 'Content types' . $output;
+    	
     	print $cck->_view('default', $variables);
     }
     

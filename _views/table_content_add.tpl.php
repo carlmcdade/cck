@@ -47,10 +47,13 @@ if(!empty($rows))
 			
 			    if($td == 0 || $td == 1){
 			         
-			    	 $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells"> <a role="button" style="width:100%" class="btn btn-primary mw-100" href="?blog/add_content/'. $id .'">' .$row[$td]. '</a></td>' ;
+			    	 $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells"> <a role="button" style="width:100%" class="btn btn-primary mw-100" href="?content/post_content/'. $id .'">' .$row[$td]. '</a></td>' ;
 			    }
-			    else{	
+			    elseif($td == 6){	
 				     $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">  <input type="text" class="form-control" id="" placeholder="'. $row[$td].'"></td>' . "\n";
+			    }
+			    else{
+			    	 
 			    }
 			
 			}

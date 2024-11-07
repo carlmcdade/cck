@@ -83,16 +83,17 @@
 	      <?php echo (isset($content) ? $content : ''); ?></p>
         
     <!-- /#content -->
+    <?php
+
+           if((require 'default_footer.tpl.php') == TRUE)
+           {
+              //echo 'default_header.tpl.php'; 
+                 //exit;
+            }
+?>
+
       </div>
     </div>
-<?php
-
-if((require 'default_footer.tpl.php') == TRUE)
-{
-    //echo 'default_header.tpl.php'; 
-    //exit;
-}
-?>
 
 </body>
 

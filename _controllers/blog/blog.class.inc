@@ -87,7 +87,7 @@ class blog{
 					);
 		$var[$link][4] = array(
 				'text' => 'New post',
-				'path' => $this->module . '/blog_post_add'
+				'path' => 'content/content_add'
 		);
 				
 		
