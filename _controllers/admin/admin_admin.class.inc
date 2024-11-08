@@ -80,8 +80,16 @@ class admin_admin{
     function categories()
     {
         global $cck;
-        
-        $variables['content'] = 'admin categories';
+        // get all links from each class controller
+    	$menu = $cck->_hooks('hook_links');
+    	$variables['navigation'] = $cck->_menu_links($menu, 'links_main_menu',' | ');
+    	
+    	$form = new \form("GettingStarted", 300);
+                $form->addElement(new \Element_Textbox("My Textbox:", "MyTextbox"));
+                $form->addElement(new \Element_Button);
+                $output = $form->render(true);
+               
+        $variables['content'] = $output;
     	
     	print $cck->_view('page_admin', $variables);
     }

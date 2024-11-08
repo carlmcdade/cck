@@ -18,14 +18,10 @@
 
 <div class="col-lg-8 px-0">
 <h1><?php echo (isset($pageTitle) ? $pageTitle : ''); ?></h1>
-</div></div>
 
-<div class="container my-5">
 
-      <div class="col-lg-8 px-0">
+     
        
-       
-	      <p class="fs-5">
 <?php if(isset($mainNavigation)){
 		  echo $mainNavigation;
 		}
@@ -43,15 +39,13 @@
 		}
 ?>
 </div>
-</p>
+
 
     
-      </div>
-    </div>
+     
 <!-- /#banner -->
 
-<div class="container my-5">
-      <div class="col-lg-8 px-0">
+
        
          
          <?php 
@@ -62,7 +56,7 @@
                      if($frontPage == $frontCheck || $urlSection == 'admin'){
                      	 echo '<h1>' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
                      }else{
-                        echo '<h1>' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
+                        //echo '<h1>' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
                         
                         ?>
                             <div class="col text-start border border-primary rounded-3">
@@ -76,11 +70,8 @@
                    <?php  } ?>
          
       
-    
-
-          <h4><?php echo (isset($userName) ? $userName : 'test'); ?></h4> 
-	      <p class="fs-5">
-	      <?php echo (isset($content) ? $content : ''); ?></p>
+	      
+	      <div class ="fs-4"><?php echo (isset($content) ? $content : ''); ?></div>
         
     <!-- /#content -->
     <?php

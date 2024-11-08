@@ -91,9 +91,7 @@
           <h4><?php echo (isset($userName) ? $userName : 'test'); ?></h4> 
 	      <p class="fs-5">
 	      <?php echo (isset($content) ? $content : ''); ?></p>
-     </div></div>   
-    <!-- /#content -->
-<?php
+	      <?php
 
 if((require 'default_footer.tpl.php') == TRUE)
 {
@@ -101,6 +99,9 @@ if((require 'default_footer.tpl.php') == TRUE)
     //exit;
 }
 ?>
+
+     </div></div>   
+    <!-- /#content -->
 
 </body>
 
