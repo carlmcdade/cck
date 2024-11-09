@@ -115,6 +115,7 @@ class blog{
     	$table = array();
     	$columns = array();
     	$rows = array();
+    	$output = '';
     	
     	//$connect = $cck->_dbconnect($ini_settings['databases']['user_db']);
     	
@@ -123,7 +124,7 @@ class blog{
     	$sub_menu = $cck->_hooks('hook_module_links');
     	$variables = array();
     	$variables['pageTitle'] = 'Blog';
-    	$variables['menuTitle'] = 'Blog Panel';
+    	$variables['menuTitle'] = 'Blog ';
     	$variables['dbTable'] = 'userlist';
     	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
     	$variables['sub_navigation'] = $cck->_module_links($sub_menu[$this->module],
@@ -136,47 +137,78 @@ class blog{
     	$userID = $cck->_path_segment(2);
         if(!empty($userID))
         {
-            $result = $db->query('SELECT * FROM userlist WHERE id='.$userID.'');
+            $result = $db->query('SELECT userlist.name,userlist.bio, userlist.image,content.* FROM userlist , content WHERE userlist.id='.$userID.' AND content.user_id ='. $userID);
+            //$result = $db->query('SELECT * FROM content WHERE id='.$userID.'');
+            
+            
         }
         else
         {
-        	$result = $db->query('SELECT * FROM userlist');
+        	$result = $db->query('SELECT userlist.name, userlist.bio, userlist.image,content.* FROM userlist , content');
+        	
         }
 
-        
-    	 while ($row = $result->fetchArray()) {
+         while ($row = $result->fetchArray()) {
                $rows[] = $row;
-         }
+            }
+    	 
           //SQLite3Result::numColumns();
         for ($i = 0; $i < $result->numColumns(); $i++) {
 			    $col = $result->columnName($i);
 			    $columns[] = $col;
-			}
-				$table['header'] = $columns;
-				$table['rows'] = $rows; 
-				$output = $cck->_view('table_blogs', $table);
+		}
+			   $table['header'] = $columns;
+				
+            
+               $table['rows'] = $rows;
+				
+
        
-    	
+    	//var_dump($rows);
     	// check for user id no id means site owner
         $variables['userID'] = $cck->_path_segment(2);
         if (empty($cck->_path_segment(2))) {
             $variables['profileImage'] = 'default_user.jpeg';
             $variables['userHandle'] = 'Site Members';
-            $variables['userBio'] = $cck->_view('default_footer', $variables);
+            $variables['userBio'] = $cck->_view('default_content', $variables);
+            $variables['contentTitle'] = 'Members Blogs';
             
-          }else{
+          }elseif(!empty($rows)){
           	  
           foreach($rows as $key => $value){
           
           	$variables['profileImage'] =  $value ['image'];
             $variables['userHandle'] =  $value ['name'];
             $variables['userBio'] = $value['bio'];
+            $variables['contentTitle'] = $value['name'] .'\'s Blog';
           }
-        }
-         
-         
+          }else{
+          	  
+          	/**$table['rows'] = array(array(
+            	'content_body'=>'user has nothing in database yet',
+            	'content_title' => 'No titles',
+            	'name' => $userID
+            	));*/
+            $result = $db->query('SELECT userlist.* FROM userlist WHERE id='. $userID);
+            
+            while ($row = $result->fetchArray()) {
+               $rows[] = $row;
+            }
+            foreach($rows as $key => $value){
+          
+          	    $variables['profileImage'] =  $value ['image'];
+                $variables['userHandle'] =  $value ['name'];
+                $variables['userBio'] = $value['bio'];
+                $variables['contentTitle'] = $value['name'] .'\'s Blog';
+
+            }
+
+          }
         
-    	$variables['contentTitle'] = $variables['userHandle'].'\'s Blog';
+          $output .= $cck->_view('table_blog_content', $table);
+         
+        //$variables['userHandle'] = $rows[0]['name'];
+    	//$variables['contentTitle'] = $variables['userHandle'].'\'s Blog';
     	$variables['content'] =  'User Id: ' .$variables['userID']. '- '. $variables['userHandle'] . '- ' .$variables['profileImage'].'<br>' . $output;
         print $cck->_view('page_profile', $variables);         
     }

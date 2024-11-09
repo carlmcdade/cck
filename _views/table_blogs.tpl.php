@@ -34,6 +34,7 @@ foreach ($header as $th => $column)
 }
 $output .= '</tr></thead>' . "\n";
 //$output .= '<tbody><tr>' . "\n";
+//var_dump($topContent);
 if(!empty($rows))
 {
 	// table rows
@@ -67,12 +68,12 @@ if(!empty($rows))
 			    case "0":
 			    	   $id = $row[$td];
 
-			    	   $row[$td] = '<a role="button"  class="btn btn-primary" href="?blog/blog_user/'. $id .'">view</a>' ;
+			    	   $row[$td] = '<a style="width:50%;" role="button"  class="btn btn-primary" href="?blog/blog_user/'. $id .'">view</a>' ;
 
 			    	break;
 			    case "1":
 			    	   $addOn = $td + 1;
-			    	   $row[$td] = '<a role="button"  class="text-nowrap btn btn-primary" href="?users/user_profile/'. $id .'">' .$row[$td]. ' ' .$row[$addOn]. '</a>' ;
+			    	   $row[$td] = '<a style="width:50%" role="button"  class="text-nowrap btn btn-primary" href="?users/user_profile/'. $id .'">' .$row[$td]. ' ' .$row[$addOn]. '</a>' ;
 			    	break;
 			        	
 			        	

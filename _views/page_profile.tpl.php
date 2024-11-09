@@ -24,7 +24,6 @@
 
       <div class="col-lg-8 px-0">
               
-	      <p class="fs-5">
 <?php if(isset($mainNavigation)){
 		  echo $mainNavigation;
 		}
@@ -40,7 +39,6 @@
 		}
 ?>
 </div>
-</p>
     
       </div>
     </div>
@@ -80,7 +78,7 @@
           
           <h4><?php echo (isset($userName) ? $userName : 'test'); ?></h4> 
 	      <p class="fs-5">
-	      <?php echo (isset($content) ? $content : ''); ?></p>
+	      <?php echo (isset($content) ? $content : ''); ?>
          <!-- /#content -->
 
 <?php
