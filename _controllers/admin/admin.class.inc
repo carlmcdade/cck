@@ -1755,10 +1755,75 @@ class admin extends SQLite3 {
     
     function content_type_edit(){
     	
-    	
+    	var_dump($_POST);
     }
     
     function content_type_save(){
+    	
+    	global $cck,$ini_settings;
+    	// get all links from each class controller
+        $database = $ini_settings['databases']['user_db'];
+    	$table = array();
+    	$columns = array();
+    	$rows = array();
+    	$output = '';
+    	
+    	
+    	$userID = $cck->_path_segment(2);
+    	$link = 'links';
+    	
+    	$var = array();
+    	
+    	$var[$link][1] = array( 
+					'text' => 'Profile', 
+					'path' => 'admin/admin_user_profiles/'. $userID
+					);
+		$var[$link][2] = array(
+					'text' => 'Account', 
+					'path' => 'admin/admin_user_accounts/' . $userID
+					);
+		$var[$link][3] = array(
+					'text' => 'Content', 
+					'path' => 'admin/admin_user_content/'. $userID
+					);
+		$var[$link][4] = array(
+				'text' => 'Settings',
+				'path' => 'admin/edit_user_settings/'. $userID
+		);
+		$var[$link][5] = array(
+				'text' => 'Inbox',
+				'path' => 'admin/admin_user_messages/'. $userID
+		);
+			
+    	
+    	$menu = $cck->_hooks('hook_links');    	
+    	$sub_menu = $cck->_hooks('hook_module_links');
+    	$admin_menu = $var;
+
+    	//var_dump($sub_menu); exit;
+    	$variables['menuTitle'] = 'Site Admin';
+    	$variables['adminMenuTitle'] = 'User Admin';
+    	$variables['pageTitle'] = 'Site Admin';
+    	$variables['contentTitle'] = 'Save content';
+    	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
+    	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
+    		array(
+    			'template'=>'links_sub_menu',
+    			'index' => $this->module
+    			) , $variables); 
+    	
+    	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
+    			'template'=>'links_user_menu',
+    			'index' => $this->module
+    			) , $variables); 
+    	foreach($_POST as $key=>$value)
+    	{
+    		$output .= 'key=' . $key . '   :   : value= ' . $value . "<br>\n"; 
+    	}
+    	$output = '<p class="fs-6">' .$output.'</p>'."\n"; 
+    	
+    	$variables['content'] = $output;
+    	print $cck->_view('page_admin', $variables);
     	
     }
     
@@ -1834,28 +1899,30 @@ class admin extends SQLite3 {
     	
     	$typeID = $cck->_path_segment(2);
 
-        $resultAdd = $db->query('SELECT * FROM content_types WHERE type_id ="'. $typeID.'"');
-        $result = $db->query('SELECT * FROM content_type_fields WHERE content_type_id ="'. $typeID.'"');
+        $resultAdd = $db->query('SELECT * FROM content_types WHERE type_id ="'. $typeID.'";');
+        $result = $db->query('SELECT * FROM content_type_fields WHERE content_type_id ="'. $typeID.'" ORDER BY weight asc;');
         
     	 while ($row = $result->fetchArray()) {
                $rows[] = $row;
-               
+
+         }
+                        
          
               while ($rowAdd = $resultAdd->fetchArray()) {
                   $table['contentType'] = $rowAdd['name'];
                   
                   $r[] = $rowAdd;
                }
-         }
          //var_dump($rows);
           //SQLite3Result::numColumns();
         for ($i = 0; $i < $result->numColumns(); $i++) {
 			    $col = $result->columnName($i);
-			    $columns[] = $col;
+			    $columns[$col] = $col;
 			}
 				$table['header'] = $columns;
 				$table['rows'] = $rows; 
 				$table['fieldType'] = '';
+				$table['contentType'] = (isset($table['contentType']) ? $table['contentType'] : '');
 				$output = $cck->_view('table_content_add_form', $table);
     	
     	

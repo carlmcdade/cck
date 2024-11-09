@@ -2,8 +2,35 @@
 $output = '<form><table class="table">';
 $output .= '<thead><tr>';
 // table header
+// table header
 foreach ($header as $th => $column)
 {
+			/**if($th == 2) { 
+                       //thi
+                 continue;
+            } elseif($th == 3) { 
+                        //i mo
+                 continue;
+            }
+            elseif($th == 4) { 
+                        //i mo
+                 continue;
+            }
+             elseif($th == 5) { 
+                        //i mo
+                 continue;
+            }*/
+            if($th == 0) { 
+                        //i mo
+                 $column = 'account';
+            }
+            elseif($th == 1) { 
+                        //i mo
+                 $column = 'profile';
+            }
+
+
+	
 	$output .= '<th scope ="col">' .  $column . '</th>' . "\n";	
 }
 $output .= '</tr></thead>' . "\n";
@@ -47,7 +74,7 @@ if(!empty($rows))
 			
 			    if($td == 0){
 			         
-			    	 $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells"> <a role="button"  class="btn btn-primary" href="?admin/edit_user/'. $id .'">' .$row[$td]. '</a></td>' ;
+			    	 $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells"> <a role="button"  class="btn btn-primary" href="?users/edit_user_save/'. $id .'">save</a></td>' ;
 			    }
 			    else{	
 				     $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">  <input type="text" class="form-control" id="" placeholder="'. $row[$td].'"></td>' . "\n";
@@ -56,7 +83,7 @@ if(!empty($rows))
 			}
 			else
 			{
-				$output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells"></td>' . "\n";
+				$output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells"><input type="text" class="form-control" id="" placeholder="none"></td>' . "\n";
 			}
 		}
 		$output .= '</tr>' . "\n";

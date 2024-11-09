@@ -95,7 +95,7 @@ class portfolio {
     	$sub_menu = $cck->_hooks('hook_module_links');
     	$variables['pageTitle'] = 'Portfolio';
     	$variables['contentTitle'] = 'Our projects';
-    	$variables['content'] = ' This is the only project as of today ';
+    	$variables['content'] = ' <p class="fs-4">portfolio is a list of content aggregated with the [Project] category</p>';
     	$variables['menuTitle'] = 'List of Portfolio';
     	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],

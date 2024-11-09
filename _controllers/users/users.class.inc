@@ -129,7 +129,6 @@ class users{
     	$sub_menu = $cck->_hooks('hook_module_links');
     	$variables = array();
     	$variables['pageTitle'] = 'User';
-    	$variables['contentTitle'] = 'User profile';
     	$variables['menuTitle'] = 'User Panel';
     	$variables['dbTable'] = 'userlist';
     	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
@@ -161,7 +160,7 @@ class users{
 			}
 				$table['header'] = $columns;
 				$table['rows'] = $rows; 
-				$output = $cck->_view('table_user_cp', $table);
+				$output = $cck->_view('table_profile_edit', $table);
        
     	
     	// check for user id no id means site owner
@@ -183,8 +182,8 @@ class users{
          
          
         
-    	
-    	$variables['content'] =  'User Id: ' .$variables['userID']. '- '. $variables['userHandle'] . '- ' .$variables['profileImage'].'<br>' . $output;
+    	$variables['contentTitle'] = $variables['userHandle'].'\'s profile';
+    	$variables['content'] =  '<h3><i>Quick Edit</i></h3>' . $output;
         print $cck->_view('page_profile', $variables);         
     }
     
@@ -938,6 +937,38 @@ class users{
 		}
 				
 		$variables['content'] = $output;
+		
+        print $cck->_view('page_profile', $variables);
+        
+    }
+    
+    function edit_user_save()
+    {
+        
+    	global $cck,$ini_settings;
+        // get all links from each class controller
+        $database = $ini_settings['databases']['user_db'];
+    	$table = array();
+    	$columns = array();
+    	$rows = array();
+    	$output ='';
+    	$variables['content'] = $output;
+		
+        print $cck->_view('page_profile', $variables);
+        
+    }
+    
+        
+    function edit_profile_save()
+    {
+        global $cck,$ini_settings;
+        // get all links from each class controller
+        $database = $ini_settings['databases']['user_db'];
+    	$table = array();
+    	$columns = array();
+    	$rows = array();
+    	$output ='';
+    	$variables['content'] = $output;
 		
         print $cck->_view('page_profile', $variables);
         

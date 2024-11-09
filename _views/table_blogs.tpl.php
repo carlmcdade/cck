@@ -67,7 +67,7 @@ if(!empty($rows))
 			    case "0":
 			    	   $id = $row[$td];
 
-			    	   $row[$td] = '<a role="button"  class="btn btn-primary" href="?blog/blog_user/'. $id .'">' .$row[$td]. '</a>' ;
+			    	   $row[$td] = '<a role="button"  class="btn btn-primary" href="?blog/blog_user/'. $id .'">view</a>' ;
 
 			    	break;
 			    case "1":

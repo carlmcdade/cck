@@ -105,7 +105,7 @@ class blog{
     	    return $authorize;
     }
     
-        function blog_user()
+    function blog_user()
     {
     	global $cck, $ini_settings;
     	
@@ -123,7 +123,6 @@ class blog{
     	$sub_menu = $cck->_hooks('hook_module_links');
     	$variables = array();
     	$variables['pageTitle'] = 'Blog';
-    	$variables['contentTitle'] = 'User Blog';
     	$variables['menuTitle'] = 'Blog Panel';
     	$variables['dbTable'] = 'userlist';
     	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
@@ -177,7 +176,7 @@ class blog{
          
          
         
-    	
+    	$variables['contentTitle'] = $variables['userHandle'].'\'s Blog';
     	$variables['content'] =  'User Id: ' .$variables['userID']. '- '. $variables['userHandle'] . '- ' .$variables['profileImage'].'<br>' . $output;
         print $cck->_view('page_profile', $variables);         
     }

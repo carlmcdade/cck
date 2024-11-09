@@ -410,10 +410,12 @@ class CCK
     	    $variables['imagesDir'] = $ini_settings['paths']['images_dir'];
     	    $variables['cssDir'] = $ini_settings['paths']['css_dir'];
     	    $variables['jsDir'] = $ini_settings['paths']['js_dir'];
+    	     $variables['jsCDN'] = $ini_settings['paths']['js_cdn'];
     	    $variables['devSymlink'] = $ini_settings['paths']['dev_symlink'];
     	    $variables['frontPage'] = $ini_settings['url']['frontpage'];
     	    $variablea['siteName']= $ini_settings['site']['site_name'];
     	    $variables['urlSection']= $cck->_path_segment(0);
+    	    
      	    
      	    
     	    
@@ -465,7 +467,7 @@ class CCK
 			$parts[$path] = explode('/', $_SERVER['QUERY_STRING']);
 		}
 		
-		$parameters = ber_url_query();
+		$parameters = cck_url_query();
 	
 		foreach($parts[$path] as $key => $segment)
 		{
@@ -721,21 +723,24 @@ class CCK
     	 
     	return $output;
 	}
+
 }
 
+/** 
+*
+@author Carl McDade
+@since 2024.11.9
 
+These methods cannot be called by MODULES they are outside
+of the CCK class position. But can be called from inside the CCK
+class and methods
 
-function ber_access($path, $class, $method)
+*/
+
+function cck_access()
 {
-	
-	if($path)
-	{
-		return TRUE;
-	}
-	else 
-	{
-		return FALSE;	
-	}
+	echo 'this is a cck non global function';
+	exit;
 
 }
 
@@ -756,7 +761,7 @@ function ber_access($path, $class, $method)
 */
 
 
-function ber_model( $model, $mode = NULL, $parameter = NULL )
+function cck_model( $model, $mode = NULL, $parameter = NULL )
 {
 	$model_path = DOCROOT . '/_models' . '/' . $model . '.model.inc';
 	if(include_once($model_path))
@@ -790,7 +795,7 @@ function ber_model( $model, $mode = NULL, $parameter = NULL )
 	
 
 
-function ber_render_template($template_file, $variables)
+function cck_render_template($template_file, $variables)
 {
     ob_start();
 	extract($variables, EXTR_SKIP); // Extract the variables to a local namespace
@@ -803,7 +808,7 @@ function ber_render_template($template_file, $variables)
 * A module-defined block content function.
 */
 
-function ber_pathpart($index = NULL)
+function cck_pathpart($index = NULL)
 {
 	
 	$path = $_SERVER['QUERY_STRING'];
@@ -854,13 +859,13 @@ function ber_pathpart($index = NULL)
 	}
 }
 
-function ber_translatable($string)
+function cck_translatable($string)
 {
 	//
 	return $string;
 }
 
-function ber_uri($path = NULL)
+function cck_uri($path = NULL)
 {
 	//
 	return $path;
@@ -873,7 +878,7 @@ function ber_uri($path = NULL)
  * @return    array    params
  */
  
-function ber_url_query($parameter = NULL)
+function cck_url_query($parameter = NULL)
 {
 	$queryParts = array();
 	$path = $_SERVER['QUERY_STRING'];
