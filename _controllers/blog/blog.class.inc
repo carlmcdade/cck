@@ -144,7 +144,7 @@ class blog{
         }
         else
         {
-        	$result = $db->query('SELECT userlist.name, userlist.bio, userlist.image,content.* FROM userlist , content');
+        	$result = $db->query('SELECT userlist.name, userlist.bio, userlist.image,content.* FROM userlist , content WHERE userlist.id = content.user_id');
         	
         }
 
@@ -166,7 +166,7 @@ class blog{
        
     	//var_dump($rows);
     	// check for user id no id means site owner
-        $variables['userID'] = $cck->_path_segment(2);
+        $variables['userID'] = $userID;
         if (empty($cck->_path_segment(2))) {
             $variables['profileImage'] = 'default_user.jpeg';
             $variables['userHandle'] = 'Site Members';
@@ -209,8 +209,9 @@ class blog{
          
         //$variables['userHandle'] = $rows[0]['name'];
     	//$variables['contentTitle'] = $variables['userHandle'].'\'s Blog';
+    	$variables['defaultContent'] = $cck->_view('default_content', $variables);
     	$variables['content'] =  'User Id: ' .$variables['userID']. '- '. $variables['userHandle'] . '- ' .$variables['profileImage'].'<br>' . $output;
-        print $cck->_view('page_profile', $variables);         
+        print $cck->_view('page_blog_view', $variables);         
     }
 
 
@@ -385,7 +386,7 @@ class blog{
         }
          
        
-        $variables['content'] = "Latest Content by users: ". $output;
+        $variables['content'] =  $output;
         /**$output .$database . '<br>::' . 
         $_SERVER['REQUEST_URI'] .' <br>::' . 
         $_SERVER['QUERY_STRING'] .' <br>::' .

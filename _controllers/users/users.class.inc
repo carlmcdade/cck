@@ -257,7 +257,7 @@ class users{
 					);
 		$var[$link][3] = array(
 					'text' => 'User Content', 
-					'path' => 'users/user_blog'
+					'path' => 'blog/blog_user'
 					);
 		$var[$link][4] = array(
 				'text' => 'User Settings',

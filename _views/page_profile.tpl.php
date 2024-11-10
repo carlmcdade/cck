@@ -76,8 +76,8 @@
     </div>
 
           
-          <h4><?php echo (isset($userName) ? $userName : 'test'); ?></h4> 
-	      <p class="fs-5">
+          <h4><?php echo (isset($userName) ? $userName : $userHandle); ?></h4> 
+	      
 	      <?php echo (isset($content) ? $content : ''); ?>
          <!-- /#content -->
 

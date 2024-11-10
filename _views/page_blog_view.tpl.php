@@ -15,53 +15,36 @@
 <body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <div class="container my-5">
+
 <div class="col-lg-8 px-0">
-   <h1>
-   <?php 
-        if($frontPage == $_SERVER['QUERY_STRING']){
-        	
-        }else{
-        
-          echo (isset($pageTitle) ? $pageTitle : ''); 
-        }
-   ?>
-   </h1>
-</div>
-</div>
+<h1><?php echo (isset($pageTitle) ? $pageTitle : ''); ?></h1>
+</div></div>
 
-      <div class="container my-5">
+<div class="container my-5">
+
       <div class="col-lg-8 px-0">
-       
-       
-	      <p class="fs-5">
-             <?php if(isset($mainNavigation)){
-		             echo $mainNavigation;
-		       }
-              ?>
-        <div class="btn-group">
+              
+<?php if(isset($mainNavigation)){
+		  echo $mainNavigation;
+		}
+?>
+<div class="btn-group">
+<?php if(isset($subNavigation)){
+		  echo $subNavigation;
+		}
+?>
 
-             <?php
-             /**
-             if(isset($subNavigation)){
-		             echo $subNavigation;
-		       }*/
-		       
-              ?>
-
-
-         <?php if(isset($adminNavigation)){
-		            echo $adminNavigation;
-		   }
-          ?>
-         </div>
-</p>
-
+<?php if(isset($adminNavigation)){
+		  echo $adminNavigation;
+		}
+?>
+</div>
     
       </div>
     </div>
 <!-- /#banner -->
 
-      <div class="container my-5">
+<div class="container my-5">
       <div class="col-lg-8 px-0">
        
          <h1>
@@ -69,41 +52,36 @@
 
              $clearSpace = array("_", "-");
              $contentTitle = str_replace($clearSpace, " ", $contentTitle);
-             $frontCheck = '?'. $_SERVER['QUERY_STRING'];
-                     if($frontPage == $frontCheck){
-                     	 echo '';
-                     }else{
-                     	     
-                     if(isset($subNavigation)){
-		                   echo $subNavigation;
-		              }
-		       
-                        echo (isset($contentTitle) ? $contentTitle : ''); 
-                     }
-
-             //echo (isset($contentTitle) ? $contentTitle : ''); 
+             echo (isset($contentTitle) ? $contentTitle : ''); 
+             if (empty($userID))
+             	 {
+             	 	 $userID = 'shared';
+             	 	 $profileImage = 'default_user.jpeg';
+             	 	 $variables['content'] = '';
+             	 	 $userBio = '<p class="fs-5">'. $defaultContent .'</p>';
+             	 }
+             	 
+             	 
 
          ?>
          </h1>
        
-    
-   
-    <div class="col text-start border border-primary rounded">
-     <img style="float:left; width:150px; height:relative" class="align-self-start m-2 img-fluid" src="images/user_profile/user_id_<?php echo $userID . '/' .$profileImage. ''; ?>" alt="Generic placeholder image">
-      <p class="fs-6 mt-2"><?php echo $userBio; ?></p>
-    </div>
-    
+      
+ 
 
-         <?php     
-             if(isset($subNavigation)){
-		             echo $subNavigation;
-		       }
-		  ?>     
+   
+    <div class="col border border-primary rounded ml-2 mr-2">
+    <img style="float:left; width:150px; height:150px;" class="align-self-start m-3 img-fluid" src="images/user_profile/user_id_<?php echo $userID . '/' .$profileImage. ''; ?>" alt="Generic placeholder image">   
+    <p  style="margin-right:.75em;margin-left:1em;" class="fs-6 mt-2 ml-2 mr-2"><?php echo $userBio; ?></p>
+    </div>
+
           
-          <h4 class="text-center"><?php echo (isset($userHandle) ? $userHandle : 'test'); ?></h4> 
-	      <p class="fs-5">
-	      <?php echo (isset($content) ? $content : ''); ?></p>
-	      <?php
+          <h4><?php echo (isset($userName) ? $userName : $userHandle); ?></h4> 
+	      
+	      <?php echo (isset($content) ? $content : ''); ?>
+         <!-- /#content -->
+
+<?php
 
 if((require 'default_footer.tpl.php') == TRUE)
 {
@@ -111,10 +89,7 @@ if((require 'default_footer.tpl.php') == TRUE)
     //exit;
 }
 ?>
-
-     </div></div>   
-    <!-- /#content -->
-
+</div></div>
 </body>
 
 </html> 
