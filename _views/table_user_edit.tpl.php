@@ -3,30 +3,17 @@ $output = '<form method="POST" action="?users/edit_user_save" name="user_edit"><
 $output .= '<thead><tr>';
 // table header
 // table header
+//$header[] = array('action');
 foreach ($header as $th => $column)
 {
-			/**if($th == 2) { 
-                       //thi
-                 continue;
-            } elseif($th == 3) { 
-                        //i mo
-                 continue;
-            }
-            elseif($th == 4) { 
-                        //i mo
-                 continue;
-            }
-             elseif($th == 5) { 
-                        //i mo
-                 continue;
-            }*/
+			
             if($th == 0) { 
                         //i mo
-                 $column = 'account';
+                 $column = 'action';
             }
             elseif($th == 1) { 
                         //i mo
-                 $column = 'profile';
+                 $column = 'name';
             }
 
 
@@ -50,44 +37,30 @@ if(!empty($rows))
 			if(isset($row[$td]))
 			{
 				
-			    switch($td)
-			    {
-			    case "0":
-			    	   $id = $row[$td];
 
-			    	  // $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">'.$row[$td].'</td>' . "\n";
-
-
-			    	break;
-			    case "1":
-			    	   
-			    	   //$row[$td] = '<a role="button"  class="btn btn-primary" href="?admin/edit_profile/'. $id .'">' .$row[$td]. '</a>' ;
-			    	break;
-			    
-			        case "4":
-			    	   $row[$td] = substr($row[$td],0,40);
-			    	break;
-			    	default :
-			    	    $placeholder = $row[$td];
-			    	 break;
-			    }
-			
 			    if($td == 0){
-			         
-			    	 $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">   <input type="submit" class="btn btn-primary" value="save" name="save_user"'. $id .'"></td>' ;
+			         $id = $row['id'];
+			    	 $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">
+			    	 <input type="hidden" name="'.$cell.'" id="'.$cell.'" value="'.$row['id'].'">
+			    	 <input type="submit" class="btn btn-primary" value="save" name="save_user" id="'. $id.'">
+			    	 </td>' ;
 			    }
 			    else{	
-				     $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">  <input name="'.$cell.'" type="text" class="form-control" id="" placeholder="'. $row[$td].'"></td>' . "\n";
+				     $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">  <input  value="'. $row[$td].'" name="'.$cell.'" type="text" class="form-control" id="" placeholder="'. $row[$td].'"></td>' . "\n";
 			    }
 			
 			}
 			else
 			{
-				$output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">  <input name="'.$cell.'" type="text" class="form-control" id="" placeholder="none"></td>' . "\n";
+			
+			    $row[$td] = 'none';
+				$output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">  <input  value="'. $row[$td].'" name="'.$cell.'" type="text" class="form-control" id="" placeholder="none"></td>' . "\n";
 			}
 		}
 		$output .= '</tr>' . "\n";
 	}
+	
+	//$output .= '<tr><td><input type="submit" class="btn btn-primary" value="save" name="save_user" id="'. $id.'"></td></tr>';
 
 }
 $output .= '</table></form>';

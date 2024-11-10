@@ -448,7 +448,7 @@ class users{
     function users_login_submit()
     {
     	$variables['content'] = 'show users logged in and redirect';
-    	print $this->common->ber_view('users', $variables);
+    	print $cck->_view('users', $variables);
     }
     
     /**
@@ -459,7 +459,7 @@ class users{
     function users_login_form()
     {
     	$variables['content'] = 'show users login form';
-    	print $this->common->ber_view('users', $variables);
+    	print $cck->_view('users', $variables);
     }
     
     function user_account($userID = NULL)
@@ -729,7 +729,7 @@ class users{
     function users_logout_submit()
     {
     	$variables['content'] = 'show users logged out and redirect';
-    	print $this->common->ber_view('users', $variables);
+    	print $cck->_view('users', $variables);
     }
     
     /**
@@ -740,7 +740,7 @@ class users{
     function users_logout()
     {
     	$variables['content'] = 'show users logout confirmation';
-    	print $this->common->ber_view('users', $variables);
+    	print $cck->_view('users', $variables);
     }
     
     function edit_user($userID = NULL)
@@ -944,7 +944,9 @@ class users{
     
     function edit_user_save()
     {
-        
+   	$link = 'links';
+    	
+          
     	global $cck,$ini_settings;
         // get all links from each class controller
         $database = $ini_settings['databases']['user_db'];
@@ -954,9 +956,7 @@ class users{
     	$var = array();
     	$output ='';
     	
-    	$link = 'links';
-    	
-    
+   
 	    $var = array();
     	
     	$var[$link][1] = array( 
