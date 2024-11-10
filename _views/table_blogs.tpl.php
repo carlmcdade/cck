@@ -2,23 +2,14 @@
 $output = '<table class="table table-responsive">';
 $output .= '<thead><tr>';
 // table header
+$skip_over = array(2,3,4,5,6,);
 foreach ($header as $th => $column)
 {
-			if($th == 2) { 
-                       //thi
+			if(in_array( $th , $skip_over)) { 
+                       //this value 
                  continue;
-            } elseif($th == 3) { 
-                        //i mo
-                 continue;
-            }
-            elseif($th == 4) { 
-                        //i mo
-                 continue;
-            }
-             elseif($th == 5) { 
-                        //i mo
-                 continue;
-            }
+            } 
+
             elseif($th == 0) { 
                         //i mo
                  $column = 'blog';
@@ -27,6 +18,7 @@ foreach ($header as $th => $column)
                         //i mo
                  $column = 'profile';
             }
+            
 
 
 	
@@ -42,24 +34,14 @@ if(!empty($rows))
 	{
 		$output .= '<tr id="tr-'. (isset($id) ? $id : '') . '-' . $tr . '" class="table-cells">';
 		// table cells per row
+		$skip_over = array(2,3,4,5,6,);
 		foreach($header as $td => $cell)
 		{
 			
-			if($td == 2) { 
+			if(in_array( $td , $skip_over)) { 
                        //this value 
                  continue;
-            } elseif($td == 3) { 
-                        //i mostly 
-                 continue;
-            }
-            elseif($td == 4) { 
-                        //i mo
-                 continue;
-            }
-             elseif($td == 5) { 
-                        //i .
-                 continue;
-            }
+            } 
 			if(isset($row[$td]))
 			{
 				
@@ -68,12 +50,12 @@ if(!empty($rows))
 			    case "0":
 			    	   $id = $row[$td];
 
-			    	   $row[$td] = '<a style="width:50%;" role="button"  class="btn btn-primary" href="?blog/blog_user/'. $id .'">view</a>' ;
+			    	   $row[$td] = '<a style="width:100%;" role="button"  class="btn btn-primary" href="?blog/blog_user/'. $id .'">view</a>' ;
 
 			    	break;
 			    case "1":
 			    	   $addOn = $td + 1;
-			    	   $row[$td] = '<a style="width:50%" role="button"  class="text-nowrap btn btn-primary" href="?users/user_profile/'. $id .'">' .$row[$td]. ' ' .$row[$addOn]. '</a>' ;
+			    	   $row[$td] = '<a style="width:100%" role="button"  class="text-nowrap btn btn-primary" href="?users/user_profile/'. $id .'">' .$row[$td]. ' ' .$row[$addOn]. '</a>' ;
 			    	break;
 			        	
 			        	

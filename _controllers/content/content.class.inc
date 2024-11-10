@@ -64,7 +64,7 @@ class content{
     function content_user_list()
     {
     	   
-    	global $cck;
+    	global $cck,$ini_settings;
     	$output = 'A list of this users content';
     	   
     	   // get all links from each class controller
@@ -86,10 +86,10 @@ class content{
     	   $variables['page_title'] = 'Content';
     	   $variables['content_title'] = 'Content list';
     	   $variables['content'] = $output;
-    	   print $this->common->ber_view('default', $variables);      
+    	   print $cck->_view('default', $variables);      
     }
     
-    function content_add()
+    function content_types()
     {
     	global $cck,$ini_settings;
         
@@ -123,11 +123,11 @@ class content{
         $userID = $cck->_path_segment(2);
         if(!empty($typeID))
         {
-            $result = $db->query('SELECT * FROM content_types WHERE id='.$typeID.'');
+            $result = $db->query('SELECT id,name,desc FROM content_types WHERE id='.$typeID.'');
         }
         else
         {
-        	$result = $db->query('SELECT * FROM content_types');
+        	$result = $db->query('SELECT id,name,desc FROM content_types');
         }
         
     	 while ($row = $result->fetchArray()) {
@@ -140,7 +140,7 @@ class content{
 			}
 				$table['header'] = $columns;
 				$table['rows'] = $rows; 
-				$output = $cck->_view('table_content_add', $table);
+				$output = $cck->_view('table_user_content_types', $table);
 				
 		foreach($rows as $key => $value)			
 		{
@@ -157,7 +157,7 @@ class content{
     
      
     
-    function content_types()
+    function content_post_save()
     {
     	global $cck,$ini_settings;
         
@@ -223,70 +223,113 @@ class content{
    
     }
     
-    function content_add_types()
+    function content_add_post()
     {
+    	
     	global $cck,$ini_settings;
-        
+    	
     	$database = $ini_settings['databases']['user_db'];
-    	$table = array();
+    	$form = array();
     	$columns = array();
     	$rows = array();
     	
-    	//some variables to load into the view will appear as $[variable name]
-      	$output = '';
-    	$menu = $cck->_hooks('hook_links');
+    	// get all links from each class controller
+    	$menu = $cck->_hooks('hook_links');    	
     	$sub_menu = $cck->_hooks('hook_module_links');
-    	$variables['seperators'] = array('|','-',';',':');
-    	$variables['pageTitle'] = 'Content';
-    	$variables['menuTitle'] = 'Content';
-    	$variables['contentTitle'] = 'Content Types';
-    	$variables['dbTable'] = 'content_types';
-        
+    	//var_dump($sub_menu); exit;
+    	$variables['menuTitle'] = 'Site Admin';
+    	$variables['pageTitle'] = 'Site Admin';
+    	$variables['contentTitle'] = 'admin content';
+    	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
     	
+             	//$link = 'links';
+        $userID = $cck->_path_segment(2);
+    	$link = 'links';
+    	
+    	$var = array();
+    	
+    	$var[$link][1] = array( 
+					'text' => 'Profile', 
+					'path' => 'admin/admin_user_profiles/'. $userID
+					);
+		$var[$link][2] = array(
+					'text' => 'Account', 
+					'path' => 'admin/admin_user_accounts/' . $userID
+					);
+		$var[$link][3] = array(
+					'text' => 'Content', 
+					'path' => 'admin/admin_user_content/'. $userID
+					);
+		$var[$link][4] = array(
+				'text' => 'Settings',
+				'path' => 'admin/edit_user_settings/'. $userID
+		);
+		$var[$link][5] = array(
+				'text' => 'Inbox',
+				'path' => 'admin/admin_user_messages/'. $userID
+		);
+			
+    	
+    	
+    	$menu = $cck->_hooks('hook_links');    	
+    	$sub_menu = $cck->_hooks('hook_module_links');
+    	$admin_menu = $var;
+
+    	//var_dump($sub_menu); exit;
+    	$variables['menuTitle'] = 'Site Admin';
+    	$variables['adminMenuTitle'] = 'User Admin';
+    	$variables['pageTitle'] = 'Site Admin';
     	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
     			'index' => $this->module
-    			)
-    		, $variables); 
-         
+    			) , $variables); 
+    	
+    	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
+    			'template'=>'links_user_menu',
+    			'index' => $this->module
+    			) , $variables); 
+    	
+    	 
     	$db = new SQLite3($database);
+    	
+    	$typeID = $cck->_path_segment(2);
 
-    	    	
-        $userID = $cck->_path_segment(2);
-        if(!empty($typeID))
-        {
-            $result = $db->query('SELECT * FROM content_types WHERE id='.$typeID.'');
-        }
-        else
-        {
-        	$result = $db->query('SELECT * FROM content_types');
-        }
+        $resultAdd = $db->query('SELECT * FROM content_types WHERE type_id ="'. $typeID.'";');
+        $result = $db->query('SELECT * FROM content_type_fields WHERE content_type_id ="'. $typeID.'" ORDER BY weight asc;');
         
     	 while ($row = $result->fetchArray()) {
                $rows[] = $row;
+
          }
+                        
+         
+              while ($rowAdd = $resultAdd->fetchArray()) {
+                  $form['contentType'] = $rowAdd['name'];
+                  
+                  $r[] = $rowAdd;
+               }
+         //var_dump($rows);
           //SQLite3Result::numColumns();
         for ($i = 0; $i < $result->numColumns(); $i++) {
 			    $col = $result->columnName($i);
-			    $columns[] = $col;
+			    $columns[$col] = $col;
 			}
-				$table['header'] = $columns;
-				$table['rows'] = $rows; 
-				$output = $cck->_view('table_content_add', $table);
-				
-		foreach($rows as $key => $value)			
-		{
-			$variables['userBio'] =  '';
-			$variables['userName'] = $value['name'];
-			$variables['profileImage'] = '';
-			$variables['userID'] = '';
-		}
-               
-        $variables['content'] = 'Content types' . $output;
+				$form['formAction'] = '?content/content_post_save';
+				$form['mimeType'] = '';
+			    $form['header'] = $columns;
+				$form['rows'] = $rows; 
+				$form['fieldType'] = '';
+				$form['contentType'] = (isset($form['contentType']) ? $form['contentType'] : '');
+				$output = $cck->_view('form_user_content_post', $form);
     	
-    	print $cck->_view('default', $variables);
+    	
+               
+        $variables['content'] = 'create new content using <h3><i>'.$form['contentType'].'</i></h3>' . $output;
+    	
+    	print $cck->_view('page_form', $variables);
+    	
     }
     
     function content_crud()

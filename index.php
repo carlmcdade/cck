@@ -30,7 +30,9 @@ if (file_exists(INI_FILENAME))
 
 
 
-// Set the front page by redirection
+// Set the front page by redirection a fix for free hosting glitch of adding an extra query string on first load
+if ($_SERVER['QUERY_STRING'] == 'i=1') header('location:' . $where . $ini_settings['url']['frontpage']);
+
 if (!$_SERVER['QUERY_STRING']) header('location:' . $where . $ini_settings['url']['frontpage']);
 
 // Start system and respond to calls

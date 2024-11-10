@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<content_type name="new tyxo" status="public">
-  <Fields>
-    <field name="myfield" type="Element_Text">
-      <DisplayName>Real name</DisplayName>
-      <Description>Your real name. Will not be shown to others.</Description>
-    </field>
-  </Fields>
-</content_type>

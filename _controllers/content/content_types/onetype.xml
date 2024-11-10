@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ContentType name="onetype" status="public">
-<DisplayName>onetype</DisplayName>
-  <Fields>
-    <Field name="an_element" type="Element_Textbox">
-      <attributes/>
-    </Field>
-  </Fields>
-</ContentType>

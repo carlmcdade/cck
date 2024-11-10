@@ -82,12 +82,12 @@ class blog{
 					'path' => $this->module . '/blog_categories'
 					);
 		$var[$link][3] = array(
-					'text' => 'My Blog ', 
+					'text' => 'Blog Users ', 
 					'path' => $this->module . '/blog_user'
 					);
 		$var[$link][4] = array(
 				'text' => 'New post',
-				'path' => 'content/content_add'
+				'path' => 'content/content_types'
 		);
 				
 		
@@ -341,7 +341,7 @@ class blog{
     	$sub_menu = $cck->_hooks('hook_module_links');
     	//var_dump($sub_menu); exit;
     	$variables['iniSettings'] = $ini_settings;
-    	$variables['menuTitle'] = 'Blog Latest';
+    	$variables['menuTitle'] = 'Latest bloggers';
     	$variables['pageTitle'] = 'Recent posts';
     	$variables['contentTitle'] = $cck->_path_segment(1);
     	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);

@@ -50,16 +50,11 @@ print('<!DOCTYPE html>
 	      	                    	echo $content;
 	      	                    } ?>
 	      </p>
+	      <?php require 'default_footer.tpl.php'; ?>
         </div>
     <!-- /#content -->
-
     </div>
-<?php
 
-require 'default_footer.tpl.php';  //echo 'default_header.tpl.php'; 
-    //exit;
-
-?>
 
 </body>
 </html>

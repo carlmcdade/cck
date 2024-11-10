@@ -584,6 +584,8 @@ class CCK
 	
 	function _hooks($hook = NULL, $type = NULL)
 	{		
+		
+		global $cck, $ini_settings;
 		$output = array();
 		
 		foreach ($this->_modules_list as $module)
@@ -601,10 +603,17 @@ class CCK
 	            	//$module = explode('/', $module);	            	
 	            	$namespace = $module . '_' . $type;	            	            	
 	            }
-	            else
+	            
+	            elseif(!empty($module))
 	            {
 		            $namespace = $module.'\\'.$module;
 	            }
+	            /**
+	            elseif(empty($module)){
+	            
+	            	$namespace = $cck->_path_segment(0) . '\\'. $cck->_path_segment(0) ;
+	                
+	            }*/
 							
 					if(class_exists($module) == TRUE)
 					{
@@ -655,9 +664,43 @@ class CCK
 		//
 	}
 	
-	function _varget()
+	function _target($operation)
 	{
-		//
+		
+		//var_dump($_POST); exit;
+		global $cck, $ini_settings;
+		$output='';
+		
+		switch($operation){
+		
+		case 'is_front' :
+			
+			$frontPage = $ini_settings['frontpage'];
+            if($frontPage == $_SERVER['QUERY_STRING']){
+        	
+        	    $output = TRUE;
+        	
+            }else{
+        
+               $output = FALSE; 
+            }
+			
+		break;
+		case 'form_post' :
+        
+             foreach($_POST as $name => $text){
+             
+			     $output .= $name.  ' ===> ' . $text. "\n<br>";
+			 }
+			break;
+		default:
+			$output = 'say what???';
+			
+			
+		}
+	 return $output;
+		
+		
 	}
 	
 	function _vardel()
@@ -681,6 +724,7 @@ class CCK
 	{
 		//
 		global $cck,$ini_settings;
+		$list= array();
 		
     	foreach($menu as $section => $group)
     	{	
@@ -709,11 +753,12 @@ class CCK
 		//var_dump($variables);
 		//var_dump($attributes);
 		//exit;
-    	  	 
-    	foreach($menu['links'] as $link)
-    	{
+    	if(isset($menu)){ 	 
+    	  foreach($menu['links'] as $link)
+    	  {
     		//print '<pre>' . print_r($links, 1) . '</pre>';
     		$list[] = $this->_view('links', $link);		
+    	    }
     	}
     	
     	$variables['menu_index'] = $attributes['index'];
@@ -731,9 +776,8 @@ class CCK
 @author Carl McDade
 @since 2024.11.9
 
-These methods cannot be called by MODULES they are outside
-of the CCK class position. But can be called from inside the CCK
-class and methods
+These methods cannot be called directly by MODULES they are outside the scope
+of the CCK class. But global to this file.
 
 */
 

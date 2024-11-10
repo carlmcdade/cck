@@ -1,5 +1,5 @@
 <?php 
-$output = '<form><table class="table">';
+$output = '<form method="POST" action="?users/edit_user_save" name="user_edit"><table class="table">';
 $output .= '<thead><tr>';
 // table header
 // table header
@@ -74,16 +74,16 @@ if(!empty($rows))
 			
 			    if($td == 0){
 			         
-			    	 $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells"> <a role="button"  class="btn btn-primary" href="?users/edit_user_save/'. $id .'">save</a></td>' ;
+			    	 $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">   <input type="submit" class="btn btn-primary" value="save" name="save_user"'. $id .'"></td>' ;
 			    }
 			    else{	
-				     $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">  <input type="text" class="form-control" id="" placeholder="'. $row[$td].'"></td>' . "\n";
+				     $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">  <input name="'.$cell.'" type="text" class="form-control" id="" placeholder="'. $row[$td].'"></td>' . "\n";
 			    }
 			
 			}
 			else
 			{
-				$output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells"><input type="text" class="form-control" id="" placeholder="none"></td>' . "\n";
+				$output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">  <input name="'.$cell.'" type="text" class="form-control" id="" placeholder="none"></td>' . "\n";
 			}
 		}
 		$output .= '</tr>' . "\n";
