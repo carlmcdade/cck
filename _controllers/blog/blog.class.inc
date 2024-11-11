@@ -75,7 +75,7 @@ class blog{
     	
     	$var[$link][1] = array( 
 					'text' => 'Blogs', 
-					'path' => $this->module . '/blog_list'
+					'path' => $this->module . '/blog_user'
 					);
 		$var[$link][2] = array(
 					'text' => 'Categories', 
@@ -83,7 +83,7 @@ class blog{
 					);
 		$var[$link][3] = array(
 					'text' => 'Blog Users ', 
-					'path' => $this->module . '/blog_user'
+					'path' => $this->module . '/blog_list'
 					);
 		$var[$link][4] = array(
 				'text' => 'New post',
@@ -210,7 +210,7 @@ class blog{
         //$variables['userHandle'] = $rows[0]['name'];
     	//$variables['contentTitle'] = $variables['userHandle'].'\'s Blog';
     	$variables['defaultContent'] = $cck->_view('default_content', $variables);
-    	$variables['content'] =  'User Id: ' .$variables['userID']. '- '. $variables['userHandle'] . '- ' .$variables['profileImage'].'<br>' . $output;
+    	$variables['content'] =  '<!--User Id: ' .$variables['userID']. '- '. $variables['userHandle'] . '- ' .$variables['profileImage'].'--><br>' . $output;
         print $cck->_view('page_blog_view', $variables);         
     }
 

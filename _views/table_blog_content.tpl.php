@@ -21,8 +21,8 @@ $output = '<div>';
 			{
 
 			    //$output .= '<h3 id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $tr . '" class="table-cells">' . $row['name'] . '</h3>' . "\n";
-				$output .= '<h2 id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $tr . '" class="">' . $row['content_title'] . '</h2> by <span class="fs-4">' .$row['name'] ."</span>\n";
-				$output .= '<div style="" class="border border-solid border-1 border-primary border-start-0 border-end-0 p-3 mt-2">' . substr($row['content_body'],0,200) . '</div>' . "\n";
+				$output .= '<div style="padding:1em;background-color:#dee5ff;"><h1 style="" id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $tr . '" class="">' . $row['content_title'] . ' </h1><br>by <span class="fs-5">' .$row['name'] ."</span></div>\n";
+				$output .= '<div style="" class="border border-solid border-1 border-primary border-start-0 border-end-0 p-3 mt-0">' . substr($row['content_body'],0,200) . '</div>' . "\n";
 			}
 			else
 			{

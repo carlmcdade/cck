@@ -1,9 +1,9 @@
 <?php 
-$output = '<form><table class="table">';
+$output = '<form method="POST" action="?users/edit_profile_save"><table class="table">';
 $output .= '<thead><tr>';
 // table header
 // table header
-foreach ($header as $th => $column)
+/* foreach ($header as $th => $column)
 {
 			/**if($th == 2) { 
                        //thi
@@ -19,7 +19,7 @@ foreach ($header as $th => $column)
              elseif($th == 5) { 
                         //i mo
                  continue;
-            }*/
+            }
             if($th == 0) { 
                         //i mo
                  $column = 'profile';
@@ -33,19 +33,19 @@ foreach ($header as $th => $column)
 	
 	$output .= '<th scope ="col">' .  $column . '</th>' . "\n";	
 }
-$output .= '</tr></thead>' . "\n";
+$output .= '</tr></thead>' . "\n"; */
 //$output .= '<tbody><tr>' . "\n";
 if(!empty($rows))
 {
 	// table rows
 	foreach ($rows as $tr => $row)
 	{
-		$output .= '<tr id="tr-'. (isset($id) ? $id : '') . '-' . $tr . '" class="table-cells">';
 		// table cells per row
 		
 		foreach($header as $td => $cell)
 		{  
-			
+			$output .= '<tr colspan="8" id="tr-'. (isset($id) ? $id : '') . '-' . $header[$tr] . '" class="table-cells"><td>'. $header[$td] ."\n</td></tr>";
+		
 			
 			if(isset($row[$td]))
 			{
@@ -65,20 +65,21 @@ if(!empty($rows))
 			
 			    if($td == 0){
 			         
-			    	 $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells"> <a role="button"  class="btn btn-primary" href="?users/edit_profile_save/'. 
-			    	 $id .'">save</a></td>' ;
+			    	 $output .= '<tr><td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells"> <input value="'.$row[$td].'" name="'.$cell.'"  type="text" class="form-control" id="" placeholder="'. $row[$td].'">'. 
+			    	 '</td></tr>' ;
 			    }
 			    else{	
-				     $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">  <input type="text" class="form-control" id="" placeholder="'. $row[$td].'"></td>' . "\n";
+				     $output .= '<tr><td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">  <input value="'.$row[$td].'" name="'.$cell.'"  type="text" class="form-control" id="" placeholder="'. $row[$td].'"></td></tr>' . "\n";
 			    }
 			
 			}
 			else
 			{
-				$output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells"><input type="text" class="form-control" id="" placeholder="none"></td>' . "\n";
+				$output .= '<tr><td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells"><input value="'.$row[$td].'" name="'.$cell.'" type="text" class="form-control" id="" placeholder="none"></td></tr>' . "\n";
 			}
 		}
-		$output .= '</tr>' . "\n";
+		$output .= '<tr><td><input type="submit" class="btn btn-primary" value="save" name="save_user" id="'. $id.'">'."\n".'</td></tr>';
+
 	}
 
 }

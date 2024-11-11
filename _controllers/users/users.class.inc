@@ -840,6 +840,8 @@ class users{
         print $cck->_view('page_profile', $variables);
         
     }
+    
+    
     function edit_profile($userID = NULL)
     {
         global $cck,$ini_settings;
@@ -926,7 +928,7 @@ class users{
 			}
 				$table['header'] = $columns;
 				$table['rows'] = $rows; 
-				$output = $cck->_view('table_user_edit', $table);
+				
 				
 		foreach($rows as $key => $value)			
 		{
@@ -935,7 +937,7 @@ class users{
 			$variables['profileImage'] = $value['image'];
 			$variables['userID'] = $userID;
 		}
-				
+			
 		$variables['content'] = $output;
 		
         print $cck->_view('page_profile', $variables);
@@ -1062,7 +1064,9 @@ class users{
     			'index' => $this->module
     			) , $variables); 
     	
-    	$variables['content'] = $output;
+    			
+		$output .= $cck->_target('form_post');
+    	$variables['content'] =  $output;
 		
         print $cck->_view('page_profile', $variables);
         

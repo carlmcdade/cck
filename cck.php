@@ -456,7 +456,9 @@ class CCK
 	
 	function _path_segment($index = NULL)
 	{
-		//	
+		//
+		global $cck,$ini_settings;
+		
 		$path = $_SERVER['QUERY_STRING'];
 		if($path == '')
 		{
@@ -467,7 +469,7 @@ class CCK
 			$parts[$path] = explode('/', $_SERVER['QUERY_STRING']);
 		}
 		
-		$parameters = cck_url_query();
+		$parameters = $cck->_url_query();
 	
 		foreach($parts[$path] as $key => $segment)
 		{
@@ -493,7 +495,7 @@ class CCK
 		}
 	}
 	
-	function _translate()
+	function _t()
 	{
 		//
 	}
@@ -685,7 +687,7 @@ class CCK
                $output = FALSE; 
             }
 			
-		break;
+		    break;
 		case 'form_post' :
         
              foreach($_POST as $name => $text){
@@ -693,11 +695,15 @@ class CCK
 			     $output .= $name.  ' ===> ' . $text. "\n<br>";
 			 }
 			break;
-		default:
-			$output = 'say what???';
+	    case 'form_post_json' :
+        
+                //$json_string = json_encode($_POST , JSON_PRETTY_PRINT);
+            
+			    // $output .= $json_string . "\n<br>";
+			 
+			break;	
 			
-			
-		}
+	    }
 	 return $output;
 		
 		
@@ -768,6 +774,38 @@ class CCK
     	 
     	return $output;
 	}
+	
+	function _url_query($parameter = NULL)
+{
+	$queryParts = array();
+	$path = $_SERVER['QUERY_STRING'];
+	$query[$path] = explode('/', $path);
+	$get_last = array_reverse($query[$path]);
+	$queryParts = explode('&', $get_last[0]);
+	$params = array();
+	
+	foreach ($queryParts as $param)
+	{
+		$item = explode('=', $param);
+		if(isset($item[1]))
+		{
+			$params[$item[0]] = $item[1];
+		}
+		else
+		{
+			continue;
+		}
+	}
+	if(!empty($params) && array_key_exists($parameter, $params))
+    {
+    	return $params[$parameter];
+    }
+    else
+    {
+    	return ;
+    }
+} 
+
 
 }
 
@@ -901,6 +939,7 @@ function cck_pathpart($index = NULL)
 	{
 		return $parts[$path][$index];
 	}
+	
 }
 
 function cck_translatable($string)
@@ -922,36 +961,6 @@ function cck_uri($path = NULL)
  * @return    array    params
  */
  
-function cck_url_query($parameter = NULL)
-{
-	$queryParts = array();
-	$path = $_SERVER['QUERY_STRING'];
-	$query[$path] = explode('/', $path);
-	$get_last = array_reverse($query[$path]);
-	$queryParts = explode('&', $get_last[0]);
-	$params = array();
-	
-	foreach ($queryParts as $param)
-	{
-		$item = explode('=', $param);
-		if(isset($item[1]))
-		{
-			$params[$item[0]] = $item[1];
-		}
-		else
-		{
-			continue;
-		}
-	}
-	if(!empty($params) && array_key_exists($parameter, $params))
-    {
-    	return $params[$parameter];
-    }
-    else
-    {
-    	return ;
-    }
-} 
 
 
 
