@@ -1,5 +1,5 @@
 <?php
-
+namespace install;
 /**
  * @author Carl McDade 
  * @copyright Carl McDade
@@ -7,7 +7,7 @@
  * @version 1.0
  * @license MIT
  * 
- * @link http://fhqk.com Content Connection Kit
+ * @link http://hardcopy.free.nf Content Connection Kit
  * ==================================================================
  * 
  *                        install.class.inc
@@ -15,22 +15,8 @@
  * ==================================================================
  *
  * @todo 
- * 
+ *
  */
-namespace install;
-
-// classes used by the global $cck object from the globalspace
-use \PDO;
-use \PDOException;
-
-// classes used by this module controller class
-
-use \form;
-use \Element_Textbox;
-use \Element_Textarea;
-use \Element_Hidden;
-use \Element_Button;
-
 class install{
 	
 	private $common;

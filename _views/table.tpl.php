@@ -1,5 +1,5 @@
 <?php 
-$output = '<table class="table">';
+$output = '<table class="table fs-6">';
 $output .= '<thead><tr>';
 // table header
 foreach ($header as $th => $column)

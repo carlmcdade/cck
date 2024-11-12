@@ -93,7 +93,7 @@
       <p class="fs-6 mt-2"><?php echo $userBio; ?></p>
     </div>
     
-
+    
          <?php     
              if(isset($subNavigation)){
 		             echo $subNavigation;

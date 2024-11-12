@@ -97,32 +97,7 @@ class CCK
 		// directories
 		$controllers = $ini_settings['system']['controllers'];
 		$helpers = $ini_settings['system']['helpers'];
-		
-		// load the common controller items first
-		if($common_loaded == FALSE)
-		{
-			
-			//CCK loader
-			$path = DOCROOT . '/cck.php';	
-			if(file_exists($path))
-			{
-				require_once($path);
-			}			
-			
-			foreach($ini_settings['common'] as $suffix)
-			{
-				//$class = strtolower(ber_pathpart(0));
-				$path = DOCROOT . '/_controllers/common/' . 'common' . '_' . $suffix . '.class.inc';	
-				if(file_exists($path))
-				{
-					require_once($path);
-					
-				}						
-			}
-			
-			$common_loaded = TRUE;
-		}
-		
+				
 		// get a list of class file names. Allow only these and not Drupal class files in array
 		$class = strtolower($class);
 		$check_class = substr_count($class, '_');
@@ -589,6 +564,7 @@ class CCK
 		
 		global $cck, $ini_settings;
 		$output = array();
+		$Class = $cck->_path_segment(0) . '\\'. $cck->_path_segment(0) ;
 		
 		foreach ($this->_modules_list as $module)
 		{                   		    	       
@@ -610,12 +586,12 @@ class CCK
 	            {
 		            $namespace = $module.'\\'.$module;
 	            }
-	            /**
-	            elseif(empty($module)){
 	            
-	            	$namespace = $cck->_path_segment(0) . '\\'. $cck->_path_segment(0) ;
+	            elseif($Class == NULL){
+	            
+	            	$Class = $cck->_path_segment(0) . '\\'. $cck->_path_segment(0) ;
 	                
-	            }*/
+	            }
 							
 					if(class_exists($module) == TRUE)
 					{
@@ -666,7 +642,7 @@ class CCK
 		//
 	}
 	
-	function _target($operation)
+	function _target($operation , $item = NULL)
 	{
 		
 		//var_dump($_POST); exit;
@@ -701,7 +677,29 @@ class CCK
             
 			    // $output .= $json_string . "\n<br>";
 			 
-			break;	
+			break;
+		 case 'var_dump' :
+               $output = $cck->_view('table_var_dump', $variables);
+                //$json_string = json_encode($_POST , JSON_PRETTY_PRINT);
+            
+			    // $output .= $json_string . "\n<br>";
+			 
+			break;
+			
+		case 'array2text' :
+			 function array2text($array){
+			  $output = '';	 
+			  $counter = 0;
+		      foreach($item as $name => $text){
+             
+			     $output .= $name .  ' ===> ' . $text. "\n<br>";
+			     if(is_array($text) && $counter < 3){
+			     
+                      array2text($text);
+			     }
+			   }
+			  }
+			break;
 			
 	    }
 	 return $output;
@@ -811,156 +809,110 @@ class CCK
 
 /** 
 *
-@author Carl McDade
-@since 2024.11.9
-
-These methods cannot be called directly by MODULES they are outside the scope
-of the CCK class. But global to this file.
-
-*/
-
-function cck_access()
-{
-	echo 'this is a cck non global function';
-	exit;
-
-}
-
-
-
-/**
-* ==================================== MODEL ===================================
 * @author Carl McDade
-* @since 2012-07-14
-* Start the class loader function. The arguments are the Class name
+* @since 2024.11.9
 *
-* Add any database routines here and load the results into variables. Complicated
-* solutions should be placed in a model file
-*
-* Add any business logic here and load the results to variables. Complicated
-* solutions should be placed in a model file
+* These methods cannot be called directly by MODULES they are outside the scope
+* of the CCK class. But global to this file.
 *
 */
+    /** 
+    * ini file methods
+    * _______________________
+    *   cck_array_2_ini
+    *   cck_ini_2_array
+    *   cck_save_ini_file
+    * _______________________
+    * process
+    * _______________________
+    *   read from ini file to array
+    *   make changes to array values
+    *   write array to ini file
+    *
+    */
+    
+    function cck_ini_2_array($ini_array){
+    	
+    	
+    }
+    
+    function cck_array_2_ini($ini_array,$out="")
+    {
+    
+    	$t="";
+        $q=false;
+       foreach($ini_array as $c=>$d)
+       {
+            if(is_array($d))$t.=array_to_ini($d,$c);
+            else
+            {
+           if($c===intval($c))
+           {
+                if(!empty($out))
+
+                {
+                    $t.="\r\n".$out." = \"".$d."\"";
+                    if($q!=2)$q=true;
+                }
+                else $t.="\r\n".$d;
+            }
+           else
+            {    
+                $t.="\r\n".$c." = \"".$d."\"";
+                $q=2;
+
+            }
+
+        }
+
+    }
+
+    if($q!=true && !empty($out)) return "[".$out."]\r\n".$t;
+    if(!empty($out)) return  $t;
+    return trim($t);
+
+    }
 
 
-function cck_model( $model, $mode = NULL, $parameter = NULL )
-{
-	$model_path = DOCROOT . '/_models' . '/' . $model . '.model.inc';
-	if(include_once($model_path))
-	{
-		//
-		$data = new $model;
-		if(method_exists($data,$mode))
-		{
-			return $data->$mode();
-		}
-		else
-		{
-			return 'The model was not was not processed.';
-		}
-	}
-	else
-	{
-		return 'The model file was not found.';
-	}
-}
-
-/**
-* @todo Update INI file methods to handle sections and add these to INI file
-*
-* the array of permission actually have to exists in the hook_perm fuction used by Drupal
-* the reason I do this here is to enforce the ordered mvc routing conventions 
-* over the chaotic Drupal ones. MVC usage hints to where and what is being used in the code
-* while Drupal allows anything to hide anywhere.
-*
-*/
-	
+    function cck_save_ini_file($ini_array,$file)
+    {
+        global $cck,$ini_settings;
+        $buffer = $cck->_array_2_ini($ini_array);
+        $handel= fopen($file,"w");
+        fwrite($handle,$buffer);
+        fclose($handle);
+    }
 
 
-function cck_render_template($template_file, $variables)
-{
-    ob_start();
-	extract($variables, EXTR_SKIP); // Extract the variables to a local namespace
-	include $template_file; // Include the template file
-	return ob_get_clean(); // End buffering and return its contents
-}
+     function cck_get_class_comments($fullyQualifiedClassName)
+     {
+    	
+                $refClass = new ReflectionClass($fullyQualifiedClassName);
+                $comments = array();
+
+                foreach ($refClass->getProperties() as &$refProperty) {
+                    $comments[$refProperty->getName()]  =  trim(preg_replace("#((\/)?(\*{1,2})(\/)?)#si", "", $refProperty->getDocComment()));
+                }
+                return $comments;
+     }
+        
 
 
-/**
-* A module-defined block content function.
-*/
+     function cck_render_template($template_file, $variables)
+     {
+          ob_start();
+	      extract($variables, EXTR_SKIP); // Extract the variables to a local namespace
+	      include $template_file; // Include the template file
+	      return ob_get_clean(); // End buffering and return its contents
+     }
 
-function cck_pathpart($index = NULL)
-{
-	
-	$path = $_SERVER['QUERY_STRING'];
-		
-	
-	if($path == '')
-	{
-		return;
-	}
-	else
-	{
-		$parts[$path] = explode('/', $_SERVER['QUERY_STRING']);
-	}
-	
-	$parameters = ber_url_query();
 
-	foreach($parts[$path] as $key => $segment)
-	{
-		$cleaned = explode('&', $segment);
-		$parts[$path][$key] = $cleaned[0];
-	}
-		
-	//	
-	
-	if(count($parts[$path]) >= 3 && $parts[$path][2])
-	{
-		$class = strtolower($parts[$path][1]) .'_' . strtolower($parts[$path][0]);
-		$namespace = $class . '//' . $class;
-		
-		if(class_exists($class) == TRUE || class_exists($namespace) == TRUE)
-		{
-			$new_path = strtolower($parts[$path][1]) .'_' . strtolower($parts[$path][0]) . '/' . $parts[$path][2];
-			$parts[$new_path] = explode('/', $new_path);
-			
-			foreach($parts[$new_path] as $key => $segment)
-			{
-				$cleaned = explode('&', $segment);
-				$parts[$new_path][$key] = $cleaned[0];
-			}
-			
-			return $parts[$new_path][$index];
-	    }
-	}
-	
-	if(isset($parts[$path][$index]))
-	{
-		return $parts[$path][$index];
-	}
-	
-}
+     function cck_t($string)
+     {	
+	      return $string;
+     }
 
-function cck_translatable($string)
-{
-	//
-	return $string;
-}
 
-function cck_uri($path = NULL)
-{
-	//
-	return $path;
-}
-
-/**
- * Returns the url query as associative array
- *
- * @param    string    query
- * @return    array    params
- */
- 
 
 
 

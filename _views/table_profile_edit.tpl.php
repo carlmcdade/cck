@@ -44,7 +44,7 @@ if(!empty($rows))
 		
 		foreach($header as $td => $cell)
 		{  
-			$output .= '<tr colspan="8" id="tr-'. (isset($id) ? $id : '') . '-' . $header[$tr] . '" class="table-cells"><td>'. $header[$td] ."\n</td></tr>";
+			$output .= '<tr colspan="8" id="tr-'. (isset($id) ? $id : '') . '-' . $header[$tr] . '" class="table-cells"><td style="background-color:#dee5ff;" class="table-cells">'. $header[$td] ."\n</td></tr>";
 		
 			
 			if(isset($row[$td]))

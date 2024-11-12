@@ -1,20 +1,28 @@
 <?php
 
-/*
- * @author Carl McDade
- * @copyright Copyright (c) 2010, Carl McDade
- * @since 2010-02-19
- * @version 0.2
- * @license
- * @link http://www.berlinto.com Berlin Germany
- *
- */
 
 
 namespace contact;
 
 use SQLite3;
-
+/**
+ * @author Carl McDade 
+ * @copyright Carl McDade
+ * @since 2011
+ * @version 1.0
+ * @license MIT
+ * 
+ * @link http://hardcopy.free.nf
+ * ==================================================================
+ * 
+ *                        contact.class.inc
+ * 
+ * ==================================================================
+ * This CCK example site is built around this blogging module.
+ * It handles the blog content type
+ *  
+ * 
+ */
 class contact {
 	
 	private $common;

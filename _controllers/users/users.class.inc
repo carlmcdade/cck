@@ -1,5 +1,5 @@
 <?php
-
+namespace users;
 /**
  * @author Carl McDade 
  * @copyright Carl McDade
@@ -7,7 +7,7 @@
  * @version 1.0
  * @license MIT
  * 
- * @link http://berlinto.com/berlinto
+ * @link http://hardcopy.free.nf
  * ==================================================================
  * 
  *                        users.class.inc
@@ -18,7 +18,6 @@
  * 
  */
 
-namespace users;
 
 use SQLite3;
 
@@ -160,6 +159,10 @@ class users{
 			}
 				$table['header'] = $columns;
 				$table['rows'] = $rows; 
+				
+		/*==============================================
+		           content  template
+		===============================================*/
 				$output = $cck->_view('table_profile_edit', $table);
        
     	
@@ -168,6 +171,7 @@ class users{
         if (empty($cck->_path_segment(2))) {
             $variables['profileImage'] = 'default_user.jpeg';
             $variables['userHandle'] = 'Site Members';
+            
             $variables['userBio'] = $cck->_view('default_footer', $variables);
             
           }else{
@@ -184,6 +188,10 @@ class users{
         
     	$variables['contentTitle'] = $variables['userHandle'].'\'s profile';
     	$variables['content'] =  '<h3><i>Quick Edit</i></h3>' . $output;
+    	
+		/*==============================================
+		           page  template
+		===============================================*/
         print $cck->_view('page_profile', $variables);         
     }
     
@@ -241,7 +249,7 @@ class users{
         {
             $variables['profileImage'] = 'default_user.jpeg';
             $variables['userHandle'] = 'Site Members';
-            $variables['menuTitle'] = 'Site Members'; 	
+            $variables['menuTitle'] = 'Site Users'; 	
             
             $link = 'links';
     	
@@ -257,7 +265,7 @@ class users{
 					);
 		$var[$link][3] = array(
 					'text' => 'User Content', 
-					'path' => 'blog/blog_user'
+					'path' => 'users/user_content'
 					);
 		$var[$link][4] = array(
 				'text' => 'User Settings',
@@ -514,7 +522,7 @@ class users{
         {
             $variables['profileImage'] = 'default_user.jpeg';
             $variables['userHandle'] = 'Site Members';
-            $variables['menuTitle'] = 'Site Members'; 	
+            $variables['menuTitle'] = 'Site Users'; 	
             
             $link = 'links';
     	
@@ -530,7 +538,7 @@ class users{
 					);
 		$var[$link][3] = array(
 					'text' => 'User Content', 
-					'path' => 'users/user_blog'
+					'path' => 'users/user_content'
 					);
 		$var[$link][4] = array(
 				'text' => 'User Settings',
@@ -552,7 +560,7 @@ class users{
         }
          
 		
-    	$variables['pageTitle'] = 'User Account';
+    	$variables['pageTitle'] = 'User Accounts';
     	$variables['contentTitle'] = '';
     	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu' , $variables);
     	$variables['subNavigation'] = $cck->_module_links($var,
@@ -564,7 +572,7 @@ class users{
     	
         $variables['content'] = $output;
     	
-    	print $cck->_view('page_profile', $variables);
+    	print $cck->_view('page_admin', $variables);
     	
     }
     
@@ -745,7 +753,9 @@ class users{
     
     function edit_user($userID = NULL)
     {
-        global $cck,$ini_settings;
+        
+       /* ====================== Method variables ===============*/		
+    	global $cck,$ini_settings;
         // get all links from each class controller
         $database = $ini_settings['databases']['user_db'];
     	$table = array();
@@ -755,7 +765,7 @@ class users{
     	
     	/// build admin navigation links that only are used by this module/method
    
-        
+       /* ====================== navigation menus ===============*/	 
              	//$link = 'links';
         $userID = $cck->_path_segment(2);
     	$link = 'links';
@@ -780,7 +790,7 @@ class users{
 		);
 			
     	
-    	
+      /* ====================== template variables ===============*/	
     	$menu = $cck->_hooks('hook_links');    	
     	$sub_menu = $cck->_hooks('hook_module_links');
     	$admin_menu = $var;
@@ -803,6 +813,7 @@ class users{
     	
     	
     	$variables['contentTitle'] = $cck->_path_segment(1);
+    /* ====================== database query ===============*/	
     	$db = new SQLite3($database);
     	
         $userID = $cck->_path_segment(2);
@@ -825,6 +836,8 @@ class users{
 			}
 				$table['header'] = $columns;
 				$table['rows'] = $rows; 
+				
+	/* ====================== content template ===============*/			
 				$output = $cck->_view('table_user_edit', $table);
 				
 		foreach($rows as $key => $value)			
@@ -836,7 +849,7 @@ class users{
 		}
 				
 		$variables['content'] = $output;
-		
+    /* ====================== page template ===============*/	
         print $cck->_view('page_profile', $variables);
         
     }
@@ -939,7 +952,9 @@ class users{
 		}
 			
 		$variables['content'] = $output;
-		
+		/*==============================================
+		           page  template
+		===============================================*/
         print $cck->_view('page_profile', $variables);
         
     }

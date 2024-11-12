@@ -26,6 +26,7 @@
 		  echo $mainNavigation;
 		}
 ?>
+<div style="text-align:right;">
 <div class="btn-group">
 
 <?php if(isset($subNavigation)){
@@ -38,7 +39,7 @@
 		  echo $adminNavigation;
 		}
 ?>
-</div>
+</div></div>
 
 
     

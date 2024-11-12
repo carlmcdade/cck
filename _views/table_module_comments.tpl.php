@@ -1,0 +1,43 @@
+<?php 
+$output = '<table class="table table-striped">';
+$output .= '<thead><tr>';
+// table header
+foreach ($header as $th => $column)
+{
+	$output .= '<th scope ="col">' .  $column . '</th>' . "\n";	
+}
+$output .= '</tr></thead>' . "\n";
+//var_dump($rows);
+if(!empty($rows))
+{
+	// table rows
+	//$counter = 0;
+	//$output .= '<tr><td colspan="2">'. $section.'</td></tr>' . "\n";
+
+
+	foreach ($rows as $tr => $row)
+	{
+		$output .= '<tr id="" class="table-cells">';	
+	foreach($row as $key=> $value){
+		// table cells per row
+			if($key == 1)
+			{
+
+								//$output .= '<tr><td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $tr . '" class="table-cells">'. $row[$key].'what</td></tr>' . "\n";
+			}
+			elseif($key == 0)
+			{
+				$output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $tr . '" class="table-cells"><a href="?admin/module_edit/'.$row[0].'">configure</a></td>'.
+				'<td>'. $row[1]. '</td><td><a href="?admin/module_comments_view/' . $row[0].'">'.'administer'.'</a></td>'. 
+				'' . "\n";
+			}
+		}
+	$output .= '</tr>' . "\n";	
+	}
+    
+}
+$output .= '</table>';
+
+print $output;
+//var_dump($row);
+?>

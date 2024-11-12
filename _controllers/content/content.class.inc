@@ -1,14 +1,4 @@
 <?php
-
-/*
- * @author Carl McDade
- * 
- * @since 2012-06-11
- * @version 0.2
- *
- */
-
-
 namespace content;
 
 // classes used by the global $cck object from the globalspace
@@ -16,7 +6,27 @@ namespace content;
 use \Common;
 use SQLite3;
 
+/**
+ * @author Carl McDade 
+ * @copyright Carl McDade
+ * @since 2011
+ * @version 1.0
+ * @license MIT
+ * 
+ * @link http://hardcopy.free.nf
+ * ==================================================================
+ * 
+ *                        content.class.inc
+ * 
+ * ==================================================================
+ * This CCK example site is built around this blogging module.
+ * It handles the blog content type
+ *  
+ * 
+ */
+
 class content{
+	
 	
 	public  $common;
 	public  $menu;
@@ -27,7 +37,6 @@ class content{
     function __construct()
     {
     	// Common settings
-    	$this->common = Common::get_instance();
     	$this->module = __NAMESPACE__;
     }
     

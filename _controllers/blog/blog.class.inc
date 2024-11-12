@@ -1,5 +1,12 @@
 <?php
 
+namespace blog;
+
+use SQLite3;
+
+// classes used // classes used by the global $cck object from the globalspace
+
+
 /**
  * @author Carl McDade 
  * @copyright Carl McDade
@@ -7,22 +14,17 @@
  * @version 1.0
  * @license MIT
  * 
- * @link http://berlinto.com/berlinto
+ * @link http://hardcopy.free.nf
  * ==================================================================
  * 
  *                        blog.class.inc
  * 
  * ==================================================================
- *
- * @todo 
+ * This CCK example site is built around this blogging module.
+ * It handles the blog content type
+ *  
  * 
  */
-namespace blog;
-
-use SQLite3;
-
-// classes used // classes used by the global $cck object from the globalspace
-
 class blog{
 	
 	private $common;

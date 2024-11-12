@@ -1,16 +1,25 @@
 <?php
-
-/*
- * @author Carl McDade
- * @copyright Copyright (c) 2010, Carl McDade
- * @since 2010-02-19
- * @version 0.2
- * @license 
- * @link http://www.berlinto.com Berlinto Germany
- *
+namespace category;
+/**
+ * @author Carl McDade 
+ * @copyright Carl McDade
+ * @since 2011
+ * @version 1.0
+ * @license MIT
+ * 
+ * @link http://hardcopy.free.nf
+ * ==================================================================
+ * 
+ *                        blog.class.inc
+ * 
+ * ==================================================================
+ * This CCK example site is built around this blogging module.
+ * It handles the blog content type
+ *  
+ * 
  */
 
-class install{
+class category{
 	
 	private $common;
 

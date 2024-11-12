@@ -1,21 +1,31 @@
 <?php
 
-/*
- * @author Carl McDade
- * @copyright Copyright (c) 2010, Carl McDade
- * @since 2010-02-19
- * @version 0.2
- * @
- * @
- *
- */
+
 
 namespace admin;
 
 use SQLite3;
 use \content\content;
 
-class admin extends SQLite3 {
+/**
+ * @author Carl McDade 
+ * @copyright Carl McDade
+ * @since 2011
+ * @version 1.0
+ * @license MIT
+ * 
+ * @link http://hardcopy.free.nf
+ * ==================================================================
+ * 
+ *                        admin.class.inc
+ * 
+ * ==================================================================
+ * This CCK example site is built around this blogging module.
+ * It handles the blog content type
+ *  
+ * 
+ */
+class admin {
 	
 	public  $common;
 	public  $menu;
@@ -76,13 +86,13 @@ class admin extends SQLite3 {
     	$var = array();
     	
     	$var[$link][1] = array( 
-					'text' => 'Users', 
-					'path' => $this->module . '/admin_users'
+					'text' => 'Accounts', 
+					'path' => $this->module . '/admin_user_accounts'
 					);
 		
 		$var[$link][2] = array(
 				'text' => 'Profiles',
-				'path' => $this->module . '/admin_profiles'
+				'path' => $this->module . '/admin_user_profiles'
 		);
 				
 		$var[$link][3] = array(
@@ -316,7 +326,7 @@ class admin extends SQLite3 {
 		        foreach($sections as $alias => $string){
 		        	$names = array_keys($sections); 
 				    $table['section'] = 'modules';
-		        	$rows[] = array($alias,$string, $table['section']);
+		        	$rows[] = array($alias,$string);
 
 				     
 		        }
@@ -325,14 +335,80 @@ class admin extends SQLite3 {
 		        		        
 
 		       
-		        $table['header'] = array('field', 'data','section');
-                 $table['rows'] = $rows;
-		
-		$output = $cck->_view('table_config_ini', $table);
-       
+		$table['header'] = array('Action', 'Module','Documentation');
+        $table['rows'] = $rows;
+		$table['module'] = $rows[1];
+		$table['section'] = $sections[1];
+		$output = $cck->_view('table_module_ini', $table);
+        
         $variables['content'] = 'configure and admin modules [ <i>config.ini</i>  ]'. $output;
     	
     	print $cck->_view('page_admin', $variables);
+    }
+    
+    function module_comments_view($module = NULL){
+    	
+    	/* ====================== variables ===============*/
+            global $cck,$ini_settings;
+            $variables = array();
+            $table = array();
+            $output = '';
+        /* ====================== menus ===============*/    
+            $menu = $cck->_hooks('hook_links');    	
+    	    $sub_menu = $cck->_hooks('hook_module_links');
+    	    $module = $cck->_path_segment(2);
+    	
+            
+            $variables['menuTitle'] = 'Site Admin';
+    	    $variables['pageTitle'] = 'Site Admin';
+    	    $variables['contentTitle'] = $module . ' - documentation';
+    	    $variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
+    	    $variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
+    		array(
+    			'template'=>'links_sub_menu',
+    			'index' => $this->module
+    			) , $variables); 
+       
+          
+
+            if(is_numeric($module)){
+                $module = $ini_settings['modules'][$module];
+                $module_class = "\\" . $module."\\". $module;
+                $rc = new \ReflectionClass($module_class);
+                $table['rows'] = array(array($module, $rc->getDocComment()));
+            }
+            
+            elseif(empty($module)){
+            
+            // list modules
+            exit('nothing found');
+            
+            }
+            else{
+            
+            $module_class = "\\" . $module."\\". $module;
+            $rc = new \ReflectionClass($module_class);
+            $table['rows'] = array(array($module, '<p class="fs-6"><pre style="overflow-x: auto;font-size:.5em" class="">'. $rc->getDocComment().'</pre></p>'));
+            
+            }
+
+    	/* ====================== content ===============*/
+          
+            $table['header'] = array( 'Action',' Developer comments', ''); 
+            
+            $table['module'] = $module;
+        /* ====================== content template ===============*/
+            $output = $cck->_view('table_module_comments', $table);
+            $variables['content'] = $output;
+        /* ====================== page template ===============*/
+            print $cck->_view('page_admin', $variables);
+    
+    }
+    
+    function module_comments($comments_class){
+    	
+             $get_comments = new ReflectionClass($comments_class);
+             return $get_comments->getDocComment();
     }
     
     function admin_config()
@@ -770,25 +846,19 @@ class admin extends SQLite3 {
     	print $cck->_view('page_admin', $variables);
     }
     
-    function admin_user_profiles($userID = NULL){
-    	
-    	      
-    	global $cck,$ini_settings;
-    	
-    	$database = $ini_settings['databases']['user_db'];
+    function admin_user_profiles($userID = NULL)
+    {
+        global $cck,$ini_settings;
+        // get all links from each class controller
+        $database = $ini_settings['databases']['user_db'];
     	$table = array();
     	$columns = array();
     	$rows = array();
+    	$output ='';
     	
-    	// get all links from each class controller
-    	$menu = $cck->_hooks('hook_links');    	
-    	$sub_menu = $cck->_hooks('hook_module_links');
-    	//var_dump($sub_menu); exit;
-    	$variables['menuTitle'] = 'Site Admin';
-    	$variables['pageTitle'] = 'Site Admin';
-    	$variables['contentTitle'] = 'admin user profiles';
-    	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
-    	
+    	/// build admin navigation links that only are used by this module/method
+   
+        
              	//$link = 'links';
         $userID = $cck->_path_segment(2);
     	$link = 'links';
@@ -797,23 +867,19 @@ class admin extends SQLite3 {
     	
     	$var[$link][1] = array( 
 					'text' => 'Profile', 
-					'path' => 'admin/edit_profile/'. $userID
+					'path' => 'user/user_profile/'.$userID
 					);
 		$var[$link][2] = array(
 					'text' => 'Account', 
-					'path' => 'admin/edit_user/' . $userID
+					'path' => 'user/user_settings/'.$userID
 					);
 		$var[$link][3] = array(
-					'text' => 'Your Content', 
-					'path' => 'admin/edit_post/'. $userID
+					'text' => 'Content', 
+					'path' => 'user/user_content/'.$userID
 					);
 		$var[$link][4] = array(
-				'text' => 'Settings',
-				'path' => 'admin/edit_user_settings/'. $userID
-		);
-		$var[$link][5] = array(
 				'text' => 'Inbox',
-				'path' => 'admin/edit_messages/'. $userID
+				'path' => 'user/user_messages/' .$userID
 		);
 			
     	
@@ -839,9 +905,18 @@ class admin extends SQLite3 {
     			) , $variables); 
     	
     	
+    	$variables['contentTitle'] = $cck->_path_segment(1);
     	$db = new SQLite3($database);
-
-        $result = $db->query('SELECT * FROM categories');
+    	
+        $userID = $cck->_path_segment(2);
+        if(!empty($userID))
+        {
+            $result = $db->query('SELECT * FROM userlist WHERE id='.$userID.'');
+        }
+        else
+        {
+        	$result = $db->query('SELECT * FROM userlist');
+        }
         
     	 while ($row = $result->fetchArray()) {
                $rows[] = $row;
@@ -853,42 +928,92 @@ class admin extends SQLite3 {
 			}
 				$table['header'] = $columns;
 				$table['rows'] = $rows; 
-				$output = $cck->_view('table_categories', $table);
-    	
-    	
-               
-        $variables['content'] = 'admin  user_error profiles panel' . $output;
-    	
-    	print $cck->_view('page_admin', $variables);
-    	
+				$output = $cck->_view('table_user_edit', $table);
+				
+		foreach($rows as $key => $value)			
+		{
+			$variables['userBio'] =  $value['bio'];
+			$variables['userName'] = $value['name'];
+			$variables['profileImage'] = $value['image'];
+			$variables['userID'] = $userID;
+		}
+				
+		$variables['content'] = $output;
+		
+        print $cck->_view('page_admin', $variables);
+        
     }
     
     function admin_user_accounts($userID = NULL){
-    	
-    	      
     	global $cck,$ini_settings;
-    	
-    	$database = $ini_settings['databases']['user_db'];
+        // get all links from each class controller
+        $database = $ini_settings['databases']['user_db'];
     	$table = array();
     	$columns = array();
     	$rows = array();
+    	$output ='';
     	
-    	// get all links from each class controller
+    	/// build admin navigation links that only are used by this module/method
+   
+        
+             	//$link = 'links';
+        $userID = $cck->_path_segment(2);
+    	$link = 'links';
+    	
+    	$var = array();
+    	
+    	$var[$link][1] = array( 
+					'text' => 'Profile', 
+					'path' => 'user/user_profile/'.$userID
+					);
+		$var[$link][2] = array(
+					'text' => 'Account', 
+					'path' => 'user/user_settings/'.$userID
+					);
+		$var[$link][3] = array(
+					'text' => 'Content', 
+					'path' => 'user/user_content/'.$userID
+					);
+		$var[$link][4] = array(
+				'text' => 'Inbox',
+				'path' => 'user/user_messages/' .$userID
+		);
+			
+    	
+    	
     	$menu = $cck->_hooks('hook_links');    	
     	$sub_menu = $cck->_hooks('hook_module_links');
+    	$admin_menu = $var;
+
     	//var_dump($sub_menu); exit;
     	$variables['menuTitle'] = 'Site Admin';
+    	$variables['adminMenuTitle'] = 'User Admin';
     	$variables['pageTitle'] = 'Site Admin';
-    	$variables['contentTitle'] = 'admin user accounts';
     	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
     			'index' => $this->module
     			) , $variables); 
+    	
+    	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
+    			'template'=>'links_user_menu',
+    			'index' => $this->module
+    			) , $variables); 
+    	
+    	
+    	$variables['contentTitle'] = $cck->_path_segment(1);
     	$db = new SQLite3($database);
-
-        $result = $db->query('SELECT * FROM categories');
+    	
+        $userID = $cck->_path_segment(2);
+        if(!empty($userID))
+        {
+            $result = $db->query('SELECT * FROM userlist WHERE id='.$userID.'');
+        }
+        else
+        {
+        	$result = $db->query('SELECT * FROM userlist');
+        }
         
     	 while ($row = $result->fetchArray()) {
                $rows[] = $row;
@@ -900,13 +1025,20 @@ class admin extends SQLite3 {
 			}
 				$table['header'] = $columns;
 				$table['rows'] = $rows; 
-				$output = $cck->_view('table_categories', $table);
-    	
-    	
-               
-        $variables['content'] = 'admin user accounts panel' . $output;
-    	
-    	print $cck->_view('page_admin', $variables);
+				$output = $cck->_view('table_user_edit', $table);
+				
+		foreach($rows as $key => $value)			
+		{
+			$variables['userBio'] =  $value['bio'];
+			$variables['userName'] = $value['name'];
+			$variables['profileImage'] = $value['image'];
+			$variables['userID'] = $userID;
+		}
+				
+		$variables['content'] = $output;
+		
+        print $cck->_view('page_admin', $variables);
+        
     }
     
     function admin_user_settings($userID= NULL){

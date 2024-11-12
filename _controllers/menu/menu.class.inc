@@ -1,18 +1,23 @@
 <?php
-
-/*
- * @author Carl McDade
- * @copyright Copyright (c) 2010, Carl McDade
- * @since 2010-02-19
- * @version 0.2
- * @license 
- * @link http://www.berlinto.com Berlin Germany
- *
- */
-
 namespace menu;
-
-use \Common;
+/**
+ * @author Carl McDade 
+ * @copyright Carl McDade
+ * @since 2011
+ * @version 1.0
+ * @license MIT
+ * 
+ * @link http://hardcopy.free.nf
+ * ==================================================================
+ * 
+ *                        menu.class.inc
+ * 
+ * ==================================================================
+ * This CCK example site is built around this blogging module.
+ * It handles the blog content type
+ *  
+ * 
+ */
 
 class menu{
 	

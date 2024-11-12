@@ -7,7 +7,7 @@ foreach ($header as $th => $column)
 	$output .= '<th scope ="col">' .  $column . '</th>' . "\n";	
 }
 $output .= '</tr></thead>' . "\n";
-
+var_dump($rows);
 if(!empty($rows))
 {
 	// table rows
@@ -21,7 +21,7 @@ if(!empty($rows))
 		// table cells per row
 		foreach($header as $td => $cell)
 		{
-			if(isset($row[$td]))
+			if(isset($row['name']))
 			{
 				if(strlen($row[$td] > 40)){
 				     $row[$td] = substr($row[$td],0,40);
@@ -30,7 +30,7 @@ if(!empty($rows))
 			}
 			else
 			{
-				$output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">' . $section .'</td>' . "\n";
+				$output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">section</td>' . "\n";
 			}
 		}
 		$output .= '</tr>' . "\n";
