@@ -27,7 +27,6 @@ use \content\content;
  */
 class admin {
 	
-	public  $common;
 	public  $menu;
 	public  $title = 'Administration';
 	public  $module;
@@ -45,7 +44,7 @@ class admin {
     /**
      *   Navigation hook for all modules
      */
-    
+     
     function hook_links()
     {
     	$link = 'links';
@@ -62,6 +61,9 @@ class admin {
         
         return $var;
     }
+    /**
+    Permisssion and access hook for per [module]/[method]security check
+    */
   
     function hook_access()
     {
@@ -146,7 +148,7 @@ class admin {
     	
     	
     	
-    		$variables['postUrl'] = '?' .$cck->_path_segment(0). '/' . 'login_user'; 
+    	$variables['postUrl'] = '?' .$cck->_path_segment(0). '/' . 'login_user'; 
     	
     	
     	$output .=  $cck->_view('forms', $variables);
@@ -346,6 +348,13 @@ class admin {
     	print $cck->_view('page_admin', $variables);
     }
     
+    /**
+     Documentation function  to show developer comments that are to to used
+     by end users and developers. Removing the need for documentation that is 
+     seperate for the site. Future plan is to make it a module rather that a 
+     group of functions in the admin module
+    */
+    
     function module_comments_view($module = NULL){
     	
     	/* ====================== variables ===============*/
@@ -385,16 +394,30 @@ class admin {
             
             }
             else{
+            	
             
             $module_class = "\\" . $module."\\". $module;
             $rc = new \ReflectionClass($module_class);
-            $table['rows'] = array(array($module, '<p class="fs-6"><pre style="overflow-x: auto;font-size:.5em" class="">'. $rc->getDocComment().'</pre></p>'));
+         
+            //$class_methods = get_class_methods(new myclass());
+            
+            $class_methods = get_class_methods($module_class);
+            //var_dump($class_methods);
+            foreach($class_methods as $key => $name)
+            {
+            	    $method_comments[] =  $rc->getMethod($name)->getDocComment();
+            }
+            //exit(var_dump($method_comments));
+            
+            $table['moduleMethods'] =  $class_methods;
+            $table['moduleComments'] = $method_comments;
+            $table['rows'] = array(array($module, '<p class="fs-6"><pre style="overflow-x: auto;" class="">'. $rc->getDocComment().'</pre></p>'));
             
             }
 
     	/* ====================== content ===============*/
           
-            $table['header'] = array( 'Action',' Developer comments', ''); 
+            $table['header'] = array( ' Developer comments', 'Methods'); 
             
             $table['module'] = $module;
         /* ====================== content template ===============*/
@@ -404,6 +427,15 @@ class admin {
             print $cck->_view('page_admin', $variables);
     
     }
+    
+     
+    /**
+     Documentation function  to show developer comments that are to to used
+     by end users and developers. Removing the need for documentation that is 
+     seperate for the site. Future plan is to make it a module rather that a 
+     group of functions in the admin module
+    */
+    
     
     function module_comments($comments_class){
     	

@@ -15,13 +15,15 @@ use SQLite3;
  * @license MIT
  * 
  * @link http://hardcopy.free.nf
- * ==================================================================
+ * =============================
  * 
- *                        blog.class.inc
+ * blog.class.inc
  * 
- * ==================================================================
- * This CCK example site is built around this blogging module.
- * It handles the blog content type
+ * =============================
+ * This CCK example site is built 
+ * around this blogging module.
+ * It handles the blog content 
+ * type.
  *  
  * 
  */
