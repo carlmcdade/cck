@@ -9,10 +9,11 @@ $comment_titles = '';
 
     foreach($moduleMethods as $key => $name){
     /* ============ side bar naviagation ============ */
-      $method_output .= '<a class="list-group-item list-group-item-action fs-6" href="#list-item-'.$key.'">'.$name."</a><br>\n";
+      $method_output .= '<a class="list-group-item list-group-item-action fs-6" href="#list-item-'.$key.'">'.str_replace('_' , ' ', $name)."</a><br>\n";
     /* ========= comments ====================== */
       $comment_titles .= '<h5 class="m-0" style="padding:.25em 0 .25em 0; border-bottom: 2px solid #777;background-color: #ffffff;" id="list-item-'.$key.'">'.$name.'</h5>';
       $comment_titles .= '<pre class="m-0" style="max-width:100%;overflow-x:auto; background-color: #fff999;">'. ($moduleComments[$key] != FALSE ? $moduleComments[$key]: 'no developer comments').'</pre>'."\n";
+      $comment_titles .= '<a style="--bs-btn-padding-y: .15rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 1rem;" class="btn btn-secondary btn-sm rounded-0" href="https://github.com/carlmcdade/cck/blob/main/_controllers/'.  $module .'/'. $module .'.class.inc">code</a>';
     }
 $comment_titles .= '</div>';
 

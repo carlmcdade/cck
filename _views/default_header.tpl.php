@@ -15,6 +15,14 @@
 <body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script src="https://vjs.zencdn.net/8.16.1/video.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+
+<!-- Initialize Quill editor -->
+<script>
+  const quill = new Quill('#td-10-4', {
+    theme: 'snow'
+  });
+</script>
 <div class="container my-5">
 <div class="col-lg-8 px-0">
 <h1><?php echo (isset($pageTitle) ? $pageTitle : ''); ?></h1>
