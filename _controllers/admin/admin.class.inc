@@ -408,7 +408,7 @@ class admin {
             	    $method_comments[] =  $rc->getMethod($name)->getDocComment();
             }
             //exit(var_dump($method_comments));
-            
+            $table['otherModules'] = $ini_settings['modules'];
             $table['moduleMethods'] =  $class_methods;
             $table['moduleComments'] = $method_comments;
             $table['rows'] = array(array($module, '<p class="fs-6"><pre style="overflow-x: auto;" class="">'. $rc->getDocComment().'</pre></p>'));

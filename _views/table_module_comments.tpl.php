@@ -8,15 +8,21 @@ $comment_titles = '';
  $comment_titles = '<div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example">' ."\n";
 
     foreach($moduleMethods as $key => $name){
-    
+    /* ============ side bar naviagation ============ */
       $method_output .= '<a class="list-group-item list-group-item-action fs-6" href="#list-item-'.$key.'">'.$name."</a><br>\n";
-      
+    /* ========= comments ====================== */
       $comment_titles .= '<h5 class="m-0" style="padding:.25em 0 .25em 0; border-bottom: 2px solid #777;background-color: #ffffff;" id="list-item-'.$key.'">'.$name.'</h5>';
       $comment_titles .= '<pre class="m-0" style="max-width:100%;overflow-x:auto; background-color: #fff999;">'. ($moduleComments[$key] != FALSE ? $moduleComments[$key]: 'no developer comments').'</pre>'."\n";
     }
-$method_output .= '</div>';
 $comment_titles .= '</div>';
 
+    /* ======== modules list =================*/
+    $method_output .= '<span class="fs-4">Other Modules</span>'; 
+    foreach($otherModules as $key => $name){
+    	$method_output .= '<a class="list-group-item list-group-item-action fs-6" href="?admin/module_comments_view/'.$name.'">'.$name."</a><br>\n";
+    }
+    
+$method_output .= '</div>';
 
 $output .= '</div>' . "\n";
 $output .= '<div class="container"><div style="border-style:solid;border-width:1px 0 1px 0;border-color:#cccccc;" class="row">';
