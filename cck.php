@@ -391,10 +391,12 @@ class CCK
     	    $variablea['siteName']= $ini_settings['site']['site_name'];
     	    $variables['urlSection']= $cck->_path_segment(0);
     	    
+     	    /* load in the CCK object as a tempalate variable */
+     	    $variables['cck'] = $cck;
      	    
-     	    
-    	    
+    	    /* ============ call for template content ===========*/
     	    $output .= $cck->_template($template_path, $variables);
+    	    
     	    //$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
     	    
     		//var_dump($variables); exit;
@@ -653,10 +655,13 @@ class CCK
 		
 		case 'is_front' :
 			
-			$frontPage = $ini_settings['frontpage'];
+			$frontPage = $ini_settings['url']['frontpage'];
             if($frontPage == $_SERVER['QUERY_STRING']){
-        	
-        	    $output = TRUE;
+            	
+	         /* prevent query string parameters (&'s) from interfering with the string comparison */   
+            	if ($cck->_url_query(0) == 0){
+        	        $output = TRUE;
+        	    }
         	
             }else{
         

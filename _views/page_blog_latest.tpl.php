@@ -69,16 +69,16 @@
 
              $clearSpace = array("_", "-");
              $contentTitle = str_replace($clearSpace, " ", $contentTitle);
-             $frontCheck = '?'. $_SERVER['QUERY_STRING'];
-                     if($frontPage == $frontCheck){
+             //$frontCheck = '?'. $_SERVER['QUERY_STRING'];
+                     if($cck->_target('is_front') == FALSE){
                      	 echo '';
                      }else{
                      	     
-                     if(isset($subNavigation)){
-		                   echo $subNavigation;
-		              }
+                         if(isset($subNavigation)){
+		                     echo $subNavigation;
+		                 }
 		       
-                        echo (isset($contentTitle) ? $contentTitle : ''); 
+                          echo (isset($contentTitle) ? $contentTitle : ''); 
                      }
 
              //echo (isset($contentTitle) ? $contentTitle : ''); 
