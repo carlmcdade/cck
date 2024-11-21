@@ -41,6 +41,21 @@ class install{
     {
     	   //
     }
+    
+    /**
+    Check the installation environment for required PHP modules and install
+    directory location. Pull settings from _configuration/config.ini and
+    compare to read server host information.
+    */
+    function install_env_check()
+    {
+    	
+    	global $cck,$ini_settings;
+    	$user_settings = array();
+    	$install_settings = $ini_settings['install'];
+    	
+    	
+    }
 
     
 }
