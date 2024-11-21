@@ -1,5 +1,5 @@
 <?php 
-$output = '<form method="POST" action="?users/edit_user_save" name="user_edit"><table class="table">';
+$output = '<form method="POST" action="?users/edit_user_save" name="form" id="form"><table class="table">';
 $output .= '<thead><tr>';
 // table header
 // table header
@@ -45,16 +45,21 @@ if(!empty($rows))
 			    	 <input type="submit" class="btn btn-primary" value="save" name="save_user" id="'. $id.'">
 			    	 </td>' ;
 			    }
-			    else{	
-				     $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">  <input  value="'. $row[$td].'" name="'.$cell.'" type="text" class="form-control" id="" placeholder="'. $row[$td].'"></td>' . "\n";
+                elseif($cell == 'bio'){
+			    	
+			    	$editor =  'editor<div name="editor" id="editor">'.$row[$td].'</div>';
+			    	$output .= '<tr><td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells"> '.$editor.' <input value="'.$row[$td].'" name="'.$cell.'"  type="hidden" class="form-control" id="'. (isset($cell) ? $cell : '') .'" placeholder="'. $row[$td].'"></td></tr>' . "\n";
+			    	
 			    }
-			
+			    else{	
+				     $output .= '<tr><td id="td-' . (isset($cell) ? $cell : '')  . $tr . '-' .  $td . '" class="table-cells">  <input value="'.$row[$td].'" name="'.$cell.'"  type="text" class="form-control" id="'. (isset($cell) ? $cell : '') .'" placeholder="'. $row[$td].'"></td></tr>' . "\n";
+			    }			
 			}
 			else
 			{
 			
 			    $row[$td] = 'none';
-				$output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">  <input  value="'. $row[$td].'" name="'.$cell.'" type="text" class="form-control" id="" placeholder="none"></td>' . "\n";
+				$output .= '<td id="td-' . (isset($cell) ? $cell: '')  . $tr . '-' .  $td . '" class="table-cells">  <input  value="'. $row[$td].'" name="'.(isset($cell) ? $cell : '').'" type="text" class="form-control" id="'.(isset($cell) ? $cell : '').'" placeholder="none"></td>' . "\n";
 			}
 		}
 		$output .= '</tr>' . "\n";
@@ -66,3 +71,14 @@ if(!empty($rows))
 $output .= '</table></form>';
 print $output;
 ?>
+<script>
+// javascript is loaded after the template has been rendered to prevent element not found errors
+//const container = document.getElementByID('editor');
+const quill = new Quill('#editor',{theme:'snow'});
+
+//listen to quill editor and append to form element
+form.addEventListener("formdata", (event) => {
+          event.formData.append("bio", quill.root.innerHTML);
+        });
+    
+</script>

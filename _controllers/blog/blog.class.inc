@@ -275,9 +275,9 @@ class blog{
         }
          
        
-        $variables['content'] = "List of users with blogs: ". $output;
+        $variables['content'] = "User Blogs: ". $output;
     	
-    	print $cck->_view('page_blog_latest', $variables);
+    	print $cck->_view('page_blog_view', $variables);
 
     }
 
@@ -354,6 +354,7 @@ class blog{
     			'template'=>'links_sub_menu',
     			'index' => $this->module
     			) , $variables); 
+    	/*========================= bloggers ======================================*/
     	$db = new SQLite3($database);
 
         $result = $db->query('SELECT * FROM userlist');
@@ -368,7 +369,7 @@ class blog{
 			}
 				$table['header'] = $columns;
 				$table['rows'] = $rows; 
-				$output = $cck->_view('table_blogs', $table);
+				$output = $cck->_view('table_blog_latest_sidebar', $table);
 		//$variables['userID'] = $cck->_path_segment(2);
 		$variables['profileImage'] = 'default_user.jpeg';
 		
@@ -388,6 +389,83 @@ class blog{
             $variables['userBio'] = $value['bio'];
           }
         }
+        
+        /* ========================== blog posts ========================== */
+        
+    	$db = new SQLite3($database);
+    	$table_posts = array();
+    	$userID = $cck->_path_segment(2);
+        if(!empty($userID))
+        {
+            $result = $db->query('SELECT userlist.name,userlist.bio, userlist.image,content.* FROM userlist , content WHERE userlist.id='.$userID.' AND content.user_id ='. $userID);
+            //$result = $db->query('SELECT * FROM content WHERE id='.$userID.'');
+            
+            
+        }
+        else
+        {
+        	$result = $db->query('SELECT userlist.name, userlist.bio, userlist.image,content.* FROM userlist , content WHERE userlist.id = content.user_id');
+        	
+        }
+
+         while ($row = $result->fetchArray()) {
+               $rows[] = $row;
+            }
+    	 
+          //SQLite3Result::numColumns();
+        for ($i = 0; $i < $result->numColumns(); $i++) {
+			    $col = $result->columnName($i);
+			    $columns[] = $col;
+		}
+			   $table_posts['header'] = $columns;
+				
+            
+               $table_posts['rows'] = $rows;
+				
+
+        
+    	//var_dump($rows);
+    	// check for user id no id means site owner
+        $variables['userID'] = $userID;
+        if (empty($cck->_path_segment(2))) {
+            $variables['profileImage'] = 'default_user.jpeg';
+            $variables['userHandle'] = 'Latest Stories';
+            $variables['userBio'] = $cck->_view('default_content', $variables);
+            $variables['contentTitle'] = 'Members Blogs';
+            
+          }elseif(!empty($rows)){
+          	  
+          foreach($rows as $key => $value){
+          
+          	$variables['profileImage'] =  $value ['image'];
+            $variables['userHandle'] =  $value ['name'];
+            $variables['userBio'] = $value['bio'];
+            $variables['contentTitle'] = $value['name'] .'\'s Blog';
+          }
+          }else{
+          	  
+          	$table_posts['rows'] = array(array(
+            	'content_body'=>'user has nothing in database yet',
+            	'content_title' => 'No titles',
+            	'name' => $userID
+            	));
+            $result = $db->query('SELECT userlist.* FROM userlist WHERE id='. $userID);
+            
+            while ($row = $result->fetchArray()) {
+               $rows[] = $row;
+            }
+            foreach($rows as $key => $value){
+          
+          	    $variables['profileImage'] =  $value ['image'];
+                $variables['userHandle'] =  $value ['name'];
+                $variables['userBio'] = $value['bio'];
+                $variables['contentTitle'] = $value['name'] .'\'s Blog';
+
+            }
+
+          }
+        
+          $variables['sideBar'] = $cck->_view('table_blog_latest_content', $table_posts);
          
        
         $variables['content'] =  $output;

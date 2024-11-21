@@ -4,3 +4,5 @@ cck
 *.inc~
 *.php~
 .htaccess
+
+*.inc##

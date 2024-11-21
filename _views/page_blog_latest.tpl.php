@@ -105,11 +105,22 @@
 		       }
 		  ?>     
           
-          <h4 class="text-center"><?php echo (isset($userHandle) ? $userHandle : 'test'); ?></h4> 
-	      <p class="fs-5">
-	      <?php echo (isset($content) ? $content : ''); ?></p>
-	      <?php
+          <h4 style="" class="text-center"><?php echo (isset($userHandle) ? $userHandle : 'test'); ?></h4> 
+	      <div style="border-top: 1px solid #7777; height:600px;overflow-y: scroll;" class="container my-5">
+	      <div class="row d-inline">
 
+	      <div style="width:30%;float:right;" class="col-8">
+          
+	      <?php echo (isset($content) ? $content : ''); ?>
+	      </div>
+	      <div style="width:70%;float:left" class="col-4 border border-1-secondary border-start-0 border-top-0 border-bottom-0">
+	      <?php echo (isset($sideBar) ? $sideBar : ''); ?>
+	      </div>
+	      </div>
+	      </div>
+	    
+	      <?php
+          
 if((require 'default_footer.tpl.php') == TRUE)
 {
     //echo 'default_header.tpl.php'; 
