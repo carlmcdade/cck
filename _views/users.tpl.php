@@ -75,7 +75,7 @@ if((require 'default_footer.tpl.php') == TRUE)
  * @version 1.0
  * @license MIT
  *
- * @link http://berlinto.com/berlinto
+ * @link http://hardcopy.free.nf
  * ==================================================================
  *
  *                             users.tpl.php

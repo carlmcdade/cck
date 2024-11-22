@@ -104,7 +104,7 @@
  * @version 1.0
  * @license MIT
  *
- * @link http://berlinto.com/berlinto
+ * @link http://hardcopy.free.nf
  * ==================================================================
  *
  *                        default.tpl.php

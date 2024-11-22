@@ -27,7 +27,9 @@ if (file_exists(INI_FILENAME))
 
 }
 
-
+/**
+ *  check installation environment
+ */
 
 
 // Set the front page by redirection a fix for free hosting glitch of adding an extra query string on first load
