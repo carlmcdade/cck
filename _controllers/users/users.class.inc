@@ -192,7 +192,7 @@ class users{
 		/*==============================================
 		           page  template
 		===============================================*/
-        print $cck->_view('page_profile', $variables);         
+        print $cck->_view('page_users_profile', $variables);         
     }
     
     /**
@@ -321,7 +321,7 @@ class users{
     		, $variables); 
     	
     	$variables['content'] = $output;  
-    	print $cck->_view('users', $variables);
+    	print $cck->_view('page_users_cp', $variables);
     }
     
     /**
@@ -850,7 +850,7 @@ class users{
 				
 		$variables['content'] = $output;
     /* ====================== page template ===============*/	
-        print $cck->_view('page_profile', $variables);
+        print $cck->_view('page_users_profile', $variables);
         
     }
     
@@ -955,7 +955,7 @@ class users{
 		/*==============================================
 		           page  template
 		===============================================*/
-        print $cck->_view('page_profile', $variables);
+        print $cck->_view('page-users_profile', $variables);
         
     }
     
@@ -1019,7 +1019,7 @@ class users{
     	$output = $cck->_target('form_post');
     	$variables['content'] =  $output;
 		
-        print $cck->_view('page_profile', $variables);
+        print $cck->_view('page-users_profile', $variables);
         
     }
     
@@ -1083,7 +1083,7 @@ class users{
 		$output .= $cck->_target('form_post');
     	$variables['content'] =  $output;
 		
-        print $cck->_view('page_profile', $variables);
+        print $cck->_view('page_users_profile', $variables);
         
     }
 }
