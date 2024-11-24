@@ -62,7 +62,7 @@ class users{
     	$var[$link][1] = array(
         		'text' => 'Your Account', 
         		'path' => $this->module . '/user_control_panel',
-        		'controller' => 'users',
+        		'controller' => 'page_users_profile',
         		'action' => 'users_control_panel',
         		'css_class' => array($this->module, 'main_item'),
         		'css_id' => $this->module 
@@ -383,7 +383,7 @@ class users{
        
     	
     	$variables['content'] = $output;
-        print $cck->_view('users', $variables);
+        print $cck->_view('page_users_profile', $variables);
     }
     
     /**
@@ -445,7 +445,7 @@ class users{
         
     	
     	$variables['content'] = $output;
-    	print $cck->_view('users', $variables);
+    	print $cck->_view('page_users_profile', $variables);
     }
     
     /**
@@ -456,7 +456,7 @@ class users{
     function users_login_submit()
     {
     	$variables['content'] = 'show users logged in and redirect';
-    	print $cck->_view('users', $variables);
+    	print $cck->_view('page_users_profile', $variables);
     }
     
     /**
@@ -467,7 +467,7 @@ class users{
     function users_login_form()
     {
     	$variables['content'] = 'show users login form';
-    	print $cck->_view('users', $variables);
+    	print $cck->_view('page_users_profile', $variables);
     }
     
     function user_account($userID = NULL)
@@ -572,7 +572,7 @@ class users{
     	
         $variables['content'] = $output;
     	
-    	print $cck->_view('page_admin', $variables);
+    	print $cck->_view('page_users_profile', $variables);
     	
     }
     
@@ -625,7 +625,7 @@ class users{
 		
         $variables['content'] = "User Acoount: ". $output;
     	
-    	print $cck->_view('page_admin', $variables);
+    	print $cck->_view('page_users_cp', $variables);
     	
     }
     
@@ -681,7 +681,7 @@ class users{
        
         $variables['content'] = "User Blog: ". $output;
     	
-    	print $cck->_view('page_admin', $variables);
+    	print $cck->_view('page_users_cp', $variables);
     	
     }
     
@@ -726,7 +726,7 @@ class users{
        
         $variables['content'] = "User Messages: ". $output;
     	
-    	print $cck->_view('page_admin', $variables);
+    	print $cck->_view('page_users-cp', $variables);
     	
     }
     /**
@@ -737,7 +737,7 @@ class users{
     function users_logout_submit()
     {
     	$variables['content'] = 'show users logged out and redirect';
-    	print $cck->_view('users', $variables);
+    	print $cck->_view('page_users_profile', $variables);
     }
     
     /**
@@ -748,7 +748,7 @@ class users{
     function users_logout()
     {
     	$variables['content'] = 'show users logout confirmation';
-    	print $cck->_view('users', $variables);
+    	print $cck->_view('page_users_profile', $variables);
     }
     
     function edit_user($userID = NULL)

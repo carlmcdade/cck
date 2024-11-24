@@ -96,7 +96,7 @@ if((require 'default_footer.tpl.php') == TRUE)
 ?>
 </div></div>
 <style>
-    @import "css/default.css";
+    @import "css/users.css";
   </style>
 </body>
 

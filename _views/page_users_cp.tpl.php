@@ -13,7 +13,7 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">    
 <link href="https://vjs.zencdn.net/8.16.1/video-js.css" rel="stylesheet" />
-<link href="css/default.css" rel="stylesheet" />
+
 </head>
 
 <body>
@@ -80,7 +80,7 @@
 	      <div style="border-color:#777777; border-style:solid; border-width: 1px 0 0 0;height:600px;overflow-y: scroll;" class ="fs-4"><?php echo (isset($content) ? $content : ''); ?></div>
         
     <!-- /#content -->
-    </div>
+  
     <?php
 
            if((require 'default_footer.tpl.php') == TRUE)
@@ -90,10 +90,10 @@
             }
 ?>
 
-     
+   </div>    
 </div> 
 <style>
-    @import "css/default.css";
+    @import "css/users.css";
   </style>
 </body>
 

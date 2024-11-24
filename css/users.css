@@ -1,0 +1,17 @@
+.btn-primary,.btn , .bg-primary{
+	font: #660000 !important;
+	color:#000000 !important;
+	background-color:#ff9999 !important;
+	border-color: #ff9999 !important;
+	
+	
+}
+
+.btn-secondary,.btn , .bg-secondary{
+	font-weight: bold !important;
+	color:#000000 !important;
+	background-color:#ff9999 !important;
+	border-color: #ff9999 !important;
+	
+	
+}
