@@ -1,4 +1,4 @@
-.btn-primary,.btn , .bg-primary{
+.btn-primary, .bg-primary{
 	color:#000000 !important;
 	background-color:#ff9999 !important;
 	border-color: #ff9999 !important;
@@ -6,9 +6,24 @@
 	
 }
 
-.btn-secondary,.btn , .bg-secondary{
+.bg-secondary{
 	color:#000000 !important;
 	background-color:#ff9999 !important;
+	border-color: #ff9999 !important;
+	
+	
+}
+
+.btn-secondary{
+	color:#000000 !important;
+	background-color:#f7d1d1 !important;
+	border-color: #f7d1d1 !important;
+	
+	
+}
+.btn{
+	color:#000000 !important;
+	background-color:#eeb9bf !important;
 	border-color: #ff9999 !important;
 	
 	

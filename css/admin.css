@@ -1,8 +1,39 @@
-.btn-primary,.btn , .bg-primary{
-	font: #f7f6f6cb;
+
+.btn-primary {
 	background-color: #3fc467 !important;
 	border-color: #3fc467 !important;
+	color:#FFFFFF;
+}
+
+.bg-primary {
+	background-color: #3fc467 !important;
+	border-color: #3fc467 !important;
+	color:#FFFFFF;
+}
+
+
+
+
+
+.bg-secondary{
+	color:#000000 !important;
+	background-color:#ccffcc !important;
+	border-color: #ff9999 !important;
 	
 	
 }
 
+.btn-secondary{
+	color:#000000 !important;
+	background-color:#f7d1d1 !important;
+	border-color: #f7d1d1 !important;
+	
+	
+}
+.btn{
+	color:#000000 !important;
+	background-color:#ccffcc!important;
+	border-color: #3fc467 !important;
+	
+	
+}
