@@ -93,7 +93,7 @@
      
 </div> 
 <style>
-    @import "css/default.css";
+    @import "css/admin.css";
   </style>
 </body>
 
