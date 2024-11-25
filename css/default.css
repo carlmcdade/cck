@@ -1,8 +1,15 @@
-.btn-primary,.btn , .bg-primary{
-	font: #f7f6f6cb;
-	background-color: #3fc467 !important;
-	border-color: #3fc467 !important;
+.btn-primary{
+	color: #ffffff !important;
+	border-color: #1B8EFF !important;
 	
 	
 }
 
+.btn{
+	background-color: #0049FF !important;
+	border-color: #0049FF !important;
+}
+
+.bg-primary{
+	background-color:#1B8EFF !important;
+}

@@ -75,7 +75,7 @@
  
 
    
-    <div class="col border border-primary rounded ml-2 mr-2">
+    <div class="col border border-danger rounded ml-2 mr-2">
     <img style="float:left; width:150px; height:150px;" class="align-self-start m-3 img-fluid" src="images/user_profile/user_id_<?php echo $userID . '/' .$profileImage. ''; ?>" alt="Generic placeholder image">   
     <p  style="margin-right:.75em;margin-left:1em;min-height: 150px;" class="fs-6 mt-2 ml-2 mr-2"><?php echo $userBio; ?></p>
     </div>

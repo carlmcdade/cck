@@ -1,6 +1,6 @@
 <?php
 //var_dump($moduleMethods);
-$output = "";
+$output = '<div class="container"';
 $method_output = '';
 $comment_titles = '';
 /*  methods list */
@@ -26,18 +26,15 @@ $comment_titles .= '</div>';
 $method_output .= '</div>';
 
 $output .= '</div>' . "\n";
-$output .= '<div class="container"><div style="border-style:solid;border-width:1px 0 1px 0;border-color:#cccccc;" class="row">';
+$output .= '<div style="border-style:solid;border-width:1px 0 1px 0;border-color:#cccccc;" class="row">';
 foreach ($header as $th => $column)
 {
 	$span = ($th == 0 ? 8 : 4);
 	$output .= '<div class="fs-4 col-'.$span.'">' .  $column . '</div>' . "\n";	
 }
-$output.= '</div>';
-$output .= '<div style="height:640px; overflow-y:scroll;" class="container">';
-$output .= '<div class="row"></div>';
-// table header
 
-//var_dump($rows);
+$output .= '</div><div style="height:600px; overflow-y:scroll;" class="container">';
+
 if(!empty($rows))
 {
 	// table rows
@@ -68,7 +65,7 @@ if(!empty($rows))
 	}
     
 }
-$output .= '</div>';
+//$output .= '</div>';
 
 print $output;
 //var_dump($row);

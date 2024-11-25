@@ -6,7 +6,7 @@ if(!isset($rows)){
 
 }
 else{
-$output = '<div class="row">';
+$output = '<div style="height:600px;overflow-y:scroll;" class="row">';
 
 
 //$output .= '<tbody><tr>' . "\n";

@@ -2,7 +2,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">    
 
-<link rel="stylesheet" href="default.css" type="text/css" />
  
 </head>
 
@@ -48,21 +47,25 @@
 	      <p class="fs-5"><?php echo (isset($content) ? $content : ''); ?></p>
         </div><!-- /#banner -->
 
-<section id="content-title" class="content-title">
+<div id="content-title" class="content-title">
 	<span><?php echo (isset($contentTitle) ? $contentTitle : 'Error'); ?></span>
-</section>
+  </div>
 
-<section id="content">
+<div id="content">
  <?php echo (isset($content) ? $content : ''); ?>
- <div style="clear:both"></div>
-</section>
+ 
+  </div>
 
-<footer id="post-info" class="body">
-<span> The Content Connection Kit project is owned and operated by </span>
-<span> &copy; 2012 - Carl McDade - All rights reserved.</span>
-<span>No content on this site may be copied without express written consent from Carl McDade.</span>
-</footer>
+  require 'default_footer.tpl.php';  //echo 'default_header.tpl.php'; 
+    //exit;
 
+?>
+        </div>
+        </div>
+    <!-- /#content -->
+<style>
+    @import "css/default.css";
+</style>
 </body>
 
 </html> 

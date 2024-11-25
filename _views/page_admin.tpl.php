@@ -62,14 +62,10 @@
                      if($frontPage == $frontCheck || $urlSection == 'admin'){
                      	 echo '<h1>' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
                      }else{
-                        //echo '<h1>' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
+                        echo '<h1>' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
                         
                         ?>
-                            <div class="col text-start border border-primary rounded-3">
-     
-      <img style="float:left; width:150px; height:relative;margin:1.5em;" class="align-self-start mr-3 img-fluid" src="images/user_profile/user_id_<?php echo $userID . '/' .$profileImage. ''; ?>" alt="Generic placeholder image">     
-    <p class="fs-6"><?php echo $userBio; ?></p>
-    
+
 
       </div>
           
@@ -77,7 +73,7 @@
          
       
 	      
-	      <div style="border-color:#777777; border-style:solid; border-width: 1px 0 0 0;height:600px;overflow-y: scroll;" class ="fs-4"><?php echo (isset($content) ? $content : ''); ?></div>
+	      <?php echo (isset($content) ? $content : ''); ?>
         
     <!-- /#content -->
     </div>
