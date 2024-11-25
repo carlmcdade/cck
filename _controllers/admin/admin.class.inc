@@ -1524,6 +1524,134 @@ class admin {
         print $cck->_view('page_profile', $variables);
     
     }
+
+	function edit_user_save()
+    {
+   	$link = 'links';
+    	
+          
+    	global $cck,$ini_settings;
+        // get all links from each class controller
+        $database = $ini_settings['databases']['user_db'];
+    	$table = array();
+    	$columns = array();
+    	$rows = array();
+    	$var = array();
+    	$output ='';
+    	
+   
+	    $var = array();
+    	
+    	$var[$link][1] = array( 
+						'path' => 'users/user_profile'
+					);
+		$var[$link][2] = array(
+					'text' => 'User Accounts', 
+					'path' => 'users/user_account'
+					);
+		$var[$link][3] = array(
+					'text' => 'User Content', 
+					'path' => 'blog/blog_user'
+					);
+		$var[$link][4] = array(
+				'text' => 'User Settings',
+				'path' => 'users/user_settings'
+		);
+		
+			
+    	
+    	$sub_menu = $cck->_hooks('hook_module_links');
+    	$menu = $cck->_hooks('hook_links');    	
+    	$admin_menu = $var;
+
+    	
+    	//var_dump($sub_menu); exit;
+    	$variables['menuTitle'] = 'Site Admin';
+    	$variables['adminMenuTitle'] = 'User Admin';
+    	$variables['pageTitle'] = 'User account saved';
+    	$variables['contentTitle'] = 'account saved';
+    	$variables['userBio'] = 'thanks for the updated information';
+    	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
+    	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
+    		array(
+    			'template'=>'links_sub_menu',
+    			'index' => $this->module
+    			) , $variables); 
+    	
+    	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
+    			'template'=>'links_user_menu',
+    			'index' => $this->module
+    			) , $variables); 
+    	$output = $cck->_target('form_post');
+    	$variables['content'] =  $output;
+		
+        print $cck->_view('page_user_save', $variables);
+        
+    }
+    
+        
+    function edit_profile_save()
+    {
+        global $cck,$ini_settings;
+        // get all links from each class controller
+        $database = $ini_settings['databases']['user_db'];
+    	$table = array();
+    	$columns = array();
+    	$rows = array();
+    	$var = array();
+    	$output ='';
+    	
+    	$link = 'links';
+    	
+    	 
+		$var = array();
+    	
+    	$var[$link][1] = array( 
+						'path' => 'users/user_profile'
+					);
+		$var[$link][2] = array(
+					'text' => 'User Accounts', 
+					'path' => 'users/user_account'
+					);
+		$var[$link][3] = array(
+					'text' => 'User Content', 
+					'path' => 'blog/blog_user'
+					);
+		$var[$link][4] = array(
+				'text' => 'User Settings',
+				'path' => 'users/user_settings'
+		);
+		
+			
+    	
+    	$sub_menu = $cck->_hooks('hook_module_links');
+    	$menu = $cck->_hooks('hook_links');    	
+    	$admin_menu = $var;
+
+    	
+    	//var_dump($sub_menu); exit;
+    	$variables['menuTitle'] = 'Site Admin';
+    	$variables['adminMenuTitle'] = 'User Admin';
+    	$variables['pageTitle'] = 'Site Admin';
+    	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
+    	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
+    		array(
+    			'template'=>'links_sub_menu',
+    			'index' => $this->module
+    			) , $variables); 
+    	
+    	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
+    			'template'=>'links_user_menu',
+    			'index' => $this->module
+    			) , $variables); 
+    	
+    			
+		$output .= $cck->_target('form_post');
+    	$variables['content'] =  $output;
+		
+        print $cck->_view('page_user_save', $variables);
+        
+    }
     
     function edit_category($userID = NULL)
     {

@@ -1019,7 +1019,7 @@ class users{
     	$output = $cck->_target('form_post');
     	$variables['content'] =  $output;
 		
-        print $cck->_view('page-users_profile', $variables);
+        print $cck->_view('pageusers_profile', $variables);
         
     }
     

@@ -34,10 +34,7 @@
 <div style="text-align:right;">
 <div class="btn-group">
 
-<?php if(isset($subNavigation)){
-		  echo $subNavigation;
-		}
-?>
+
 
 
 </div></div>
@@ -71,11 +68,15 @@
           
                    <?php  } ?>
          
-      
+        <?php if(isset($subNavigation))
+              {
+		              echo $subNavigation;
+		          }
+        ?>
 	      
         <?php if(isset($adminNavigation))
               {
-		               echo $adminNavigation;
+		              echo $adminNavigation;
 		          }
         ?>
 	      <div style="border-color:#777777; border-style:solid; border-width: 1px 0 0 0;height:600px;overflow-y: scroll;" class ="fs-4"><?php echo (isset($content) ? $content : ''); ?></div>

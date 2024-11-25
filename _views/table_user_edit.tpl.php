@@ -9,7 +9,7 @@ if(!empty($rows))
 	// table rows
 	foreach ($rows as $tr => $row)
 	{
-        $output .= "\n\n<br>".'<form method="POST" action="?users/edit_user_save/'. $row['id'].'" name="formdata-'.$tr.'" id="formdata-'.$tr.'"><div class="container">';
+        $output .= "\n\n<br>".'<form method="POST" action="?admin/edit_user_save/'. $row['id'].'" name="formdata-'.$tr.'" id="formdata-'.$tr.'"><div class="container">';
 
 		$output .= '<div id="tr-'. (isset($id) ? $id : '') . '-' . $tr . '" class="row">';
 		// table cells per row
