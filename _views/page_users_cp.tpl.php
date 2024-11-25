@@ -40,10 +40,6 @@
 ?>
 
 
-<?php if(isset($adminNavigation)){
-		  echo $adminNavigation;
-		}
-?>
 </div></div>
 
 
@@ -77,18 +73,23 @@
          
       
 	      
+        <?php if(isset($adminNavigation))
+              {
+		               echo $adminNavigation;
+		          }
+        ?>
 	      <div style="border-color:#777777; border-style:solid; border-width: 1px 0 0 0;height:600px;overflow-y: scroll;" class ="fs-4"><?php echo (isset($content) ? $content : ''); ?></div>
         
     <!-- /#content -->
   
     <?php
 
-           if((require 'default_footer.tpl.php') == TRUE)
-           {
-              echo '<!-- default_footer -->'; 
-                 //exit;
+            if((require 'default_footer.tpl.php') == TRUE)
+            {
+                echo '<!-- default_footer -->'; 
+                 
             }
-?>
+    ?>
 
    </div>    
 </div> 

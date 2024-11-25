@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>CCK | <?php echo (isset($pageTitle) ? $pageTitle : ''); ?></title>
+<title>CCK | <?php echo(isset($pageTitle) ? $pageTitle : ''); ?></title>
 <meta name="description" content="CCK is a PHP framework for web developers to build on.">
 <meta name="keywords" content=" cck, drupal, wordpress, framework, cms, hosting, webhosting, server, php, servage">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,27 +22,27 @@
 <div class="container my-5">
 
 <div class="col-lg-8 px-0">
-<h1><?php echo (isset($pageTitle) ? $pageTitle : ''); ?></h1>
+<h1><?php echo(isset($pageTitle) ? $pageTitle : ''); ?></h1>
 
 
      
        
-<?php if(isset($mainNavigation)){
-		  echo $mainNavigation;
-		}
+<?php if (isset($mainNavigation)) {
+    echo $mainNavigation;
+}
 ?>
 <div style="text-align:right;">
 <div class="btn-group">
 
-<?php if(isset($subNavigation)){
-		  echo $subNavigation;
-		}
+<?php if (isset($subNavigation)) {
+    echo $subNavigation;
+}
 ?>
 
 
-<?php if(isset($adminNavigation)){
-		  echo $adminNavigation;
-		}
+<?php if (isset($adminNavigation)) {
+    echo $adminNavigation;
+}
 ?>
 </div></div>
 
@@ -54,39 +54,38 @@
 
        
          
-         <?php 
+         <?php
 
              $clearSpace = array("_", "-");
-             $contentTitle = str_replace($clearSpace, " ", $contentTitle);
-             $frontCheck = '?'. $_SERVER['QUERY_STRING'];
-                     if($frontPage == $frontCheck || $urlSection == 'admin'){
-                     	 echo '<h1>' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
-                     }else{
-                        echo '<h1>' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
-                        
-                        ?>
+$contentTitle = str_replace($clearSpace, " ", $contentTitle);
+$frontCheck = '?'. $_SERVER['QUERY_STRING'];
+if ($frontPage == $frontCheck || $urlSection == 'admin') {
+    echo '<h1>' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
+} else {
+    echo '<h1>' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
+
+    ?>
 
 
-      </div>
+      
           
                    <?php  } ?>
          
       
 	      
-	      <?php echo (isset($content) ? $content : ''); ?>
+	      <?php echo(isset($content) ? $content : ''); ?>
         
     <!-- /#content -->
-    </div>
+
     <?php
 
-           if((require 'default_footer.tpl.php') == TRUE)
-           {
-              echo '<!-- default_footer -->'; 
-                 //exit;
-            }
+           if ((require 'default_footer.tpl.php') == true) {
+               echo '<!-- default_footer -->';
+               //exit;
+           }
 ?>
 
-     
+          </div>
 </div> 
 <style>
     @import "css/admin.css";
@@ -95,7 +94,7 @@
 
 </html> 
 <?php
- 
+
 /**
  * @author Carl McDade
  * @copyright Carl McDade

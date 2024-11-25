@@ -65,7 +65,7 @@ if(!empty($rows))
 	}
     
 }
-//$output .= '</div>';
+$output .= '</div>';
 
 print $output;
 //var_dump($row);
