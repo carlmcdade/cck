@@ -34,16 +34,27 @@ print('<!DOCTYPE html>
 
       <div class="col-lg-8 px-0">
               
-	      <p class="fs-5">
+
 <?php if(isset($mainNavigation)){
 		  echo $mainNavigation;
 		}
 ?>
 
-<?php if(isset($subNavigation)){
-		  echo $subNavigation;
-		}
-?></p>
+<div style="text-align:right;">
+<div class="btn-group">
+
+<?php if (isset($subNavigation)) {
+    echo $subNavigation;
+}
+?>
+
+
+<?php if (isset($adminNavigation)) {
+    echo $adminNavigation;
+}
+?>
+</div></div>
+
 <!-- /#banner -->
 
 

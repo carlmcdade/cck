@@ -1,8 +1,8 @@
+.btn{
+	color:#FFFFFF !important;
+	background-color:#ccffcc!important;
 
-.btn-primary {
-	background-color: #3fc467 !important;
-	border-color: #3fc467 !important;
-	color:#FFFFFF;
+		
 }
 
 .bg-primary {
@@ -12,28 +12,29 @@
 }
 
 
-
-
-
 .bg-secondary{
 	color:#000000 !important;
 	background-color:#ccffcc !important;
-	border-color: #ff9999 !important;
+	border-color: #3fc467 !important;
 	
 	
 }
 
 .btn-secondary{
 	color:#000000 !important;
-	background-color:#f7d1d1 !important;
-	border-color: #f7d1d1 !important;
-	
-	
+	background-color: #ccffcc !important;
+	border-color:#3fc467 !important;
+		
 }
-.btn{
-	color:#000000 !important;
-	background-color:#ccffcc!important;
-	border-color: #3fc467 !important;
-	
-	
+
+
+
+.table-danger{
+	background-color:#ccffcc !important;
+}
+
+.border-danger{
+
+    border-color:#3fc467 !important;
+
 }

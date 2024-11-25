@@ -58,7 +58,7 @@
                         //echo '<h1>' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
                         
                         ?>
-                            <div class="col text-start border border-primary rounded-3">
+                            <div class="col text-start border border-danger rounded-3">
      
       <img style="float:left; width:150px; height:relative;margin:1.5em;" class="align-self-start mr-3 img-fluid" src="images/user_profile/user_id_<?php echo $userID . '/' .$profileImage. ''; ?>" alt="Generic placeholder image">     
     <p class="fs-6"><?php echo $userBio; ?></p>

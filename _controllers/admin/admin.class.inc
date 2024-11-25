@@ -132,6 +132,7 @@ class admin {
     {
         // get all links from each class controller
     	global $cck, $ini_settings; 
+		$output = '';
     	// get all links from each class controller
     	$menu = $cck->_hooks('hook_links');    	
     	$sub_menu = $cck->_hooks('hook_module_links');
@@ -147,16 +148,19 @@ class admin {
     			) , $variables);
     	
     	
-    	
+    	$variables['formName'] = $cck->_path_segment(1);
+		;
     	$variables['postUrl'] = '?' .$cck->_path_segment(0). '/' . 'login_user'; 
     	
     	
     	$output .=  $cck->_view('forms', $variables);
                
-        $variables['content'] = "<div>". $output ."</div>";
+        $variables['content'] = $output ;
     	
     	print $cck->_view('page_form', $variables);
     }
+
+
     function admin_profiles()
     {
 // get all links from each class controller
@@ -1271,8 +1275,9 @@ class admin {
    
 	    $var = array();
     	
-    	$var[$link][1] = array( 
-						'path' => 'users/user_profile'
+    	$var[$link][1] = array(
+			        'text' => 'User Profile',
+				    'path' => 'users/user_profile'
 					);
 		$var[$link][2] = array(
 					'text' => 'User Accounts', 
@@ -1283,8 +1288,8 @@ class admin {
 					'path' => 'blog/blog_user'
 					);
 		$var[$link][4] = array(
-				'text' => 'User Settings',
-				'path' => 'users/user_settings'
+				    'text' => 'User Settings',
+				    'path' => 'users/user_settings'
 		);
 		
 			
@@ -1295,7 +1300,7 @@ class admin {
 
     	
     	//var_dump($sub_menu); exit;
-    	$variables['menuTitle'] = 'User Admin';
+    	$variables['menuTitle'] = 'Site Admin';
     	$variables['adminMenuTitle'] = 'User Admin';
     	$variables['pageTitle'] = 'User Login';
     	$variables['contentTitle'] = 'user logged in';

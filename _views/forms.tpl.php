@@ -1,32 +1,6 @@
-
-<div class="container my-5">
-
-      <div class="col-lg-8 px-0">
-              
-	      <p class="fs-5">
-<?php 
-		  //echo ' form $formMainLinks put tabs here for multiple forms on the same page';
-		
-?>
-
-<?php 
-		  //echo 'form $formSubLinks';
-		
-?></p></div></div>
-<!-- /#banner -->
-
-<div class="container my-5">
-      <div class="col-lg-8 px-0">
-       <h1> Login </h1>
-        </div>
-      
-</div>
-<div class="container my-5">
-
-      <div class="col-lg-8 px-0">
-              
-	      <p class="fs-5">
-              <form action="<?php echo $postUrl; ?>" method="post">
+<!-- start form-<?php echo $formName; ?>-->
+  <h1> Login </h1>             
+<form name="login_user_<?php echo $formName; ?>" id="login-user-<?php echo $formName; ?>" action="<?php echo $postUrl; ?>" method="post">
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Email address</label>
     <input name="username" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
@@ -42,10 +16,4 @@
   </div>
   <button name="login_send" value="user_credentials" type="submit" class="btn btn-primary">Submit</button>
 </form>
-	      </p>
-        </div>
-    <!-- /#content -->
-
-
-</body>
-</html>
+<!-- form end -->

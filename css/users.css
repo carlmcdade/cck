@@ -6,6 +6,14 @@
 	
 }
 
+a.btn-primary{
+	color:#4d1717 !important;
+	background-color:#ff9999 !important;
+	border-color: #ff9999 !important;
+	
+	
+}
+
 .bg-secondary{
 	color:#000000 !important;
 	background-color:#ff9999 !important;
@@ -33,8 +41,8 @@
 	background-color: #ffc2c2;
 }
 
-.border-primary{
+.border-danger{
 
-    border-color:#ff9999;
+    border-color:#f55d5d;
 
 }

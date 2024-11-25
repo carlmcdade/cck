@@ -6,10 +6,19 @@
 }
 
 .btn{
-	background-color: #0049FF !important;
-	border-color: #0049FF !important;
+	background-color: #1B8EFF !important;
+	border-color: #1B8EFF !important;
+	color:#ffffff !important;
 }
 
 .bg-primary{
 	background-color:#1B8EFF !important;
+}
+
+.main-item a{
+
+	font-weight: 500 !important;
+	color:#fdfdfd !important;
+	padding: 12px 10px 12px 10px  !important;
+    border-radius: 5px;
 }

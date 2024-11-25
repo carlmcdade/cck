@@ -9,7 +9,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">    
 <link href="https://vjs.zencdn.net/8.16.1/video-js.css" rel="stylesheet" />
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
-<link rel="stylesheet" href="css/default.css" type="text/css" />
+
  
 </head>
 
@@ -33,20 +33,21 @@
 		  echo $mainNavigation;
 		}
 ?>
+<div style="text-align:right;">
 <div class="btn-group">
-<?php if(isset($subNavigation)){
-		  echo $subNavigation;
-		}
+
+<?php if (isset($subNavigation)) {
+    echo $subNavigation;
+}
 ?>
 
-<?php if(isset($adminNavigation)){
-		  echo $adminNavigation;
-		}
+
+<?php if (isset($adminNavigation)) {
+    echo $adminNavigation;
+}
 ?>
-</div>
-    
-      </div>
-    </div>
+</div></div>
+
 <!-- /#banner -->
 
 <div class="container my-5">
@@ -94,6 +95,11 @@ if((require 'default_footer.tpl.php') == TRUE)
     //exit;
 }
 ?>
+<style>
+
+      @import "css/admin.css";
+
+</style>
 </div></div>
 </body>
 
@@ -110,7 +116,7 @@ if((require 'default_footer.tpl.php') == TRUE)
  * @link http://hardcopy.free.nf
  * ==================================================================
  *
- *                        default.tpl.php
+ *                        page_profile.tpl.php
  *
  * ==================================================================
  *

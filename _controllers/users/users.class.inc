@@ -172,7 +172,7 @@ class users{
             $variables['profileImage'] = 'default_user.jpeg';
             $variables['userHandle'] = 'Site Members';
             
-            $variables['userBio'] = $cck->_view('default_footer', $variables);
+            $variables['userBio'] = $cck->_view('default_content', $variables);
             
           }else{
           	  

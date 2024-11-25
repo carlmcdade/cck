@@ -213,7 +213,7 @@ class CCK
 		$access = $cck->_hooks('hook_access');
 		
 		$namespace = $class.'\\'.$class;
-		$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
+		$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables, 'links_main_anchors');
 		
 		if(class_exists($class) == TRUE || class_exists($namespace) == TRUE)
 		{
@@ -729,7 +729,7 @@ class CCK
 		return $output;
 	}
 	
-	function _menu_links($menu, $template = NULL, $variables, $separator = NULL, $index = NULL)
+	function _menu_links($menu, $template = NULL, $variables, $style = NULL, $index = NULL)
 	{
 		//
 		global $cck,$ini_settings;
@@ -740,14 +740,24 @@ class CCK
     		//print $section;
     		foreach($group['links'] as $key => $value)
 			{				
-				$list[$section][] = $this->_view('links', $value);	
+				if($style == '')
+				{
+					$list[$section][] = $this->_view('links', $value);	
+				}
+				else
+				{
+                    $list[$section][] = $this->_view($style, $value);
+					//exit(print($this->_view($style,$value)));
+	
+				}
+					
 				
 			}
 			
     	}
     	$variables['menu_index'] = $index;
     	$variables['links'] = $list;
-        $variables['separator'] = $separator;
+        $variables['separator'] = '-';
     	
     	$output =  $this->_view($template, $variables);
     	
