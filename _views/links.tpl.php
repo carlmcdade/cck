@@ -1,4 +1,4 @@
-<a class="btn btn-primary btn-block dropdown-item" role="button" href="<?php echo (isset($host) ? $host : '..') . '/'; ?>
+<a name="name_sub_<?php echo $elementName; echo '_'.$enumerate; ?>" id="id-sub-<?php echo $elementId; echo '-'.$enumerate; ?>." class="dropdown-item" role="button" href="<?php echo (isset($host) ? $host : '..') . '/'; ?>
 <?php 
    ?>
 <?php 
@@ -18,14 +18,6 @@ if ($installDir == CCK_ROOT)
 		 $href = '?'; 
 }  
 	echo $href;
-/**	if (isset($iniSettings['url']['install_dir']))
-
-	{
-		
-		echo $iniSettings['url']['install_dir'];
-	} else{
-		 echo '?'; 
-	 */
    ?>
 <?php echo (isset($path) ? $path : ''); ?>">
 <?php echo (isset($text) ? $text : 'link'); ?></a>

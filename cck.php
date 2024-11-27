@@ -213,7 +213,7 @@ class CCK
 		$access = $cck->_hooks('hook_access');
 		
 		$namespace = $class.'\\'.$class;
-		$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables, 'links_main_anchors');
+		$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
 		
 		if(class_exists($class) == TRUE || class_exists($namespace) == TRUE)
 		{
@@ -385,11 +385,13 @@ class CCK
     	    $variables['imagesDir'] = $ini_settings['paths']['images_dir'];
     	    $variables['cssDir'] = $ini_settings['paths']['css_dir'];
     	    $variables['jsDir'] = $ini_settings['paths']['js_dir'];
-    	     $variables['jsCDN'] = $ini_settings['paths']['js_cdn'];
+    	    $variables['jsCDN'] = $ini_settings['paths']['js_cdn'];
     	    $variables['devSymlink'] = $ini_settings['paths']['dev_symlink'];
     	    $variables['frontPage'] = $ini_settings['url']['frontpage'];
-    	    $variablea['siteName']= $ini_settings['site']['site_name'];
+    	    $variables['siteName']= $ini_settings['site']['site_name'];
     	    $variables['urlSection']= $cck->_path_segment(0);
+			//$variables['elementId'] = (isset($variables['elementId']) !== '' ? $variables['elementId']: 'none-found-in-code');
+            //$variables['elementName'] = (isset($variables['elementName']) !== '' ? $variables['elementName']:'none-found-code');
     	    
      	    /* load in the CCK object as a tempalate variable */
      	    $variables['cck'] = $cck;
@@ -538,14 +540,27 @@ class CCK
 			}
 	}
 	
-	function _add_css()
+	function _add_css($file)
 	{
-		//
+		global $cck, $ini_settings;
+		$css = $ini_settings[path] .'/'. $file;
+		if(file_exists($css))
+		{
+			$css = file_get_contents($file);
+		}
+			print $css;
 	}
 	
-	function _add_js()
+	function _add_js($file)
 	{
 		//
+		global $cck, $ini_settings;
+		$js = $ini_settings[path] .'/'. $file;
+		if(file_exists($js))
+		{
+			$js = file_get_contents($file);
+		}
+			print $css;
 	}
 	
 	function _dbconnect($databaseName = '')
@@ -724,7 +739,8 @@ class CCK
 	
 	function _link($template = NULL, $variables = array())
 	{
-		//
+		$variables['elementId'] = 'no_id_found_link_variables';
+		$variables['elementName'] = 'no_id_found_link_variables';
 		$output =  $this->_view($template, $variables);
 		return $output;
 	}
@@ -738,46 +754,83 @@ class CCK
     	foreach($menu as $section => $group)
     	{	
     		//print $section;
+			$counter = 1 ;
     		foreach($group['links'] as $key => $value)
 			{				
-				if($style == '')
+                
+				
+				
+
+				if($template == 'links_main_menu')
 				{
-					$list[$section][] = $this->_view('links', $value);	
+					$variables['elementId'] = (isset($value['css_id']) != ""? '_'. $value['css_id']: $counter);
+		            $variables['elementName'] = (isset($value['css_class']) != ""? implode('_', $value['css_class']): $counter);
+					$value['elementName'] = (isset($value['css_class']) != ""? implode('_', $value['css_class']): '_'.$counter);
+				    $value['elementId'] = (isset($value['css_id']) != ""? $counter.'-'.$value['css_id']: '-'.$counter);
+					$value['enumerate'] = $counter;
+					$list[$section][] = $this->_view('links_main_anchors', $value);	
+					//var_dump($value);
 				}
 				else
 				{
-                    $list[$section][] = $this->_view($style, $value);
-					//exit(print($this->_view($style,$value)));
-	
-				}
+
 					
-				
+
+					$variables['elementName'] = (isset($value['css_class']) != "" ? implode('_',$value['css_class']): '_'. $counter);
+					$variables['elementId'] = (isset($value['css_id']) != "" ? $counter.'-'.$value['css_id']: '-'. $counter);
+					$value['enumerate'] = $counter;
+					$list[$section][] = $this->_view('links', $value);
+					
+					//var_dump($value);
+				}
+
+					
+			 $counter = $counter + 1;
 			}
-			
+			//var_dump($value);
     	}
+		//exit(var_dump( $value) .var_dump($list));
     	$variables['menu_index'] = $index;
     	$variables['links'] = $list;
         $variables['separator'] = '-';
-    	
+		//var_dump( $value);
+		//echo '==========================>';
+		//var_dump($variables);
+		//exit;
     	$output =  $this->_view($template, $variables);
     	
     	return $output;
 	}
-	
+
+	/**
+	 *  typically links here are created as sub navigation dropdowns
+	 */
 	function _module_links($menu, $attributes = array(), $variables)
 	{
 		
 		global $cck,$ini_settings;
 		$list = array();
 		//var_dump($variables);
-		//var_dump($attributes);
+		//exit(var_dump($attributes));
 		//exit;
+
     	if(isset($menu)){ 	 
-    	  foreach($menu['links'] as $link)
+		  $counter = 1;
+    	  foreach($menu['links'] as $key => $link)
     	  {
     		//print '<pre>' . print_r($links, 1) . '</pre>';
-    		$list[] = $this->_view('links', $link);		
+			$link['elementId'] = (isset($attributes['css_id']) !== '' ? '-' . $attributes['css_id'] : '-' . $counter);
+		    $link['elementName'] = (isset($attributes['css_class'])  && !empty($attributes['css_class']) ? implode('_',$attributes['css_class']) : '_'. $counter);
+    		$link['enumerate'] = $counter;
+			$variables['elementId'] = (isset($attributes['css_id']) !== '' ? '-' . $attributes['css_id'] : '-' . $counter);
+		    $variables['elementName'] = (isset($attributes['css_class'])  && !empty($attributes['css_class']) ? implode('_',$attributes['css_class']) : '_'. $counter);
+    		$variables['enumerate'] = $counter;
+			$list[] = $this->_view('links', $link);	
+
+			$counter = $counter + 1;	
+
     	    }
+		  
     	}
     	
     	$variables['menu_index'] = $attributes['index'];

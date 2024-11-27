@@ -86,20 +86,10 @@
 	      <?php echo (isset($content) ? $content : ''); ?>
          <!-- /#content -->
 
-<?php
-
-if((require 'default_footer.tpl.php') == TRUE)
-{
-    //echo 'default_header.tpl.php'; 
-    //exit;
-}
-?>
+<?php require ('default_footer.tpl.php'); ?>
 </div></div>
-<style>
-    @import "css/admin.css";
-  </style>
+<style><?php require('css/admin.css'); ?></style>
 </body>
-
 </html> 
 <?php
  

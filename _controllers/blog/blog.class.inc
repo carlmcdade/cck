@@ -79,19 +79,28 @@ class blog{
     	
     	$var[$link][1] = array( 
 					'text' => 'Blogs', 
-					'path' => $this->module . '/blog_user'
+					'path' => $this->module . '/blog_user',
+					'css_class' => array($this->module, 'main_item'),
+					'css_id' => $this->module 
 					);
 		$var[$link][2] = array(
 					'text' => 'Categories', 
-					'path' => $this->module . '/blog_categories'
+					'path' => $this->module . '/blog_categories',
+					'css_class' => array($this->module, 'main_item'),
+        			'css_id' => $this->module 
 					);
 		$var[$link][3] = array(
 					'text' => 'Blog Users ', 
-					'path' => $this->module . '/blog_list'
+					'path' => $this->module . '/blog_list',
+					'css_class' => array($this->module, 'main_item'),
+        			'css_id' => $this->module 
 					);
 		$var[$link][4] = array(
-				'text' => 'New post',
-				'path' => 'content/content_types'
+					'text' => 'New post',
+					'path' => 'content/content_types',
+					'css_class' => array($this->module, 'main_item'),
+        			'css_id' => $this->module 
+
 		);
 				
 		
@@ -134,7 +143,9 @@ class blog{
     	$variables['sub_navigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			)
     		, $variables);
     	$db = new SQLite3($database);
@@ -240,7 +251,9 @@ class blog{
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	$db = new SQLite3($database);
 
@@ -304,7 +317,9 @@ class blog{
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			)
     		, $variables); 
          
@@ -352,7 +367,9 @@ class blog{
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	/*========================= bloggers ======================================*/
     	$db = new SQLite3($database);
@@ -506,7 +523,9 @@ class blog{
     	$variables['sub_navigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			)); 
     	$variables['page_title'] = 'Blog';
     	$variables['content_title'] = 'Post edit';
@@ -538,8 +557,9 @@ class blog{
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
-    			)
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module))
     		, $variables); 
          
     	$db = new SQLite3($database);

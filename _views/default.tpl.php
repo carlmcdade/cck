@@ -73,9 +73,11 @@ require 'default_footer.tpl.php';  //echo 'default_header.tpl.php';
         </div>
         </div>
     <!-- /#content -->
+
 <style>
-    @import "css/default.css";
+  <?php require( "css/default.css"); ?>
 </style>
+
 
 </body>
 </html>

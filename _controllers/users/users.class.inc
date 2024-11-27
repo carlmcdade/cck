@@ -82,23 +82,33 @@ class users{
     	
     	$var[$link][1] = array( 
 					'text' => 'Profiles', 
-					'path' => 'admin/admin_user_profiles'
+					'path' => 'admin/admin_user_profiles',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(
 					'text' => 'Accounts', 
-					'path' => 'admin/admin_user_accounts'
+					'path' => 'admin/admin_user_accounts',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		$var[$link][3] = array(
 					'text' => 'Content', 
-					'path' => 'admin/admin_user_content'
+					'path' => 'admin/admin_user_content',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		$var[$link][4] = array(
-				'text' => 'User Settings',
-				'path' => 'admin/admin_user_settings'
+					'text' => 'User Settings',
+					'path' => 'admin/admin_user_settings',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 		);
 		$var[$link][5] = array(
-				'text' => 'User Messages',
-				'path' => 'admin/admin_user_messages'
+					'text' => 'User Messages',
+					'path' => 'admin/admin_user_messages',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 		);
 			
     	
@@ -251,26 +261,34 @@ class users{
             $variables['userHandle'] = 'Site Members';
             $variables['menuTitle'] = 'Site Users'; 	
             
-            $link = 'links';
+        $link = 'links';
     	
     	$var = array();
     	
     	$var[$link][1] = array( 
 					'text' => 'User Profiles', 
-					'path' => 'users/user_profile'
+					'path' => 'users/user_profile',
+					'css_id' =>$this->module.'-1',
+					'css_class' => array($this->module.'_1')
 					);
 		$var[$link][2] = array(
 					'text' => 'User Accounts', 
-					'path' => 'users/user_account'
+					'path' => 'users/user_account',
+					'css_id' =>$this->module.'-2',
+					'css_class' => array($this->module.'_2')
 					);
 		$var[$link][3] = array(
 					'text' => 'User Content', 
-					'path' => 'users/user_content'
+					'path' => 'users/user_content',
+					'css_id' =>$this->module.'-3',
+					'css_class' => array($this->module.'_3')
 					);
 		$var[$link][4] = array(
-				'text' => 'User Settings',
-				'path' => 'users/user_settings'
-		);
+					'text' => 'User Settings',
+					'path' => 'users/user_settings',
+					'css_id' =>$this->module.'-4',
+					'css_class' => array($this->module.'_4')
+					);
 		
 			
     	
@@ -291,19 +309,26 @@ class users{
     	
     	$var[$link][1] = array( 
 					'text' => 'Profile', 
-					'path' => 'users/user_profile/' . $userID
+					'path' => 'users/user_profile/' . $userID,
+					'css_id' =>$this->module.'-1',
+					'css_class' => array($this->module.'_1')
 					);
 		$var[$link][2] = array(
 					'text' => 'Accounts', 
-					'path' => 'users/user_account/' . $userID
-					);
+					'path' => 'users/user_account/' . $userID,
+					'css_id' =>$this->module.'-2',
+					'css_class' =>array($this->module.'_2')			);
 		$var[$link][3] = array(
 					'text' => 'Content', 
-					'path' => 'users/user_blog/' . $userID
+					'path' => 'users/user_blog/' . $userID,
+					'css_id' =>$this->module.'-3',
+					'css_class' =>array($this->module.'_3')
 					);
 		$var[$link][4] = array(
 				'text' => 'Settings',
-				'path' => 'users/user_settings/' . $userID
+				'path' => 'users/user_settings/' . $userID,
+				'css_id' =>$this->module.'-4',
+				'css_class' => array($this->module.'_4')
 		);
 		
 			
@@ -316,7 +341,9 @@ class users{
     	$variables['subNavigation'] = $cck->_module_links($var,
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => 'submenu-' .$this->module,
+				'css_class' => array('submenu_'. $this->module)
     			)
     		, $variables); 
     	
@@ -955,7 +982,7 @@ class users{
 		/*==============================================
 		           page  template
 		===============================================*/
-        print $cck->_view('page-users_profile', $variables);
+        print $cck->_view('page_users_profile', $variables);
         
     }
     

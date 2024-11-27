@@ -1,24 +1,95 @@
+/* bootstrap overrides */
+
 .btn-primary{
-	color: #ffffff !important;
+	color: #1B8EFF !important;
 	border-color: #1B8EFF !important;
-	
-	
+	background-color: rgb(230, 243, 255) !important;
 }
 
 .btn{
-	background-color: #1B8EFF !important;
+	background-color: rgb(230,243,255) !important;
 	border-color: #1B8EFF !important;
-	color:#ffffff !important;
+	color: #1B8EFF !important;
 }
 
 .bg-primary{
 	background-color:#1B8EFF !important;
 }
 
-.main-item a{
-
-	font-weight: 500 !important;
-	color:#fdfdfd !important;
-	padding: 12px 10px 12px 10px  !important;
-    border-radius: 5px;
+.bg-secondary{
+	color: rgb(230, 243, 255) !important;
+	background-color: #1B8EFF !important;
+	border-color: #1B8EFF!important;
 }
+
+.btn-secondary{
+	color: rgb(230, 243, 255) !important;
+	background-color: #1B8EFF !important;
+	border-color: #1B8EFF!important;
+}
+
+ul.dropdown-menu{	
+	background-color: rgb(230, 243, 255) !important;
+	border-color: #1B8EFF !important;
+}
+
+ul.dropdown-menu li a{
+	color: #1B8EFF !important;
+}
+
+.main-item a{
+	font-weight: 500 !important;
+	padding: 12px 10px 12px 10px  !important;
+    border-radius: 5px !important;
+}
+
+.main-item a:hover{
+	color: rgb(230, 243, 255) !important;
+	background-color: #1B8EFF !important;
+}
+
+ul.dropdown-menu li a:hover{
+	color: rgb(230, 243, 255) !important;
+	background-color: #1B8EFF !important;
+	border-style: solid;
+	border: 1px 0 1px 0;
+	border-color: #1B8EFF;
+}
+
+/*  developer css */
+.post-header{
+	background-color: rgb(230, 243, 255) !important;
+}
+
+
+/* sticky table headers */
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 20px; /* Adjust margin as needed */
+  }
+  
+  thead, tbody {
+	display: block;
+	width:100%;
+  }
+  
+  thead {
+	position: sticky;
+	top: 0;
+	background-color: #f2f2f2; /* Set a background color for the sticky header */
+  }
+  
+  th, td {
+	padding: 10px;
+	text-align: left;
+	border: 1px solid #ddd; /* Add a border for better visibility */
+  }
+  
+  tbody {
+	max-height: 300px; /* Set a maximum height for the tbody to enable scrolling */
+	overflow-y: auto;
+  }
+  
+  /* Style the table as needed */
+  

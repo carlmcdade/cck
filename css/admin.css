@@ -1,40 +1,59 @@
-.btn{
-	color:#FFFFFF !important;
-	background-color:#ccffcc!important;
 
-		
+.btn{
+	color:rgb(10, 71, 25) !important;
+	background-color: #ccffcc!important;
+	border-color: #128835 !important;		
 }
 
 .bg-primary {
 	background-color: #3fc467 !important;
 	border-color: #3fc467 !important;
-	color:#FFFFFF;
 }
 
 
 .bg-secondary{
-	color:#000000 !important;
+	color:rgb(1, 71, 25) !important;
 	background-color:#ccffcc !important;
-	border-color: #3fc467 !important;
-	
-	
+	border-color: #3fc467 !important;	
 }
 
 .btn-secondary{
-	color:#000000 !important;
-	background-color: #ccffcc !important;
-	border-color:#3fc467 !important;
-		
+	background-color: #128835 !important;
+	color: #ccffcc !important;
+	border-color: #128835 !important;		
 }
 
-
-
 .table-danger{
-	background-color:#ccffcc !important;
+	background-color: #ccffcc !important;
 }
 
 .border-danger{
+    border-color: #3fc467 !important;
+}
 
-    border-color:#3fc467 !important;
+ul.dropdown-menu{	
+	background-color: #ccffcc !important;
+	border-color: #3fc467 !important;
+}
 
+ul.dropdown-menu li a:hover{
+	background-color: #128835 !important;
+	color: #ccffcc !important;
+	border-color: #128835!important;
+}
+
+ul.dropdown-menu li a{
+	color: rgb(10, 71, 25) !important;
+}
+
+.main-item a:hover{
+	color: #ccffcc!important;
+	background-color: #128835 !important;
+}
+
+.main-item a{
+
+	font-weight: normal !important;
+	padding: 12px 10px 12px 10px  !important;
+	border-radius: 5px !important;
 }

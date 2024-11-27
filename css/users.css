@@ -1,40 +1,54 @@
-.btn-primary, .bg-primary{
-	color:#000000 !important;
-	background-color:#ff9999 !important;
+.btn{
+    color: rgb(82,19,19) !important;
+    background-color: #ff9999 !important;
 	border-color: #ff9999 !important;
-	
-	
+
+
 }
 
 a.btn-primary{
-	color:#4d1717 !important;
-	background-color:#ff9999 !important;
+	color: #4d1717 !important;
+	background-color: #f7d1d1!important;
 	border-color: #ff9999 !important;
-	
-	
-}
+
+
+}  
 
 .bg-secondary{
-	color:#000000 !important;
-	background-color:#ff9999 !important;
+	color: rgb(82, 19, 19) !important;
+	background-color: #ff9999 !important;
 	border-color: #ff9999 !important;
-	
-	
+
+
 }
 
 .btn-secondary{
-	color:#000000 !important;
-	background-color:#f7d1d1 !important;
+	color: rgb(82, 19, 19) !important;
+	background-color: #f7d1d1 !important;
 	border-color: #f7d1d1 !important;
-	
-	
+
+
 }
-.btn{
-	color:#000000 !important;
-	background-color:#eeb9bf !important;
+
+
+ul.dropdown-menu{
+	color: rgb(82, 19, 19) !important;
+	background-color: #f3d7d7 !important;
 	border-color: #ff9999 !important;
-	
-	
+
+
+}
+
+ul.dropdown-menu a{
+	background-color: #f3d7d7;
+}
+
+.btn{
+	color: rgb(82, 19, 19) !important;
+	background-color: #eeb9bf !important;
+	border-color: #ff9999 !important;
+
+
 }
 
 .table-danger{
@@ -42,7 +56,56 @@ a.btn-primary{
 }
 
 .border-danger{
-
-    border-color:#f55d5d;
-
+	border-color: #f55d5d;
 }
+
+.main-item a{
+
+	font-weight: normal !important;
+	padding: 12px 10px 12px 10px  !important;
+	border-radius: 5px !important;
+}
+
+.main-item a:hover{
+	color: #fcdddd !important;
+	background-color: #f55d5d !important;
+}
+
+/*  table headers sticky */
+
+/* styles.css */
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 20px; /* Adjust margin as needed */
+  }
+  
+  thead, tbody {
+	display: block;
+
+  }
+  
+  thead {
+
+	position: sticky;
+	top: 0;
+	background-color: #f2f2f2; /* Set a background color for the sticky header */
+  }
+  
+  th,td{
+	padding: 10px;
+	text-align: left;
+	border: 1px solid #ddd; /* Add a border for better visibility */
+  }
+
+  th{
+	width: 100%;
+  }
+  
+  tbody {
+	max-height: 300px; /* Set a maximum height for the tbody to enable scrolling */
+	overflow-y: auto;
+  }
+  
+  /* Style the table as needed */
+  

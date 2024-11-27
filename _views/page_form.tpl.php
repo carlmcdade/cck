@@ -68,9 +68,8 @@ print('<!DOCTYPE html>
         </div>
     <!-- /#content -->
     </div>
-
 <style>
-    @import "css/admin.css";
+    <?php require('css/admin.css'); ?>
 </style>
 </body>
 </html>

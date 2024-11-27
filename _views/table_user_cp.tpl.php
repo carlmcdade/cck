@@ -1,6 +1,6 @@
 <?php 
 $output = '<table class="table fs-6">';
-$output .= '<thead><tr>';
+$output .= '<thead><tr class="col-8">';
 
 	// table header
 foreach ($header as $th => $column)
@@ -31,11 +31,11 @@ foreach ($header as $th => $column)
 
 
 	
-	$output .= '<th scope ="col">' .  $column . '</th>' . "\n";	
+	$output .= '<th class="col">' .  $column . '</th>' . "\n";	
 }
 
 $output .= '</tr></thead>' . "\n";
-//$output .= '<tbody><tr>' . "\n";
+$output .= '<tbody>' . "\n";
 if(!empty($rows))
 {
 	// table rows
@@ -85,6 +85,6 @@ if(!empty($rows))
 	}
 
 }
-$output .= '</table>';
+$output .= '</tbody></table>';
 print $output;
 ?>

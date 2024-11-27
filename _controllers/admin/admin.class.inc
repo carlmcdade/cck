@@ -89,37 +89,54 @@ class admin {
     	
     	$var[$link][1] = array( 
 					'text' => 'Accounts', 
-					'path' => $this->module . '/admin_user_accounts'
+					'path' => $this->module . '/admin_user_accounts',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		
 		$var[$link][2] = array(
-				'text' => 'Profiles',
-				'path' => $this->module . '/admin_user_profiles'
+					'text' => 'Profiles',
+					'path' => $this->module . '/admin_user_profiles',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 		);
 				
 		$var[$link][3] = array(
 					'text' => 'Categories', 
-					'path' => $this->module . '/admin_categories'
+					'path' => $this->module . '/admin_categories',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		$var[$link][4] = array(
 					'text' => 'Content', 
-					'path' => $this->module . '/admin_content'
+					'path' => $this->module . '/admin_content',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		$var[$link][5] = array(
-				'text' => 'Security',
-				'path' => $this->module . '/admin_permissions'
+					'text' => 'Security',
+					'path' => $this->module . '/admin_permissions',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 		);
 		$var[$link][6] = array(
-				'text' => 'Databases',
-				'path' => $this->module . '/admin_databases'
+					'text' => 'Databases',
+					'path' => $this->module . '/admin_databases',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 		);
 		$var[$link][7] = array(
-				'text' => 'Modules',
-				'path' => $this->module . '/admin_modules'
+					'text' => 'Modules',
+					'path' => $this->module . '/admin_modules',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 		);
 		$var[$link][8] = array(
 				'text' => 'Configuration',
-				'path' => $this->module . '/admin_config'
+				'path' => $this->module . '/admin_config',
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
+
 		);
 					
 					
@@ -144,7 +161,9 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables);
     	
     	
@@ -178,7 +197,9 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	
@@ -232,7 +253,9 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	$db = new SQLite3($database);
 
@@ -278,7 +301,9 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	$db = $ini_settings['databases'];
 
@@ -318,7 +343,9 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
         $counter= 0;
         $sections = $ini_settings['modules'];
@@ -352,13 +379,12 @@ class admin {
     	print $cck->_view('page_admin', $variables);
     }
     
-    /**
+    /*
      Documentation function  to show developer comments that are to to used
      by end users and developers. Removing the need for documentation that is 
      seperate for the site. Future plan is to make it a module rather that a 
      group of functions in the admin module
     */
-    
     function module_comments_view($module = NULL){
     	
     	/* ====================== variables ===============*/
@@ -379,7 +405,9 @@ class admin {
     	    $variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
        
           
@@ -433,7 +461,7 @@ class admin {
     }
     
      
-    /**
+    /*
      Documentation function  to show developer comments that are to to used
      by end users and developers. Removing the need for documentation that is 
      seperate for the site. Future plan is to make it a module rather that a 
@@ -468,7 +496,9 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
         $counter= 0;
         $sections = array_keys($ini_settings);
@@ -518,7 +548,9 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	
@@ -544,7 +576,9 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	
@@ -584,15 +618,22 @@ class admin {
     	
     	$var[$link][1] = array( 
 					'text' => 'Content List', 
-					'path' => 'admin/content_list'
+					'path' => 'admin/content_list',
+					'css_id' => $this->module,
+				    'css_class' => array($this->module)
+					
 					);
 		$var[$link][2] = array(
 					'text' => 'Content Add', 
-					'path' => 'admin/content_add'
+					'path' => 'admin/content_add',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		$var[$link][3] = array(
 					'text' => 'Content Permissions', 
-					'path' => 'admin/content_permissions'
+					'path' => 'admin/content_permissions',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		$admin_menu = $var;    	
     	//$admin_menu = $cck->_hooks('hook_module_links');
@@ -633,12 +674,16 @@ class admin {
 		$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
     			'template'=>'links_user_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
                
@@ -668,7 +713,9 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	$db = new SQLite3($database);
 
@@ -719,23 +766,33 @@ class admin {
     	
     	$var[$link][1] = array( 
 					'text' => 'Profile', 
-					'path' => 'admin/admin_user_profiles/'. $userID
+					'path' => 'admin/admin_user_profiles/'. $userID,
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(
 					'text' => 'Account', 
-					'path' => 'admin/admin_user_accounts/' . $userID
+					'path' => 'admin/admin_user_accounts/' . $userID,
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		$var[$link][3] = array(
 					'text' => 'Content', 
-					'path' => 'admin/admin_user_content/'. $userID
+					'path' => 'admin/admin_user_content/'. $userID,
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		$var[$link][4] = array(
-				'text' => 'Settings',
-				'path' => 'admin/admin_user_settings/'. $userID
+					'text' => 'Settings',
+					'path' => 'admin/admin_user_settings/'. $userID,
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 		);
 		$var[$link][5] = array(
-				'text' => 'Inbox',
-				'path' => 'admin/admin_user_messages/'. $userID
+					'text' => 'Inbox',
+					'path' => 'admin/admin_user_messages/'. $userID,
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 		);
 			
     	
@@ -752,12 +809,16 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
     			'template'=>'links_user_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	
@@ -817,23 +878,33 @@ class admin {
     	
     	$var[$link][1] = array( 
 					'text' => 'Profile', 
-					'path' => 'admin/admin_user_profiles/'. $userID
+					'path' => 'admin/admin_user_profiles/'. $userID,
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(
 					'text' => 'Account', 
-					'path' => 'admin/admin_user_accounts/' . $userID
+					'path' => 'admin/admin_user_accounts/' . $userID,
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		$var[$link][3] = array(
 					'text' => 'Content', 
-					'path' => 'admin/admin_user_content/'. $userID
+					'path' => 'admin/admin_user_content/'. $userID,
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		$var[$link][4] = array(
-				'text' => 'Settings',
-				'path' => 'admin/edit_user_settings/'. $userID
+					'text' => 'Settings',
+					'path' => 'admin/edit_user_settings/'. $userID,
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 		);
 		$var[$link][5] = array(
-				'text' => 'Inbox',
-				'path' => 'admin/admin_user_messages/'. $userID
+					'text' => 'Inbox',
+					'path' => 'admin/admin_user_messages/'. $userID,
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 		);
 			
     	
@@ -850,12 +921,16 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
     			'template'=>'links_user_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	 
@@ -903,19 +978,27 @@ class admin {
     	
     	$var[$link][1] = array( 
 					'text' => 'Profile', 
-					'path' => 'users/user_profile/'.$userID
+					'path' => 'users/user_profile/'.$userID,
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(
 					'text' => 'Account', 
-					'path' => 'users/user_settings/'.$userID
+					'path' => 'users/user_settings/'.$userID,
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][3] = array(
 					'text' => 'Content', 
-					'path' => 'users/user_content/'.$userID
+					'path' => 'users/user_content/'.$userID,
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][4] = array(
 				'text' => 'Inbox',
-				'path' => 'users/user_messages/' .$userID
+				'path' => 'users/user_messages/' .$userID,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
 		);
 			
     	
@@ -932,12 +1015,16 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
     			'template'=>'links_user_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	
@@ -1000,19 +1087,26 @@ class admin {
     	
     	$var[$link][1] = array( 
 					'text' => 'Profile', 
-					'path' => 'users/user_profile/'.$userID
+					'path' => 'users/user_profile/'.$userID,
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(
 					'text' => 'Account', 
-					'path' => 'users/user_settings/'.$userID
+					'path' => 'users/user_settings/'.$userID,
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][3] = array(
 					'text' => 'Content', 
-					'path' => 'users/user_content/'.$userID
+					'path' => 'users/user_content/'.$userID,
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][4] = array(
 				'text' => 'Inbox',
-				'path' => 'users/user_messages/' .$userID
+				'path' => 'users/user_messages/' .$userID,'css_id' => $this->module,
+				'css_class' => array($this->module)
 		);
 			
     	
@@ -1029,12 +1123,16 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
     			'template'=>'links_user_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	
@@ -1193,7 +1291,10 @@ class admin {
     	
     	$var[$link][1] = array( 
 					'text' => 'Permissions', 
-					'path' => 'admin/admin_permissions'
+					'path' => 'admin/admin_permissions',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
+
 					);
 		/**$var[$link][2] = array(
 					'text' => 'Your Account', 
@@ -1226,12 +1327,16 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
     			'template'=>'links_user_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	
@@ -1277,19 +1382,27 @@ class admin {
     	
     	$var[$link][1] = array(
 			        'text' => 'User Profile',
-				    'path' => 'users/user_profile'
+				    'path' => 'users/user_profile',
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(
 					'text' => 'User Accounts', 
-					'path' => 'users/user_account'
+					'path' => 'users/user_account',
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][3] = array(
 					'text' => 'User Content', 
-					'path' => 'blog/blog_user'
+					'path' => 'blog/blog_user',
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][4] = array(
 				    'text' => 'User Settings',
-				    'path' => 'users/user_settings'
+				    'path' => 'users/user_settings',
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 		);
 		
 			
@@ -1309,12 +1422,16 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
     			'template'=>'links_user_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	$output = $cck->_target('form_post');
     	$variables['content'] =  $output;
@@ -1345,23 +1462,33 @@ class admin {
     	
     	$var[$link][1] = array( 
 					'text' => 'Profile', 
-					'path' => 'admin/edit_profile/'.$userID
+					'path' => 'admin/edit_profile/'.$userID,
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(
 					'text' => 'Account', 
-					'path' => 'admin/edit_user/'.$userID
+					'path' => 'admin/edit_user/'.$userID,
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][3] = array(
 					'text' => 'Content', 
-					'path' => 'admin/edit_post/'.$userID
+					'path' => 'admin/edit_post/'.$userID,
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][4] = array(
 				'text' => 'Settings',
-				'path' => 'admin/edit_user_settings/'.$userID
+				'path' => 'admin/edit_user_settings/'.$userID,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
 		);
 		$var[$link][5] = array(
 				'text' => 'Inbox',
-				'path' => 'admin/edit_messages/' .$userID
+				'path' => 'admin/edit_messages/' .$userID,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
 		);
 			
     	
@@ -1378,12 +1505,16 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
     			'template'=>'links_user_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	
@@ -1449,23 +1580,33 @@ class admin {
     	
     	$var[$link][1] = array( 
 					'text' => 'Profile', 
-					'path' => 'admin/edit_profile/'. $userID
+					'path' => 'admin/edit_profile/'. $userID,
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(
 					'text' => 'Account', 
-					'path' => 'admin/edit_user/' . $userID
+					'path' => 'admin/edit_user/' . $userID,
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][3] = array(
 					'text' => 'Your Content', 
-					'path' => 'admin/edit_post/'. $userID
+					'path' => 'admin/edit_post/'. $userID,
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][4] = array(
 				'text' => 'Settings',
-				'path' => 'admin/edit_user_settings/'. $userID
+				'path' => 'admin/edit_user_settings/'. $userID,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
 		);
 		$var[$link][5] = array(
 				'text' => 'Inbox',
-				'path' => 'admin/edit_messages/'. $userID
+				'path' => 'admin/edit_messages/'. $userID,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
 		);
 			
     	
@@ -1482,12 +1623,16 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
     			'template'=>'links_user_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	
@@ -1548,19 +1693,27 @@ class admin {
 	    $var = array();
     	
     	$var[$link][1] = array( 
-						'path' => 'users/user_profile'
+						'path' => 'users/user_profile',
+						'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(
 					'text' => 'User Accounts', 
-					'path' => 'users/user_account'
+					'path' => 'users/user_account',
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][3] = array(
 					'text' => 'User Content', 
-					'path' => 'blog/blog_user'
+					'path' => 'blog/blog_user',
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][4] = array(
 				'text' => 'User Settings',
-				'path' => 'users/user_settings'
+				'path' => 'users/user_settings',
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
 		);
 		
 			
@@ -1580,12 +1733,16 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
     			'template'=>'links_user_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	$output = $cck->_target('form_post');
     	$variables['content'] =  $output;
@@ -1612,19 +1769,27 @@ class admin {
 		$var = array();
     	
     	$var[$link][1] = array( 
-						'path' => 'users/user_profile'
+						'path' => 'users/user_profile',
+						'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(
 					'text' => 'User Accounts', 
-					'path' => 'users/user_account'
+					'path' => 'users/user_account',
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][3] = array(
 					'text' => 'User Content', 
-					'path' => 'blog/blog_user'
+					'path' => 'blog/blog_user',
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][4] = array(
 				'text' => 'User Settings',
-				'path' => 'users/user_settings'
+				'path' => 'users/user_settings',
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
 		);
 		
 			
@@ -1642,12 +1807,16 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
     			'template'=>'links_user_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     			
@@ -1679,23 +1848,33 @@ class admin {
     	
     	$var[$link][1] = array( 
 					'text' => 'Your Profile', 
-					'path' => 'users/user_profile'
+					'path' => 'users/user_profile',
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(
 					'text' => 'Your Account', 
-					'path' => 'users/user_account'
+					'path' => 'users/user_account',
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][3] = array(
 					'text' => 'Your Content', 
-					'path' => 'users/user_content'
+					'path' => 'users/user_content',
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][4] = array(
 				'text' => 'User settings',
-				'path' => 'users/user_settings'
+				'path' => 'users/user_settings',
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
 		);
 		$var[$link][5] = array(
 				'text' => 'Your Inbox',
-				'path' => 'users/user_messages'
+				'path' => 'users/user_messages',
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
 		);
 			
     	
@@ -1712,12 +1891,16 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
     			'template'=>'links_user_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	
@@ -1772,23 +1955,33 @@ class admin {
     	
     	$var[$link][1] = array( 
 					'text' => 'Your Profile', 
-					'path' => 'users/user_profile'
+					'path' => 'users/user_profile',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(
 					'text' => 'Your Account', 
-					'path' => 'users/user_account'
+					'path' => 'users/user_account',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		$var[$link][3] = array(
 					'text' => 'Your Content', 
-					'path' => 'users/user_content'
+					'path' => 'users/user_content',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		$var[$link][4] = array(
-				'text' => 'User settings',
-				'path' => 'users/user_settings'
+					'text' => 'User settings',
+					'path' => 'users/user_settings',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 		);
 		$var[$link][5] = array(
 				'text' => 'Your Inbox',
-				'path' => 'users/user_messages'
+				'path' => 'users/user_messages',
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
 		);
 			
     	
@@ -1805,12 +1998,16 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
     			'template'=>'links_user_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	
@@ -1865,23 +2062,33 @@ class admin {
     	
     	$var[$link][1] = array( 
 					'text' => 'Your Profile', 
-					'path' => 'users/user_profile'
+					'path' => 'users/user_profile',
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(
 					'text' => 'Your Account', 
-					'path' => 'users/user_account'
+					'path' => 'users/user_account',
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][3] = array(
 					'text' => 'Your Content', 
-					'path' => 'users/user_content'
+					'path' => 'users/user_content',
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][4] = array(
 				'text' => 'User settings',
-				'path' => 'users/user_settings'
+				'path' => 'users/user_settings',
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
 		);
 		$var[$link][5] = array(
 				'text' => 'Your Inbox',
-				'path' => 'users/user_messages'
+				'path' => 'users/user_messages',
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
 		);
 			
     	
@@ -1898,12 +2105,16 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
     			'template'=>'links_user_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	
@@ -1958,23 +2169,33 @@ class admin {
     	
     	$var[$link][1] = array( 
 					'text' => 'Your Profile', 
-					'path' => 'users/user_profile'
+					'path' => 'users/user_profile',
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(
 					'text' => 'Your Account', 
-					'path' => 'users/user_account'
+					'path' => 'users/user_account',
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][3] = array(
 					'text' => 'Your Content', 
-					'path' => 'users/user_content'
+					'path' => 'users/user_content',
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][4] = array(
 				'text' => 'User settings',
-				'path' => 'users/user_settings'
+				'path' => 'users/user_settings',
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
 		);
 		$var[$link][5] = array(
 				'text' => 'Your Inbox',
-				'path' => 'users/user_messages'
+				'path' => 'users/user_messages',
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
 		);
 			
     	
@@ -1991,12 +2212,16 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
     			'template'=>'links_user_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	
@@ -2052,23 +2277,33 @@ class admin {
     	
     	$var[$link][1] = array( 
 					'text' => 'Profile', 
-					'path' => 'admin/admin_user_profiles/'. $userID
+					'path' => 'admin/admin_user_profiles/'. $userID,
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(
 					'text' => 'Account', 
-					'path' => 'admin/admin_user_accounts/' . $userID
+					'path' => 'admin/admin_user_accounts/',
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][3] = array(
 					'text' => 'Content', 
-					'path' => 'admin/admin_user_content/'. $userID
+					'path' => 'admin/admin_user_content/'. $userID,
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][4] = array(
 				'text' => 'Settings',
-				'path' => 'admin/edit_user_settings/'. $userID
+				'path' => 'admin/edit_user_settings/'. $userID,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
 		);
 		$var[$link][5] = array(
 				'text' => 'Inbox',
-				'path' => 'admin/admin_user_messages/'. $userID
+				'path' => 'admin/admin_user_messages/'. $userID,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
 		);
 			
     	
@@ -2085,12 +2320,16 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
     			'template'=>'links_user_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	foreach($_POST as $key=>$value)
     	{
@@ -2129,23 +2368,33 @@ class admin {
     	
     	$var[$link][1] = array( 
 					'text' => 'Profile', 
-					'path' => 'admin/admin_user_profiles/'. $userID
+					'path' => 'admin/admin_user_profiles/'. $userID,
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(
 					'text' => 'Account', 
-					'path' => 'admin/admin_user_accounts/' . $userID
+					'path' => 'admin/admin_user_accounts/' . $userID,
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][3] = array(
 					'text' => 'Content', 
-					'path' => 'admin/admin_user_content/'. $userID
+					'path' => 'admin/admin_user_content/'. $userID,
+					'css_id' => $this->module,
+				'css_class' => array($this->module)
 					);
 		$var[$link][4] = array(
 				'text' => 'Settings',
-				'path' => 'admin/edit_user_settings/'. $userID
+				'path' => 'admin/edit_user_settings/'. $userID,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
 		);
 		$var[$link][5] = array(
 				'text' => 'Inbox',
-				'path' => 'admin/admin_user_messages/'. $userID
+				'path' => 'admin/admin_user_messages/'. $userID,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
 		);
 			
     	
@@ -2162,12 +2411,16 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
     			'template'=>'links_user_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	 

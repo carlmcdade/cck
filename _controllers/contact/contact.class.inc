@@ -85,24 +85,6 @@ class contact {
         	$sub_menu = $cck->_hooks('hook_module_links');
         	$output = "";
     	
-        	$form = array();
-    	        $form[] = array("form" => "addContact");
-    	        $form[] = array("First name:" => "name_first");               
-                $form[] = array(
-				   "action" => "myscript.php",
-				   "method" => "post",		   
-				   );
-                foreach($form as $key => $value){
-                    if(is_string($value)){
-                      $output .= $key . ":" . $value ."";
-                    }
-                    else{
-                        foreach($value as $low_key => $low_value){
-                          $output .= $low_key . ":" .  $low_value . "<br>";
-                        }
-                       
-                    }
-                }
 		
             $variables['seperators'] = array('|','-',';',':');
     	    $variables['pageTitle'] = 'Contact';
@@ -111,7 +93,12 @@ class contact {
     	    $variables['dbTable'] = 'userlist';
         
             $variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);	
-            $variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module], array('template'=>'links_sub_menu','index' => $this->module), $variables); 
+            $variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module], 
+						array('template'=>'links_sub_menu',
+							'index' => $this->module,
+							'css_id' => $this->module,
+							'css_class' => array($this->module)
+						), $variables); 
 
 		    $variables['content'] = $output;
 		    
@@ -141,23 +128,33 @@ class contact {
     	
     	$var[$link][1] = array( 
 					'text' => 'Your Profile', 
-					'path' => 'users/user_profile'
+					'path' => 'users/user_profile',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(
 					'text' => 'Your Account', 
-					'path' => 'users/user_account'
+					'path' => 'users/user_account',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		$var[$link][3] = array(
 					'text' => 'Your Content', 
-					'path' => 'users/user_blog'
+					'path' => 'users/user_blog',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		$var[$link][4] = array(
 				'text' => 'User settings',
-				'path' => 'users/user_settings'
+				'path' => 'users/user_settings',
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
 		);
 		$var[$link][5] = array(
 				'text' => 'Your Inbox',
-				'path' => 'users/user_messages'
+				'path' => 'users/user_messages',
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
 		);
 			
     	
@@ -174,12 +171,16 @@ class contact {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
     			'template'=>'links_user_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	
@@ -218,23 +219,33 @@ class contact {
     	
     	$var[$link][1] = array( 
 					'text' => 'Your Profile', 
-					'path' => 'users/user_profile'
+					'path' => 'users/user_profile',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(
 					'text' => 'Your Account', 
-					'path' => 'users/user_account'
+					'path' => 'users/user_account',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		$var[$link][3] = array(
 					'text' => 'Your Content', 
-					'path' => 'users/user_blog'
+					'path' => 'users/user_blog',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 					);
 		$var[$link][4] = array(
-				'text' => 'User settings',
-				'path' => 'users/user_settings'
+					'text' => 'User settings',
+					'path' => 'users/user_settings',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 		);
 		$var[$link][5] = array(
-				'text' => 'Your Inbox',
-				'path' => 'users/user_messages'
+					'text' => 'Your Inbox',
+					'path' => 'users/user_messages',
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 		);
 			
     	
@@ -251,12 +262,16 @@ class contact {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	$variables['adminNavigation'] = $cck->_module_links($admin_menu , array(
     			'template'=>'links_user_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			) , $variables); 
     	
     	

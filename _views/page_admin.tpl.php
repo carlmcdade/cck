@@ -88,28 +88,7 @@ if ($frontPage == $frontCheck || $urlSection == 'admin') {
           </div>
 </div> 
 <style>
-    @import "css/admin.css";
-  </style>
+  <?php require( "css/admin.css"); ?>
+</style>
 </body>
-
 </html> 
-<?php
-
-/**
- * @author Carl McDade
- * @copyright Carl McDade
- * @since 2012
- * @version 1.0
- * @license MIT
- *
- * @link http://hardcopy.free.nf
- * ==================================================================
- *
- *                        page_admin.tpl.php
- *
- * ==================================================================
- *
- * @todo make a template for this comment
- *
- */
-?>

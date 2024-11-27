@@ -91,28 +91,7 @@ require 'default_footer.tpl.php';  //echo 'default_header.tpl.php';
         </div>
     <!-- /#content -->
 <style>
-    @import "css/default.css";
+  <?php require('css/default.css'); ?>
 </style>
 </body>
-
-</html> 
-<?php
- 
-/**
- * @author Carl McDade
- * @copyright Carl McDade
- * @since 2012
- * @version 1.0
- * @license MIT
- *
- * @link http://hardcopy.free.nf
- * ==================================================================
- *
- *                        default.tpl.php
- *
- * ==================================================================
- *
- * @todo make a template for this comment
- *
- */
-?>
+</html>

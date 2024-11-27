@@ -1,4 +1,5 @@
 <?php
+
 ob_start();
 
 /**
@@ -21,8 +22,7 @@ ob_start();
 
 
 require_once('cck.php');
-if (file_exists(INI_FILENAME))
-{
+if (file_exists(INI_FILENAME)) {
     $ini_settings = parse_ini_file(INI_FILENAME, true);
 
 }
@@ -33,13 +33,12 @@ if (file_exists(INI_FILENAME))
 
 
 // Set the front page by redirection a fix for free hosting glitch of adding an extra query string on first load
-if ($_SERVER['QUERY_STRING'] == 'i=1') header('location:' . $where . $ini_settings['url']['frontpage']);
+$where = 'http://hardcopy.free.nf/';
+if ($_SERVER['QUERY_STRING'] == 'i=1' || $_SERVER['QUERY_STRING'] == '') {
+    header('location:' . $where . $ini_settings['url']['frontpage']);
+}
 
-if (!$_SERVER['QUERY_STRING']) header('location:' . $where . $ini_settings['url']['frontpage']);
 
 // Start system and respond to calls
 $cck = new CCK();
 $cck->_bootstrap();
-
-
-?>

@@ -86,38 +86,8 @@
 	      <?php echo (isset($content) ? $content : ''); ?>
          <!-- /#content -->
 
-<?php
-
-if((require 'default_footer.tpl.php') == TRUE)
-{
-    //echo 'default_header.tpl.php'; 
-    //exit;
-}
-?>
+<?php require('default_footer.tpl.php'); ?>
 </div></div>
-<style>
-    @import "css/users.css";
-  </style>
+<style><?php require( "css/users.css"); ?></style>
 </body>
-
-</html> 
-<?php
- 
-/**
- * @author Carl McDade
- * @copyright Carl McDade
- * @since 2012
- * @version 1.0
- * @license MIT
- *
- * @link http://hardcopy.free.nf
- * ==================================================================
- *
- *                        default.tpl.php
- *
- * ==================================================================
- *
- * @todo make a template for this comment
- *
- */
-?>
+</html>

@@ -68,11 +68,15 @@ class portfolio {
     	 
     	$var[$link][1] = array(
     			'text' => 'Projects',
-    			'path' => $this->module . '/list_all'
+    			'path' => $this->module . '/list_all',
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     	);
     	$var[$link][2] = array(
     			'text' => 'Featured',
-    			'path' => $this->module . '/featured'
+    			'path' => $this->module . '/featured',
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     	);
 
     	return $var;
@@ -83,11 +87,15 @@ class portfolio {
     		$link = 'links';
     		$var[$link][1] = array(
         		'text' => 'Portfolios', 
-        		'path' => 'admin/'. $this->module.'/blog_list_all'
+        		'path' => 'admin/'. $this->module.'/blog_list_all',
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
         		);
         	$var[$link][2] = array(
         		'text' => 'Add portfolio',
-        		'path' => 'admin/' . $this->module . '/blog_add'
+        		'path' => 'admin/' . $this->module . '/blog_add',
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
         		);
         	return $var;
         }
@@ -108,7 +116,9 @@ class portfolio {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			)
     		, $variables);
     	
@@ -132,7 +142,9 @@ class portfolio {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
     			), $variables);
     	
     	print $cck->_view('default', $variables);
