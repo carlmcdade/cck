@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<!--page_admin_index --><!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Language" content="en">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-<title><?php echo (isset($title) ? $title : 'CCK Administration'); ?></title>
+<title><?php echo(isset($title) ? $title : 'CCK Administration'); ?></title>
 <meta name="description" content="Berlinto a PHP framework for web developers to build on.">
 <meta name="keywords" content=" berlinto, drupal, wordpress, framework, cms, hosting, webhosting, server, php, servage">
 
@@ -14,15 +14,15 @@
 <header id="banner" class="body">
 
 <section id="page-title" class="page-title">
-<span><?php echo (isset($page_title) ? $page_title : ''); ?></span>
+<span><?php echo(isset($page_title) ? $page_title : ''); ?></span>
 </section>
 
 <nav>
-<?php echo (isset($main_navigation) ? $main_navigation : ''); ?>
+<?php echo(isset($main_navigation) ? $main_navigation : ''); ?>
 </nav>
 
 <section id="admin-section">
- <?php echo (isset($admin_navigation) ? $admin_navigation : ''); ?>
+ <?php echo(isset($admin_navigation) ? $admin_navigation : ''); ?>
   <div style="clear:both"></div>
 </section>
 

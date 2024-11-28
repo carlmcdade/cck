@@ -78,8 +78,8 @@ class blog{
     	$var = array();
     	
     	$var[$link][1] = array( 
-					'text' => 'Blogs', 
-					'path' => $this->module . '/blog_user',
+					'text' => 'Users', 
+					'path' => $this->module . '/blog_list_users',
 					'css_class' => array($this->module, 'main_item'),
 					'css_id' => $this->module 
 					);
@@ -90,13 +90,13 @@ class blog{
         			'css_id' => $this->module 
 					);
 		$var[$link][3] = array(
-					'text' => 'Blog Users ', 
-					'path' => $this->module . '/blog_list',
+					'text' => 'Content', 
+					'path' => $this->module . '/blog_list_content',
 					'css_class' => array($this->module, 'main_item'),
         			'css_id' => $this->module 
 					);
 		$var[$link][4] = array(
-					'text' => 'New post',
+					'text' => 'Create',
 					'path' => 'content/content_types',
 					'css_class' => array($this->module, 'main_item'),
         			'css_id' => $this->module 
@@ -118,7 +118,72 @@ class blog{
     	    return $authorize;
     }
     
-    function blog_user()
+    function blog_list_users()
+    {
+		global $cck, $ini_settings;
+    	
+    	$database = $ini_settings['databases']['user_db'];
+    	$table = array();
+    	$columns = array();
+    	$rows = array();
+   
+    	// get all links from each class controller
+    	$menu = $cck->_hooks('hook_links');    	
+    	$sub_menu = $cck->_hooks('hook_module_links');
+    	//var_dump($sub_menu); exit;
+    	$variables['menuTitle'] = 'View blog';
+    	$variables['pageTitle'] = 'Blogs';
+    	$variables['contentTitle'] = 'Users';
+    	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
+    	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
+    		array(
+    			'template'=>'links_sub_menu',
+    			'index' => $this->module,
+				'css_id' => $this->module,
+				'css_class' => array($this->module)
+    			) , $variables); 
+    	$db = new SQLite3($database);
+
+        $result = $db->query('SELECT * FROM userlist');
+        
+    	 while ($row = $result->fetchArray()) {
+               $rows[] = $row;
+         }
+          //SQLite3Result::numColumns();
+        for ($i = 0; $i < $result->numColumns(); $i++) {
+			    $col = $result->columnName($i);
+			    $columns[] = $col;
+			}
+				$table['header'] = $columns;
+				$table['rows'] = $rows; 
+				$output = $cck->_view('table_user_cp', $table);
+		// check for user id no id means site owner
+        $variables['userID'] = $cck->_path_segment(2);
+        if (empty($cck->_path_segment(2))) {
+            $variables['profileImage'] = 'default_user.jpeg';
+            $variables['userHandle'] = 'Site Members';
+            $variables['userBio'] = $cck->_view('default_content', $variables);
+            
+          }else{
+          	  
+          foreach($rows as $key => $value){
+          
+          	$variables['profileImage'] =  $value ['image'];
+            $variables['userHandle'] =  $value ['name'];
+            $variables['userBio'] = $value['bio'];
+          }
+        }
+         
+       
+        $variables['content'] =  $output;
+    	
+    	print $cck->_view('page_blog_view', $variables);
+
+    	       
+    }
+
+
+    function blog_list_content()
     {
     	global $cck, $ini_settings;
     	
@@ -140,7 +205,7 @@ class blog{
     	$variables['menuTitle'] = 'Blog ';
     	$variables['dbTable'] = 'userlist';
     	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
-    	$variables['sub_navigation'] = $cck->_module_links($sub_menu[$this->module],
+    	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
     			'index' => $this->module,
@@ -186,7 +251,7 @@ class blog{
             $variables['profileImage'] = 'default_user.jpeg';
             $variables['userHandle'] = 'Site Members';
             $variables['userBio'] = $cck->_view('default_content', $variables);
-            $variables['contentTitle'] = 'Members Blogs';
+            $variables['contentTitle'] = 'Content';
             
           }elseif(!empty($rows)){
           	  
@@ -226,72 +291,8 @@ class blog{
     	//$variables['contentTitle'] = $variables['userHandle'].'\'s Blog';
     	$variables['defaultContent'] = $cck->_view('default_content', $variables);
     	$variables['content'] =  '<!--User Id: ' .$variables['userID']. '- '. $variables['userHandle'] . '- ' .$variables['profileImage'].'--><br>' . $output;
-        print $cck->_view('page_blog_view', $variables);         
-    }
-
-
-    function blog_list()
-    {
-    	    
-    	global $cck, $ini_settings;
+        print $cck->_view('page_blog_view', $variables);     
     	
-    	$database = $ini_settings['databases']['user_db'];
-    	$table = array();
-    	$columns = array();
-    	$rows = array();
-   
-    	// get all links from each class controller
-    	$menu = $cck->_hooks('hook_links');    	
-    	$sub_menu = $cck->_hooks('hook_module_links');
-    	//var_dump($sub_menu); exit;
-    	$variables['menuTitle'] = 'Blog Users List';
-    	$variables['pageTitle'] = 'Blogs';
-    	$variables['contentTitle'] = $cck->_path_segment(1);
-    	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
-    	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
-    		array(
-    			'template'=>'links_sub_menu',
-    			'index' => $this->module,
-				'css_id' => $this->module,
-				'css_class' => array($this->module)
-    			) , $variables); 
-    	$db = new SQLite3($database);
-
-        $result = $db->query('SELECT * FROM userlist');
-        
-    	 while ($row = $result->fetchArray()) {
-               $rows[] = $row;
-         }
-          //SQLite3Result::numColumns();
-        for ($i = 0; $i < $result->numColumns(); $i++) {
-			    $col = $result->columnName($i);
-			    $columns[] = $col;
-			}
-				$table['header'] = $columns;
-				$table['rows'] = $rows; 
-				$output = $cck->_view('table_blogs', $table);
-		// check for user id no id means site owner
-        $variables['userID'] = $cck->_path_segment(2);
-        if (empty($cck->_path_segment(2))) {
-            $variables['profileImage'] = 'default_user.jpeg';
-            $variables['userHandle'] = 'Site Members';
-            $variables['userBio'] = $cck->_view('default_content', $variables);
-            
-          }else{
-          	  
-          foreach($rows as $key => $value){
-          
-          	$variables['profileImage'] =  $value ['image'];
-            $variables['userHandle'] =  $value ['name'];
-            $variables['userBio'] = $value['bio'];
-          }
-        }
-         
-       
-        $variables['content'] = "User Blogs: ". $output;
-    	
-    	print $cck->_view('page_blog_view', $variables);
-
     }
 
     function blog_categories()
@@ -307,9 +308,9 @@ class blog{
     	$menu = $cck->_hooks('hook_links');
     	$sub_menu = $cck->_hooks('hook_module_links');
     	$variables['seperators'] = array('|','-',';',':');
-    	$variables['pageTitle'] = 'Categories';
-    	$variables['menuTitle'] = 'Categories';
-    	$variables['contentTitle'] = 'Blog Categories';
+    	$variables['pageTitle'] = 'Blog';
+    	$variables['menuTitle'] = 'View blog';
+    	$variables['contentTitle'] = 'Categories';
     	$variables['dbTable'] = 'categories';
         
     	
@@ -337,11 +338,11 @@ class blog{
 			}
 				$table['header'] = $columns;
 				$table['rows'] = $rows; 
-				$output = $cck->_view('table_categories', $table);
+				$output = $cck->_view('table_user_cp', $table);
     	
     	
                
-        $variables['content'] = 'categories admin panel' . $output;
+        $variables['content'] = $output;
     	
     	print $cck->_view('default', $variables);
     }
@@ -360,7 +361,7 @@ class blog{
     	$sub_menu = $cck->_hooks('hook_module_links');
     	//var_dump($sub_menu); exit;
     	$variables['iniSettings'] = $ini_settings;
-    	$variables['menuTitle'] = 'Latest bloggers';
+    	$variables['menuTitle'] = 'View blog';
     	$variables['pageTitle'] = 'Recent posts';
     	$variables['contentTitle'] = $cck->_path_segment(1);
     	$variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);

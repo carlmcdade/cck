@@ -69,7 +69,7 @@ print('<!DOCTYPE html>
     <!-- /#content -->
     </div>
 <style>
-    <?php require('css/default.css'); ?>
+    <?php require('css/users.css'); ?>
 </style>
 </body>
 </html>

@@ -62,28 +62,45 @@ ul.dropdown-menu li a:hover{
 }
 
 
-/* sticky table headers */
+/*  table headers sticky */
+
+/*  tables  */
 table {
 	width: 100%;
-	border-collapse: collapse;
-	margin-top: 20px; /* Adjust margin as needed */
+	margin: 0; /* Adjust margin as needed */
+	border-collapse: separate; /* Don't collapse */
+  	border-spacing: 0;
+	
   }
   
   thead, tbody {
 	display: block;
-	width:100%;
+
   }
   
-  thead {
+  td.first-row {
+
 	position: sticky;
 	top: 0;
 	background-color: #f2f2f2; /* Set a background color for the sticky header */
+	border: 1px 0 1px 0;
+	border-style: solid;
+	border-color: #aaa8a8;
   }
   
-  th, td {
+  th,td{
 	padding: 10px;
 	text-align: left;
 	border: 1px solid #ddd; /* Add a border for better visibility */
+	
+  }
+
+  td.keep-width{
+	word-break: break-all;
+  }
+
+  th{
+	width: 100%;
   }
   
   tbody {
@@ -92,4 +109,3 @@ table {
   }
   
   /* Style the table as needed */
-  

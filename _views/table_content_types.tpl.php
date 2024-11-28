@@ -1,81 +1,85 @@
-<?php 
-$output = '<form><table class="table">';
-$output .= '<thead><tr>';
-// table header
-$displayCol = array(1,2,6);
-foreach ($header as $th => $column)
-{
-				if(in_array($th, $displayCol)){
-						$output .= '<th scope ="col">' .  $column . '</th>' . "\n";	
-				     //$output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">'. $row[$td].'</td>' . "\n";
-			    }else{
-			    	$output .= '' . "\n";	
-			    }
-			    
-	
+<?php
+
+$output = '<table class="table table-striped fs-6">';
+$output .= '<tr class="table-cells">';
+
+
+foreach ($header as $th => $column) {
+/*====== table header name override =====  */
+/*
+    
+    if($th == 2) {
+               //thi
+         continue;
+    } elseif($th == 3) {
+                //i mo
+         continue;
+    }
+    elseif($th == 4) {
+                //i mo
+         continue;
+    }
+     elseif($th == 5) {
+                //i mo
+         continue;
+    }
+    if ($th == 0) {
+        //i mo
+        $column = 'account';
+    } elseif ($th == 1) {
+        //i mo
+        $column = 'profile';
+    }
+
+*/
+
+    $output .= '<td id="id-'.$th.'" name="'.$column.'" class="first-row table-cells">' .  $column . '</td>' . "\n";
 }
-$output .= '</tr></thead>' . "\n";
-//$output .= '<tbody><tr>' . "\n";
-if(!empty($rows))
-{
-	// table rows
-	foreach ($rows as $tr => $row)
-	{
-		$output .= '<tr id="tr-'. (isset($id) ? $id : '') . '-' . $tr . '" class="table-cells">';
-		// table cells per row
-		
-		foreach($header as $td => $cell)
-		{  
-			
-			
-			if(isset($row[$td]))
-			{
-				
-			    switch($td)
-			    {
-			    case "0":
-			    	   $id = $row[$td];
 
-			    	  // $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">'.$row[$td].'</td>' . "\n";
+$output .= '</tr>' . "\n";
+//$output .= '<tbody>' . "\n";
+if (!empty($rows)) {
+    // table rows
+    foreach ($rows as $tr => $row) {
+        $output .= '<tr id="tr-'. (isset($id) ? $id : '') . '-' . $tr . '" class="table-cells">';
+        // table cells per row
+
+        foreach ($header as $td => $cell) {
+            if ($td == 0) {
+            } else {
 
 
-			    	break;
-			    case "1":
-			    	   
-			    	   //$row[$td] = '<a role="button"  class="btn btn-primary" href="?admin/edit_profile/'. $id .'">' .$row[$td]. '</a>' ;
-			    	break;
-			    
-			        case "4":
-			    	   $row[$td] = substr($row[$td],0,40);
-			    	break;
-			    	default :
-			    	    $placeholder = $row[$td];
-			    	 break;
-			    }
-			    if($td == 0 ){
-			         
-			    	 $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells"> <a role="button" style="width:100%" class="btn btn-primary mw-100" href="?admin/content_type_edit/'. $id .'">edit</a></td>' ;
-			    }
-			
-			    elseif($td == 1){
-			         
-			    	 $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells"> <a role="button" style="width:100%" class="btn btn-primary mw-100" href="?admin/content_type_post/'. $id .'">' .$row[$td]. '</a></td>' ;
-			    }
-			    elseif($td == 6){	
-				     $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">'. $row[$td].'</td>' . "\n";
-			    }
-			    else{
-                   }
-			}
-			else
-			{
-				$output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells"></td>' . "\n";
-			}
-		}
-		$output .= '</tr>' . "\n";
-	}
+            }
+
+            if (isset($row[$td])) {
+                $keeper = '';
+                switch ($td) {
+                    case "0":
+                        $id = $row[$td];
+
+                        $row[$td] = '<a name="'.$td .'" id="'. $id . '" role="button"  class="btn btn-primary" href="?content/content_type_edit/'. $id .'">edit</a>' ;
+
+                        break;
+                    case "1":
+                        $row[$td] = '<a name="' . $td . '" id="'. $id .'" role="button"  class="btn btn-primary" href="?content/content_add_post/'. $id .'">' .$row[$td]. '</a>' ;
+                        break;
+
+                    case "4":
+                        $row[$td] = substr($row[$td], 0, 40);
+                        break;
+                    default:
+                        $keeper = 'keep-width';
+                }
+
+
+                $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="'.$keeper.' table-cells">' . $row[$td] . '</td>' . "\n";
+            } else {
+                $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="'.$keeper.'. table-cells">none</td>' . "\n";
+            }
+        }
+        $output .= '</tr>' . "\n";
+    }
 
 }
-$output .= '</table></form>';
+$output .= '</table>';
 print $output;
-?>

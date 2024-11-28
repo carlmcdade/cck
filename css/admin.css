@@ -57,3 +57,51 @@ ul.dropdown-menu li a{
 	padding: 12px 10px 12px 10px  !important;
 	border-radius: 5px !important;
 }
+
+/*  table headers sticky */
+
+/*  tables  */
+table {
+	width: 100%;
+	margin: 0; /* Adjust margin as needed */
+	border-collapse: separate; /* Don't collapse */
+  	border-spacing: 0;
+	
+  }
+  
+  thead, tbody {
+	display: block;
+
+  }
+  
+  td.first-row {
+
+	position: sticky;
+	top: 0;
+	background-color: #f2f2f2; /* Set a background color for the sticky header */
+	border: 1px 0 1px 0;
+	border-style: solid;
+	border-color: #aaa8a8;
+  }
+  
+  th,td{
+	padding: 10px;
+	text-align: left;
+	border: 1px solid #ddd; /* Add a border for better visibility */
+	
+  }
+
+  td.keep-width{
+	word-break: break-all;
+  }
+
+  th{
+	width: 100%;
+  }
+  
+  tbody {
+	max-height: 300px; /* Set a maximum height for the tbody to enable scrolling */
+	overflow-y: auto;
+  }
+  
+  /* Style the table as needed */

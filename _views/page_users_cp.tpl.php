@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>CCK | <?php echo (isset($pageTitle) ? $pageTitle : ''); ?></title>
+<title>CCK | <?php echo(isset($pageTitle) ? $pageTitle : ''); ?></title>
 <meta name="description" content="CCK is a PHP framework for web developers to build on.">
 <meta name="keywords" content=" cck, drupal, wordpress, framework, cms, hosting, webhosting, server, php, servage">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,64 +22,45 @@
 <div class="container my-5">
 
 <div class="col-lg-8 px-0">
-<h1><?php echo (isset($pageTitle) ? $pageTitle : ''); ?></h1>
+<h1><?php echo(isset($pageTitle) ? $pageTitle : ''); ?></h1>
 
 
      
        
-<?php if(isset($mainNavigation)){
-		  echo $mainNavigation;
-		}
+<?php if (isset($mainNavigation)) {
+    echo $mainNavigation;
+}
 ?>
+    
+<!-- /#banner -->
+ 
 <div style="text-align:right;">
-<div class="btn-group">
-
-
-
-
+<div class="btn-group">        
+<?php if (isset($subNavigation)) {
+            echo $subNavigation;
+        }
+?>
+	      
+        <?php if (isset($adminNavigation)) {
+            echo $adminNavigation;
+        }
+?>
 </div></div>
 
+<?php
+$clearSpace = array("_", "-");
+$contentTitle = str_replace($clearSpace, " ", $contentTitle);
+$frontCheck = '?'. $_SERVER['QUERY_STRING'];
+if ($frontPage == $frontCheck || $urlSection == 'admin' || $urlSection == 'users') {
+    echo '<h1 style="margin: .5rem 0 0 0;text-align:center; border-color:#777777; border-style:solid; border-width: 1px 0 1px 0;">' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
+} else {
+    echo '<h1 style="margin: .5rem 0 0 0;text-align:center; border-color:#777777; border-style:solid; border-width: 1px 0 1px 0;">' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
+    ?>
 
-    
-     
-<!-- /#banner -->
+<?php  } ?>
 
+    <?php echo(isset($content) ? $content : ''); ?>
 
-       
-         
-         <?php 
-
-             $clearSpace = array("_", "-");
-             $contentTitle = str_replace($clearSpace, " ", $contentTitle);
-             $frontCheck = '?'. $_SERVER['QUERY_STRING'];
-                     if($frontPage == $frontCheck || $urlSection == 'admin'){
-                     	 echo '<h1>' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
-                     }else{
-                        //echo '<h1>' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
-                        
-                        ?>
-                            <div class="col text-start border border-danger rounded-3">
-     
-      <img style="float:left; width:150px; height:relative;margin:1.5em;" class="align-self-start mr-3 img-fluid" src="images/user_profile/user_id_<?php echo $userID . '/' .$profileImage. ''; ?>" alt="Generic placeholder image">     
-    <p class="fs-6"><?php echo $userBio; ?></p>
-    
-
-      </div>
-          
-                   <?php  } ?>
-         
-        <?php if(isset($subNavigation))
-              {
-		              echo $subNavigation;
-		          }
-        ?>
-	      
-        <?php if(isset($adminNavigation))
-              {
-		              echo $adminNavigation;
-		          }
-        ?>
-	      <div style="border-color:#777777; border-style:solid; border-width: 1px 0 0 0;height:600px;overflow-y: scroll;" class ="fs-4"><?php echo (isset($content) ? $content : ''); ?></div>
         
     <!-- /#content -->
   

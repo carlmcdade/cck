@@ -1243,7 +1243,9 @@ class admin {
     	$variables['subNavigation'] = $cck->_module_links($sub_menu[$this->module],
     		array(
     			'template'=>'links_sub_menu',
-    			'index' => $this->module
+    			'index' => $this->module,
+				'css_id' => '-'. $this->module,
+				'css_name' => array($this->module)
     			) , $variables); 
     	$db = new SQLite3($database);
 
@@ -1384,25 +1386,25 @@ class admin {
 			        'text' => 'User Profile',
 				    'path' => 'users/user_profile',
 					'css_id' => $this->module,
-				'css_class' => array($this->module)
+					'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(
 					'text' => 'User Accounts', 
 					'path' => 'users/user_account',
 					'css_id' => $this->module,
-				'css_class' => array($this->module)
+					'css_class' => array($this->module)
 					);
 		$var[$link][3] = array(
 					'text' => 'User Content', 
 					'path' => 'blog/blog_user',
 					'css_id' => $this->module,
-				'css_class' => array($this->module)
+					'css_class' => array($this->module)
 					);
 		$var[$link][4] = array(
 				    'text' => 'User Settings',
 				    'path' => 'users/user_settings',
 					'css_id' => $this->module,
-				'css_class' => array($this->module)
+					'css_class' => array($this->module)
 		);
 		
 			
@@ -1464,31 +1466,31 @@ class admin {
 					'text' => 'Profile', 
 					'path' => 'admin/edit_profile/'.$userID,
 					'css_id' => $this->module,
-				'css_class' => array($this->module)
+					'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(
 					'text' => 'Account', 
 					'path' => 'admin/edit_user/'.$userID,
 					'css_id' => $this->module,
-				'css_class' => array($this->module)
+					'css_class' => array($this->module)
 					);
 		$var[$link][3] = array(
 					'text' => 'Content', 
 					'path' => 'admin/edit_post/'.$userID,
 					'css_id' => $this->module,
-				'css_class' => array($this->module)
+					'css_class' => array($this->module)
 					);
 		$var[$link][4] = array(
-				'text' => 'Settings',
-				'path' => 'admin/edit_user_settings/'.$userID,
-				'css_id' => $this->module,
-				'css_class' => array($this->module)
+					'text' => 'Settings',
+					'path' => 'admin/edit_user_settings/'.$userID,
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 		);
 		$var[$link][5] = array(
-				'text' => 'Inbox',
-				'path' => 'admin/edit_messages/' .$userID,
-				'css_id' => $this->module,
-				'css_class' => array($this->module)
+					'text' => 'Inbox',
+					'path' => 'admin/edit_messages/' .$userID,
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 		);
 			
     	
@@ -1582,30 +1584,30 @@ class admin {
 					'text' => 'Profile', 
 					'path' => 'admin/edit_profile/'. $userID,
 					'css_id' => $this->module,
-				'css_class' => array($this->module)
+					'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(
 					'text' => 'Account', 
 					'path' => 'admin/edit_user/' . $userID,
 					'css_id' => $this->module,
-				'css_class' => array($this->module)
+					'css_class' => array($this->module)
 					);
 		$var[$link][3] = array(
 					'text' => 'Your Content', 
 					'path' => 'admin/edit_post/'. $userID,
 					'css_id' => $this->module,
-				'css_class' => array($this->module)
+					'css_class' => array($this->module)
 					);
 		$var[$link][4] = array(
-				'text' => 'Settings',
-				'path' => 'admin/edit_user_settings/'. $userID,
-				'css_id' => $this->module,
-				'css_class' => array($this->module)
+					'text' => 'Settings',
+					'path' => 'admin/edit_user_settings/'. $userID,
+					'css_id' => $this->module,
+					'css_class' => array($this->module)
 		);
 		$var[$link][5] = array(
-				'text' => 'Inbox',
-				'path' => 'admin/edit_messages/'. $userID,
-				'css_id' => $this->module,
+					'text' => 'Inbox',
+					'path' => 'admin/edit_messages/'. $userID,
+					'css_id' => $this->module,
 				'css_class' => array($this->module)
 		);
 			
@@ -1693,8 +1695,9 @@ class admin {
 	    $var = array();
     	
     	$var[$link][1] = array( 
-						'path' => 'users/user_profile',
-						'css_id' => $this->module,
+					'text' => 'User Profile',
+					'path' => 'users/user_profile',
+					'css_id' => $this->module,
 				'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(
@@ -1769,8 +1772,9 @@ class admin {
 		$var = array();
     	
     	$var[$link][1] = array( 
-						'path' => 'users/user_profile',
-						'css_id' => $this->module,
+                    'text' => 'User Profile',
+					'path' => 'users/user_profile',
+					'css_id' => $this->module,
 				'css_class' => array($this->module)
 					);
 		$var[$link][2] = array(

@@ -24,16 +24,27 @@
 <div class="col-lg-8 px-0">
 <h1><?php echo(isset($pageTitle) ? $pageTitle : ''); ?></h1>
 
-
-     
-       
 <?php if (isset($mainNavigation)) {
     echo $mainNavigation;
 }
 ?>
+
+  
+<!-- /#banner -->
+<?php
+
+$clearSpace = array("_", "-");
+$contentTitle = str_replace($clearSpace, " ", $contentTitle);
+$frontCheck = '?'. $_SERVER['QUERY_STRING'];
+if ($frontPage == $frontCheck || $urlSection == 'admin' || $urlSection == 'users') {
+    echo '<h1>' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
+} else {
+    echo '<h1>' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
+}
+?>
 <div style="text-align:right;">
 <div class="btn-group">
-
+<!-- sub navigation  -->
 <?php if (isset($subNavigation)) {
     echo $subNavigation;
 }
@@ -45,50 +56,22 @@
 }
 ?>
 </div></div>
-
-
-    
-     
-<!-- /#banner -->
-
-
-       
-         
-         <?php
-
-             $clearSpace = array("_", "-");
-$contentTitle = str_replace($clearSpace, " ", $contentTitle);
-$frontCheck = '?'. $_SERVER['QUERY_STRING'];
-if ($frontPage == $frontCheck || $urlSection == 'admin') {
-    echo '<h1>' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
-} else {
-    echo '<h1>' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
-
-    ?>
-
-
-      
-          
-                   <?php  } ?>
-         
-      
-	      
-	      <?php echo(isset($content) ? $content : ''); ?>
+<?php echo(isset($content) ? $content : ''); ?>
         
     <!-- /#content -->
-
+<!-- footer -->
     <?php
 
-           if ((require 'default_footer.tpl.php') == true) {
-               echo '<!-- default_footer -->';
-               //exit;
-           }
+       if ((require 'default_footer.tpl.php') == true) {
+           echo '<!-- default_footer -->';
+           //exit;
+       }
 ?>
 
           </div>
 </div> 
 <style>
-  <?php require( "css/admin.css"); ?>
+  <?php require("css/admin.css"); ?>
 </style>
 </body>
 </html> 

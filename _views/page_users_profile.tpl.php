@@ -1,8 +1,8 @@
-<!-- <?php //print_r ($_SERVER); ?>--><!DOCTYPE html>
+<!--  page_users_profile --><!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>CCK | <?php echo (isset($pageTitle) ? $pageTitle : ''); ?></title>
+<title>CCK | <?php echo(isset($pageTitle) ? $pageTitle : ''); ?></title>
 <meta name="description" content="CCK is a PHP framework for web developers to build on.">
 <meta name="keywords" content=" cck, drupal, wordpress, framework, cms, hosting, webhosting, server, php, servage">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,28 +22,18 @@
 <div class="container my-5">
 
 <div class="col-lg-8 px-0">
-<h1><?php echo (isset($pageTitle) ? $pageTitle : ''); ?></h1>
+<h1><?php echo(isset($pageTitle) ? $pageTitle : ''); ?></h1>
 </div></div>
 
 <div class="container my-5">
 
       <div class="col-lg-8 px-0">
               
-<?php if(isset($mainNavigation)){
-		  echo $mainNavigation;
-		}
-?>
-<div class="btn-group">
-<?php if(isset($subNavigation)){
-		  echo $subNavigation;
-		}
+<?php if (isset($mainNavigation)) {
+    echo $mainNavigation;
+}
 ?>
 
-<?php if(isset($adminNavigation)){
-		  echo $adminNavigation;
-		}
-?>
-</div>
     
       </div>
     </div>
@@ -53,41 +43,47 @@
       <div class="col-lg-8 px-0">
        
          <h1>
-         <?php 
+<?php
+if (empty($userID)) {
+    $userID = 'shared';
+    $profileImage = 'default_user.jpeg';
+    $userBio = require('default_content.tpl.php');
+}
 
-             $clearSpace = array("_", "-");
-             $contentTitle = str_replace($clearSpace, " ", $contentTitle);
-             echo (isset($contentTitle) ? $contentTitle : ''); 
-             if (empty($userID))
-             	 {
-             	 	 $userID = 'shared';
-             	 	 $profileImage = 'default_user.jpeg';
-             	 	 $userBio = '<p class="fs-5">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-';
-             	 }
-             	 
-             	 
-
-         ?>
+?>
          </h1>
        
-      
- 
+<h4><?php echo(isset($userName) ? $userName : $userHandle); ?></h4> 
 
-   
-    <div class="col border border-danger rounded ml-2 mr-2">
-    <img style="float:left; width:150px; height:150px;" class="align-self-start m-3 img-fluid" src="images/user_profile/user_id_<?php echo $userID . '/' .$profileImage. ''; ?>" alt="Generic placeholder image">   
-    <p  style="margin-right:.75em;margin-left:1em;min-height: 150px;" class="fs-6 mt-2 ml-2 mr-2"><?php echo $userBio; ?></p>
-    </div>
+<?php
 
-          
-          <h4><?php echo (isset($userName) ? $userName : $userHandle); ?></h4> 
-	      
-	      <?php echo (isset($content) ? $content : ''); ?>
+$clearSpace = array("_", "-");
+$contentTitle = str_replace($clearSpace, " ", $contentTitle);
+$frontCheck = '?'. $_SERVER['QUERY_STRING'];
+if ($frontPage == $frontCheck || $urlSection == 'admin' || $urlSection == 'users') {
+    echo '<h1>' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
+} else {
+    echo '<h1>' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
+}
+?>
+<div style="text-align: right;">
+<div class="btn-group">
+<?php if (isset($subNavigation)) {
+    echo $subNavigation;
+}
+?>
+
+<?php if (isset($adminNavigation)) {
+    echo $adminNavigation;
+}
+?>
+</div>
+</div>
+<?php echo(isset($content) ? $content : ''); ?>
          <!-- /#content -->
 
 <?php require('default_footer.tpl.php'); ?>
 </div></div>
-<style><?php require( "css/users.css"); ?></style>
+<style><?php require("css/users.css"); ?></style>
 </body>
 </html>

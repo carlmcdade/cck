@@ -1,38 +1,43 @@
-.btn{
-    color: rgb(82,19,19) !important;
-    background-color: #ff9999 !important;
+
+.btn-primary{
+	color: #f55d5d !important;
+	background-color: #f7d1d1 !important;
 	border-color: #ff9999 !important;
+
+
+} 
+
+.btn{
+    color: #852525!important;
+    background-color: #f7d1d1 !important;
+	border-color: #f55d5d!important;
 
 
 }
 
-a.btn-primary{
-	color: #4d1717 !important;
-	background-color: #f7d1d1!important;
-	border-color: #ff9999 !important;
-
-
-}  
-
 .bg-secondary{
-	color: rgb(82, 19, 19) !important;
-	background-color: #ff9999 !important;
-	border-color: #ff9999 !important;
+	color: #f7d1d1 !important;
+	background-color: #f55d5d !important;
+	border-color: #f55d5d !important;
 
 
 }
 
 .btn-secondary{
-	color: rgb(82, 19, 19) !important;
-	background-color: #f7d1d1 !important;
-	border-color: #f7d1d1 !important;
+	color: #f7d1d1 !important;
+	background-color: #f55d5d !important;
+	border-color: #f55d5d !important;
 
 
 }
 
+ul.dropdown-menu li a{
+	color: #852525 !important;
+}
+
 
 ul.dropdown-menu{
-	color: rgb(82, 19, 19) !important;
+	color: #852525 !important;
 	background-color: #f3d7d7 !important;
 	border-color: #ff9999 !important;
 
@@ -40,23 +45,15 @@ ul.dropdown-menu{
 }
 
 ul.dropdown-menu a{
-	background-color: #f3d7d7;
-}
-
-.btn{
-	color: rgb(82, 19, 19) !important;
-	background-color: #eeb9bf !important;
-	border-color: #ff9999 !important;
-
-
+	background-color: #f7d1d1!important;
 }
 
 .table-danger{
-	background-color: #ffc2c2;
+	background-color: #ffc2c2 !important;
 }
 
 .border-danger{
-	border-color: #f55d5d;
+	border-color: #f55d5d !important;
 }
 
 .main-item a{
@@ -66,18 +63,30 @@ ul.dropdown-menu a{
 	border-radius: 5px !important;
 }
 
-.main-item a:hover{
+.main-item a:hover, .table a:hover{
 	color: #fcdddd !important;
 	background-color: #f55d5d !important;
 }
 
+
+ul.dropdown-menu li a:hover{
+	color: rgb(230, 243, 255) !important;
+	background-color: #f55d5d!important;
+	border-style: solid !important;
+	border: 1px 0 1px 0 !important;
+	border-color: #f55d5d !important;
+}
+
+
 /*  table headers sticky */
 
-/* styles.css */
+/*  tables  */
 table {
 	width: 100%;
-	border-collapse: collapse;
-	margin-top: 20px; /* Adjust margin as needed */
+	margin: 0; /* Adjust margin as needed */
+	border-collapse: separate; /* Don't collapse */
+  	border-spacing: 0;
+	
   }
   
   thead, tbody {
@@ -85,17 +94,25 @@ table {
 
   }
   
-  thead {
+  td.first-row {
 
 	position: sticky;
 	top: 0;
 	background-color: #f2f2f2; /* Set a background color for the sticky header */
+	border: 1px 0 1px 0;
+	border-style: solid;
+	border-color: #aaa8a8;
   }
   
   th,td{
 	padding: 10px;
 	text-align: left;
 	border: 1px solid #ddd; /* Add a border for better visibility */
+	
+  }
+
+  td.keep-width{
+	word-break: break-all;
   }
 
   th{
