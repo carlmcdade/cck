@@ -37,12 +37,14 @@ if(!empty($rows))
 	$output .= '<input value= "'.$contentTime.'" type="hidden" class="form-control" id="content-time" name="content_time">' . "\n";
 	$output .= '<input value= "'.$contentUserId.'" type="hidden" class="form-control" id="content-user-id" name="content_user_id">' . "\n";
 	$output .= '<input value= "'.$contentTypeId.'" type="hidden" class="form-control" id="content-type-id" name="content_type_id">' . "\n";
-	$output .= '<tr>
+	/* $output .= '<tr>
 	<td style="text-align:center;border-style:solid; border: 1px 0 1px 0; border-color:#777777; background-color:#777777;color:#ffffff;"
 	name="td_content_title" id="td-content-title" class="table-cells">Meta Name</td></tr>' . "\n";
+    
 
 	$output .= '<tr><td name="td_content_title" id="td-content-title" class="table-cells"><input value="'.$contentType.' - '.$contentTime.'" 
 	type="text" class="form-control" placeholder="required!" id="content-title" name="content_title" REQUIRED></td></tr>' . "\n";
+    */
 	$output .= '<tr>
 	<td style="text-align:center;border-style:solid; border: 1px 0 1px 0; border-color:#777777; 
 	background-color:#777777;color:#ffffff;"name="td_content_title" id="td-content-title" class="table-cells">Content Type Fields</td></tr>' . "\n";
@@ -73,7 +75,7 @@ if(!empty($rows))
 	$output .= '<tr><td id="td-' . (isset($id) ? $id : '')  . $row['name'] . '-' .  $row['name'] . 
 				     '" class="table-cells"> 
 					 <button id="save" name="save" value="save" type="submit" class="btn btn-secondary"> Save</button>'."\n".'
-					 <button title="Requires Site Administrator Permissions" class="btn btn-secondary" type="submit" formaction="?admin/admin_content_field_add/'.$contentTypeId.'">Add new field</button>'."\n".'
+					 <button class="btn btn-secondary" type="submit" formaction="?content/content_add_field/'.$contentTypeId.'">Add new field</button>'."\n".'
 					 </td></tr>' . "\n";
 		
 }

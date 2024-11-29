@@ -254,7 +254,7 @@ class users
         if (empty($cck->_path_segment(2))) {
             $variables['profileImage'] = 'default_user.jpeg';
             $variables['userHandle'] = 'Site Members';
-            $variables['menuTitle'] = 'Site Users';
+            $variables['menuTitle'] = 'User';
 
             $link = 'links';
 
@@ -274,7 +274,7 @@ class users
                         );
             $var[$link][3] = array(
                         'text' => 'Content',
-                        'path' => 'users/user_content',
+                        'path' => 'content/content_user_list',
                         'css_id' => $this->module.'-3',
                         'css_class' => array($this->module.'_3')
                         );
