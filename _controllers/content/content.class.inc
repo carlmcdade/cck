@@ -287,15 +287,10 @@ class content
         $columns = array();
         $rows = array();
 
-        $view_content = $_POST;
-        $view_id = $cck->_path_segment(2);
+        
         $menu = $cck->_hooks('hook_links');
         $variables['page_title'] = 'Saved';
         $variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
-
-        $output = $this->module;
-        $output .= '<pre>'.print_r($view_content, true);
-        $output .= print_r($view_id, true) .'</pre>';
 
 
         
@@ -323,6 +318,16 @@ class content
         $table['header'] = $columns;
         $table['rows'] = $rows;
         //$output .= $cck->_view('table_content_add', $table);
+		
+        $view_content['content_post'] = $_POST;
+		$view_content['content_type'] = $_POST['content_type'];
+		$view_content['content_time_created'] = date("Y-m-d H:i:s");   ;
+		$view_id = $cck->_path_segment(2);
+
+
+        $output = $this->module;
+        $output .= '<pre>'.print_r($view_content, true);
+        $output .= print_r($view_id, true) .'</pre>';
 
     
 		
@@ -396,7 +401,10 @@ class content
         $form['header'] = $columns;
         $form['rows'] = $rows;
         $form['fieldType'] = '';
-        $form['contentType'] = (isset($form['contentType']) ? $form['contentType'] : '');
+		$form['userName'] = (isset($form['userName']) ? $form['userName'] : 'owner');
+		$form['contentType'] = (isset($form['contentType']) ? $form['contentType'] : '');
+		$form['contentId'] = $form['contentType'].'-'.hash('crc32',$cck->_path_segment(1).time() . mt_rand()) .'-'. $form['userName'];
+        
         $output = $cck->_view('form_user_content_post', $form);
 
 

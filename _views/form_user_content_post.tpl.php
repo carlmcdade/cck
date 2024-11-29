@@ -32,6 +32,8 @@ $output .= '<thead><tr>';
 if(!empty($rows))
 {
 	// table rows
+	$output .= '<input value= "'.$contentId.'" type="hidden" class="form-control" id="content-id" name="content_id">' . "\n";
+	$output .= '<input value= "'.$contentType.'" type="hidden" class="form-control" id="content-type" name="content_type">' . "\n";
 	foreach ($rows as $tr => $row)
 	{
 		$output .= '<tr id="tr-'. (isset($id) ? $id : '') . '-' . $tr . '" class="table-cells">';
