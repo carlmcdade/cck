@@ -1,4 +1,4 @@
-<?php 
+<!--table_categories--><?php 
 $output = '<table class="table">';
 $output .= '<thead><tr>';
 // table header

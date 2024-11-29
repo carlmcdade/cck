@@ -57,14 +57,14 @@ class content
 
         //var_dump($rows); exit;
         $link = 'links';
-       /* foreach ($rows as $key => $value) {
-            $var[$link][$key] = array(
-                'text' => $value['name'],
-                'path' => $this->module . '/content_add_post/' . $value['id'],
-                'css_class' => array($this->module, 'module_item'),
-                'css_id' => $this->module . ''
-                );
-        }
+        /* foreach ($rows as $key => $value) {
+             $var[$link][$key] = array(
+                 'text' => $value['name'],
+                 'path' => $this->module . '/content_add_post/' . $value['id'],
+                 'css_class' => array($this->module, 'module_item'),
+                 'css_id' => $this->module . ''
+                 );
+         }
 */
         $var[$link][] = array(
                 'text' => 'Create',
@@ -123,12 +123,12 @@ class content
         $menu = $cck->_hooks('hook_links');
         $sub_menu = $cck->_hooks('hook_module_links');
         $variables['seperators'] = array('|','-',';',':');
-        
+
         $variables['dbTable'] = 'content';
-        
+
         $variables['pageTitle'] = 'Content';
         $variables['contentTitle'] = 'Content list';
-		$variables['menuTitle'] = 'Add content';
+        $variables['menuTitle'] = 'Add content';
 
         $variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
         $variables['subNavigation'] = $cck->_module_links(
@@ -286,20 +286,11 @@ class content
         $columns = array();
         $rows = array();
 
-        
+
         $menu = $cck->_hooks('hook_links');
         $variables['page_title'] = 'Saved';
         $variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
-
-
-        
-
-
-
         $db = new SQLite3($database);
-
-
-
         if (!empty($typeID)) {
             $result = $db->query('SELECT * FROM content WHERE id='. $view_id .'');
         } else {
@@ -317,21 +308,28 @@ class content
         $table['header'] = $columns;
         $table['rows'] = $rows;
         //$output .= $cck->_view('table_content_add', $table);
-		
-        $view_content['content_post'] = $_POST;
-		$view_content['content_type'] = $_POST['content_type'];
-		$view_content['content_id'] = $_POST['content_id'];
-		$view_content['content_time_created'] = $_POST['content_time'];  
-		$view_content['content_type_id'] = $_POST['content_type_id'];
-		$view_id = $cck->_path_segment(2);
+
+        $view_content['content_body'] = $_POST;
+        //$view_content['content_json'] = json_encode($_POST, JSON_PRETTY_PRINT);
+        $view_content['content_type'] = $_POST['content_type'];
+        $view_content['content_id'] = $_POST['content_id'];
+        $view_content['content_time_created'] = $_POST['content_time'];
+        $view_content['content_published'] = false;
+        $view_content['content_type_id'] = $_POST['content_type_id'];
+        $view_content['content_category_id'] = $_POST['content_type_categories'];
+        $view_content['content_user_id'] = $_POST['content_user_id'];
+        $view_content['content_form_fields'] = array_keys($_POST);
+
+
+        $view_id = $cck->_path_segment(2);
 
 
         $output = $this->module;
         $output .= '<pre>'. print_r($view_content, true);
         $output .= '</pre>';
 
-    
-		
+
+
         $variables['pageTitle'] = $view_id .' Saved';
         $variables['contentTitle'] = $view_id .' Saved';
         $variables['content'] =  $output;
@@ -380,17 +378,20 @@ class content
         $resultAdd = $db->query('SELECT * FROM content_types WHERE type_id ="'. $typeID.'";');
         $result = $db->query('SELECT * FROM content_type_fields WHERE content_type_id ="'. $typeID.'" ORDER BY weight asc;');
 
-        while ($row = $result->fetchArray()) {
-            $rows[] = $row;
+        while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+            $rows[]= $row;
 
         }
 
-
-        while ($rowAdd = $resultAdd->fetchArray()) {
+        $count = 1;
+        while ($rowAdd = $resultAdd->fetchArray(SQLITE3_ASSOC)) {
             $form['contentType'] = $rowAdd['name'];
-			$form['contentTypeId'] = $rowAdd['id'];
+            $form['contentTypeId'] = $rowAdd['id'];
+            $form['contentUserId'] = $rowAdd['contenttype_user_id'];
+            $form['contentTypeCategories']['category-'. $count] = $rowAdd['contenttype_category_id'];
 
             $r[] = $rowAdd;
+            $count = $count+1;
         }
         //var_dump($rows);
         //SQLite3Result::numColumns();
@@ -402,23 +403,25 @@ class content
         $form['mimeType'] = '';
         $form['header'] = $columns;
         $form['rows'] = $rows;
-       
-		$form['contentUserId'] = (isset($form['contentUserId']) ? $form['contentUserId'] : '1');
-		$form['userName'] = (isset($form['userName']) ? $form['userName'] : 'owner');
-		$form['contentType'] = (isset($form['contentType']) ? $form['contentType'] : '');
-		$form['contentId'] = $form['contentType'].'-'.hash('crc32',$cck->_path_segment(1).time() . mt_rand()) .'-'. $form['userName'];
-        $form['contentTime'] = date("Y-m-d H:i:s"); 
+
+        $form['contentUserId'] = (isset($form['contentUserId']) ? $form['contentUserId'] : '1');
+        $form['userName'] = (isset($form['userName']) ? $form['userName'] : 'owner');
+        $form['contentType'] = (isset($form['contentType']) ? $form['contentType'] : '');
+        $form['contentId'] = $form['contentType'].'-'.hash('crc32', $cck->_path_segment(1).time() . mt_rand()) .'-'. $form['userName'];
+        $form['contentTypeFields']['content_type_fields'] = print_r($rows,TRUE); //content type fields are not  content form fields
+
+        $form['contentTime'] = date("Y-m-d H:i:s");
         $output = $cck->_view('form_user_content_post', $form);
 
 
 
-        $variables['content'] = 'create new content using <h3><i>'.$form['contentType'].'</i></h3>' . $output;
+        $variables['content'] = 'create new content using - <h3><i>'.$form['contentType'].'</i></h3>' . $output;
 
         print $cck->_view('page_form', $variables);
 
     }
 
-	public function content_add_field()
+    public function content_add_field()
     {
 
         global $cck,$ini_settings;
@@ -467,7 +470,7 @@ class content
 
         while ($rowAdd = $resultAdd->fetchArray()) {
             $form['contentType'] = $rowAdd['name'];
-			$form['contentTypeId'] = $rowAdd['id'];
+            $form['contentTypeId'] = $rowAdd['id'];
 
             $r[] = $rowAdd;
         }
@@ -481,12 +484,12 @@ class content
         $form['mimeType'] = '';
         $form['header'] = $columns;
         $form['rows'] = $rows;
-       
-		$form['contentUserId'] = (isset($form['contentUserId']) ? $form['contentUserId'] : '1');
-		$form['userName'] = (isset($form['userName']) ? $form['userName'] : 'owner');
-		$form['contentType'] = (isset($form['contentType']) ? $form['contentType'] : '');
-		$form['contentId'] = $form['contentType'].'-'.hash('crc32',$cck->_path_segment(1).time() . mt_rand()) .'-'. $form['userName'];
-        $form['contentTime'] = date("Y-m-d H:i:s"); 
+
+        $form['contentUserId'] = (isset($form['contentUserId']) ? $form['contentUserId'] : '1');
+        $form['userName'] = (isset($form['userName']) ? $form['userName'] : 'owner');
+        $form['contentType'] = (isset($form['contentType']) ? $form['contentType'] : '');
+        $form['contentId'] = $form['contentType'].'-'.hash('crc32', $cck->_path_segment(1).time() . mt_rand()) .'-'. $form['userName'];
+        $form['contentTime'] = date("Y-m-d H:i:s");
         $output = $cck->_view('form_content_field_add', $form);
 
 

@@ -1,4 +1,4 @@
-<?php 
+<!--table_blogs--><?php 
 $output = '<table class="table table-responsive">';
 $output .= '<thead><tr>';
 // table header

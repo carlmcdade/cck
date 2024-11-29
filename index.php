@@ -27,6 +27,8 @@ if (file_exists(INI_FILENAME)) {
 
 }
 
+
+
 /**
  *  check installation environment
  */
@@ -42,3 +44,5 @@ if ($_SERVER['QUERY_STRING'] == 'i=1' || $_SERVER['QUERY_STRING'] == '') {
 // Start system and respond to calls
 $cck = new CCK();
 $cck->_bootstrap();
+
+

@@ -1,12 +1,12 @@
 <?php 
 $output = '<table class="table table-striped">';
-$output .= '<thead><tr>';
+$output .= '<tr class="table-cells">';
 // table header
 foreach ($header as $th => $column)
 {
-	$output .= '<th scope ="col">' .  $column . '</th>' . "\n";	
+	$output .= '<td class="first-row">' .  $column . '</td>' . "\n";	
 }
-$output .= '</tr></thead>' . "\n";
+$output .= '</tr>' . "\n";
 //var_dump($rows);
 if(!empty($rows))
 {

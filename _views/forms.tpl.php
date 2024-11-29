@@ -14,6 +14,6 @@
     <input type="checkbox"  value="continuous_login" name="open_session" class="form-check-input" id="exampleCheck1">
     <label class="form-check-label" for="exampleCheck1">Keep me logged in</label>
   </div>
-  <button name="login_send" value="user_credentials" type="submit" class="btn btn-primary">Submit</button>
+  <button name="btn btn-secondary login_send" value="user_credentials" type="submit" class="btn btn-primary">Submit</button>
 </form>
 <!-- form end -->

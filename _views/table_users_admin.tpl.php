@@ -1,4 +1,4 @@
-<?php 
+<!--table_users_admin --><?php 
 $output = '<form method="POST" action="?users/edit_profile_save"><table class="table">';
 $output .= '<thead><tr>';
 // table header

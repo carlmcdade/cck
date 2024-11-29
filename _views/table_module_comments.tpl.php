@@ -1,4 +1,4 @@
-<?php
+<!-- table_module_comments --><?php
 //var_dump($moduleMethods);
 $output = '<div class="container"';
 $method_output = '';

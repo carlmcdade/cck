@@ -1,4 +1,4 @@
-<!-- <?php //print_r ($_SERVER); ?>--><!DOCTYPE html>
+<!-- page user save --><!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />

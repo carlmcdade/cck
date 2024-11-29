@@ -1,4 +1,4 @@
-<?php
+<!--table_blog_latest_ content --><?php
 
 if(!isset($rows)){
 		

@@ -74,7 +74,7 @@ table {
 
   }
   
-  td.first-row {
+  td.first-row, td.last-row{
 
 	position: sticky;
 	top: 0;
@@ -83,7 +83,15 @@ table {
 	border-style: solid;
 	border-color: #aaa8a8;
   }
-  
+  .td.last-row{
+
+	position: sticky;
+	bottom: 0;
+	background-color: #f2f2f2; /* Set a background color for the sticky header */
+	border: 1px 0 1px 0;
+	border-style: solid;
+	border-color: #aaa8a8;
+  }
   th,td{
 	padding: 10px;
 	text-align: left;
@@ -100,7 +108,7 @@ table {
   }
   
   tbody {
-	max-height: 300px; /* Set a maximum height for the tbody to enable scrolling */
+	max-height: 600px; /* Set a maximum height for the tbody to enable scrolling */
 	overflow-y: auto;
   }
   

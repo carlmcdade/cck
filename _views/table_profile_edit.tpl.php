@@ -1,4 +1,4 @@
-<?php 
+<!--table_profile_edit --><?php 
 $output = '<form name="form" id="form" method="POST" action="?users/edit_profile_save"><table class="table">';
 $output .= '<thead><tr>';
 

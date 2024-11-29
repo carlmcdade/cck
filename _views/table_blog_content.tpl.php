@@ -1,4 +1,4 @@
-<?php
+<!-- table_blog_content --><?php
 
 if(!isset($rows)){
 		

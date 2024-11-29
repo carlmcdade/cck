@@ -1,4 +1,4 @@
-<?php
+<!--table_user_cp --><?php
 
 $output = '<table class="table table-striped fs-6">';
 $output .= '<tr class="table-cells">';

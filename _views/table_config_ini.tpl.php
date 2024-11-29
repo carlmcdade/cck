@@ -1,41 +1,62 @@
-<?php 
+<!--table_categories--><?php 
 $output = '<table class="table table-striped">';
-$output .= '<thead><tr>';
+$output .= '<tr>';
 // table header
 foreach ($header as $th => $column)
 {
-	$output .= '<th scope ="col">' .  $column . '</th>' . "\n";	
+	$output .= '<td class="first-row">' .  $column . '</td>' . "\n";	
 }
-$output .= '</tr></thead>' . "\n";
-
+$output .= '</tr>' . "\n";
+//$output .= '<tbody><tr>' . "\n";
 if(!empty($rows))
 {
 	// table rows
-	//$counter = 0;
-	//$output .= '<tr><td colspan="2">'. $firstRow[1].'something</td></tr>' . "\n";
 	foreach ($rows as $tr => $row)
 	{
-		
-		
 		$output .= '<tr id="tr-'. (isset($id) ? $id : '') . '-' . $tr . '" class="table-cells">';
 		// table cells per row
 		foreach($header as $td => $cell)
 		{
+			
 			if(isset($row[$td]))
 			{
-				if(strlen($row[$td] > 40)){
-				     $row[$td] = substr($row[$td],0,40);
-				}
-				$output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells"><a href="?admin/module_comments_view/'.$row[$td].'">' . $row[$td] . '</a></td>' . "\n";
+				
+                if(!empty($row[$td] && $td !== 1 )){
+                    if(is_numeric($row[$td])){
+                        $cell_check = $row[2];
+                      }else{
+                        $cell_check = $row[$td];  
+                      }
+                    if($row[$td] == $row[2]){
+                        $name_check = '';
+                    }else{
+                        $name_check = '='.$row[$td];
+                    }
+					$row[$td] = '<a role="button" class="btn btn-primary" href="?admin/admin_config_edit&'.$row[2]. $name_check .'">' .$cell_check. '</a>' ;
+                    $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">' . $row[$td] . '</td>' . "\n";
+			    }else{
+                    if(empty($row[$td])){
+                      $cell_check = 'empty';
+                    }elseif(is_array($row[$td])){
+                        $cell_check = 'list';  
+                      }
+                    else{
+                      $cell_check = $row[$td];  
+                    }
+                    
+                    $row[$td] = '<a role="button" class="btn btn-primary" href="?admin/admin_config_edit&'.$row[2].'='.$cell_check.'">' .$cell_check. '</a>' ;
+                    $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">' . $row[$td] . '</td>' . "\n";
+                }
+				
 			}
 			else
 			{
-				$output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">' . $section .'</td>' . "\n";
+				$output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="table-cells">empty</td>' . "\n";
 			}
 		}
 		$output .= '</tr>' . "\n";
 	}
-    //$counter = $counter +1;
+
 }
 $output .= '</table>';
 print $output;

@@ -179,7 +179,9 @@ class CCK
     public function _bootstrap($inclass = null, $foraction = null)
     {
         // required
+
         global $cck,$ini_settings;
+        session_start();
         $controller = null;
         $action = null;
         $arguments = implode(',', func_get_args());
@@ -291,6 +293,37 @@ class CCK
             }
         } else {
             return 'The model file was not found.';
+        }
+    }
+    public function session_start()
+    { /* Starts the session */
+
+
+        global $cck,$ini_settings, $_SESSION;
+
+        /* Check Login form submitted */
+        if (isset($_POST['login_send'])) {
+            /* Define username and associated password array */
+            $logins = array(
+                'carl@dev.com' => '123456',
+                'username1' => 'password1',
+                'username2' => 'password2'
+            );
+
+            /* Check and assign submitted Username and Password to new variable */
+            $Username = isset($_POST['Username']) ? $_POST['Username'] : '';
+            $Password = isset($_POST['Password']) ? $_POST['Password'] : '';
+
+            /* Check Username and Password existence in defined array */
+            if (isset($logins[$Username]) && $logins[$Username] == $Password) {
+                /* Success: Set session variables and redirect to Protected page  */
+                $_SESSION['UserData']['Username'] = $logins[$Username];
+                header('"location:'.$ini_settings['site']['frontpage'].'"');
+                exit;
+            } else {
+                /*Unsuccessful attempt: Set error message */
+                $msg = "<span style='color:red'>Invalid Login Details</span>";
+            }
         }
     }
 

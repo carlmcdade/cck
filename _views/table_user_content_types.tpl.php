@@ -1,4 +1,4 @@
-<?php 
+<!--table_user_content_types --><?php 
 $output = '<form><table class="table">';
 $output .= '<thead><tr>';
 // table header
