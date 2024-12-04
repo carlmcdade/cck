@@ -219,6 +219,8 @@ class users
         $table = array();
         $columns = array();
         $rows = array();
+        $output ='';
+        $msg = 'messages : ';
 
 
         // get all links from each class controller
@@ -342,6 +344,15 @@ class users
         );
 
         $variables['content'] = $output;
+        $variables['CCK'] = $cck;
+        $variables['INI'] = $ini_settings;
+        $variables['formName'] = 'form_login_user';
+        $variables['postUrl'] = '?admin/login_check';
+
+        $msg .= "";
+        $variables['messages'] = $msg;
+        $variables['loggedInUser'] =  (isset($_SESSION['UserData']['UserName']) ? $_SESSION['UserData']['UserName']:'');
+        $variables['VAR'] = $variables;
         print $cck->_view('page_users_cp', $variables);
     }
 

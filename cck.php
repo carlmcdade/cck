@@ -181,7 +181,7 @@ class CCK
         // required
 
         global $cck,$ini_settings;
-        session_start();
+
         $controller = null;
         $action = null;
         $arguments = implode(',', func_get_args());

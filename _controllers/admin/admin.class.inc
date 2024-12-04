@@ -178,7 +178,7 @@ class admin
         $variables['$POST'] = $_POST;
         $variables['VAR'] = $variables;
         $variables['INI'] = $ini_settings;
-        $variables['loggedInUser'] = $_SESSION;
+        $variables['loggedInUser'] = (isset($_SESSION['UserData']['UserName']) ? $_SESSION['UserData']['UserName']: '' );
         print $cck->_view('page_admin', $variables);
     }
 
@@ -323,7 +323,7 @@ class admin
         //var_dump($sub_menu); exit;
         $variables['menuTitle'] = 'Site Admin';
         $variables['pageTitle'] = 'Site Admin';
-        $variables['contentTitle'] = $cck->_path_segment(1);
+        $variables['contentTitle'] = 'Databases';
         $variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
         $variables['subNavigation'] = $cck->_module_links(
             $sub_menu[$this->module],
@@ -379,7 +379,7 @@ class admin
         //var_dump($sub_menu); exit;
         $variables['menuTitle'] = 'Site Admin';
         $variables['pageTitle'] = 'Site Admin';
-        $variables['contentTitle'] = 'admin site modules';
+        $variables['contentTitle'] = 'Modules';
         $variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
         $variables['subNavigation'] = $cck->_module_links(
             $sub_menu[$this->module],
@@ -448,6 +448,7 @@ class admin
         $variables = array();
         $table = array();
         $output = '';
+        $msg = 'messages : ';
         /* ====================== menus ===============*/
         $menu = $cck->_hooks('hook_links');
         $sub_menu = $cck->_hooks('hook_module_links');
@@ -551,6 +552,7 @@ class admin
         $table = array();
         $columns = array();
         $rows = array();
+        $msg = 'messages : ';
 
         // get all links from each class controller
         $menu = $cck->_hooks('hook_links');
@@ -635,8 +637,12 @@ class admin
     public function admin_blocks()
     {
         // get all links from each class controller
-        global $cck;
+        global $cck, $ini_settings, $_SESSION;
         // get all links from each class controller
+        $output = '';
+        $msg = 'messages';
+        $table = array();
+
         $menu = $cck->_hooks('hook_links');
         $sub_menu = $cck->_hooks('hook_module_links');
         //var_dump($sub_menu); exit;
@@ -676,8 +682,13 @@ class admin
 
     public function admin_themes()
     {
-        global $cck;
+        global $cck, $ini_settings, $_SESSION;
         // get all links from each class controller
+        $output = '';
+        $msg = 'messages : ';
+        $table = array();
+        $columns = array();
+        $rows = array();
 
         $menu = $cck->_hooks('hook_links');
         $sub_menu = $cck->_hooks('hook_module_links');
@@ -840,6 +851,9 @@ class admin
         $form = array();
         $columns = array();
         $rows = array();
+        $table = array();
+        $output = '';
+        $msg = 'messages : ';
 
         // get all links from each class controller
         $menu = $cck->_hooks('hook_links');
@@ -957,6 +971,7 @@ class admin
         $columns = array();
         $rows = array();
         $msg = 'messages . ';
+        $output = '';
 
         // get all links from each class controller
         $menu = $cck->_hooks('hook_links');
@@ -964,7 +979,7 @@ class admin
         //var_dump($sub_menu); exit;
         $variables['menuTitle'] = 'Site Admin';
         $variables['pageTitle'] = 'Site Admin';
-        $variables['contentTitle'] = 'site admin';
+        $variables['contentTitle'] = 'Categories';
         $variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
         $variables['subNavigation'] = $cck->_module_links(
             $sub_menu[$this->module],
@@ -998,7 +1013,7 @@ class admin
         
         $variables['CCK'] = $cck;
         $variables['INI'] = $ini_settings;
-        $variables['VAR'] = $variables;
+       
         $variables['formName'] = 'form_login_user';
         $variables['postUrl'] = '?admin/login_check';
         $variables['content'] =  $output;
@@ -1006,7 +1021,7 @@ class admin
         $msg .= "";
         $variables['messages'] = $msg;
         $variables['loggedInUser'] =  (isset($_SESSION['UserData']['UserName']) ? $_SESSION['UserData']['UserName']: '' );
-        
+        $variables['VAR'] = $variables;
         print $cck->_view('page_admin', $variables);
     }
 
@@ -1019,6 +1034,7 @@ class admin
         $columns = array();
         $rows = array();
         $output = '';
+        $msg = 'messages : ';
 
         $menu = $cck->_hooks('hook_links');
         $sub_menu = $cck->_hooks('hook_module_links');
@@ -1142,6 +1158,8 @@ class admin
         $table = array();
         $columns = array();
         $rows = array();
+        $output = '';
+        $msg = 'messages : ';
 
         // get all links from each class controller
         $menu = $cck->_hooks('hook_links');
@@ -1327,7 +1345,7 @@ class admin
                 ), $variables);
 
 
-        $variables['contentTitle'] = $cck->_path_segment(1);
+        $variables['contentTitle'] = 'User Profiles';
         $db = new SQLite3($database);
 
         $userID = $cck->_path_segment(2);
@@ -1446,7 +1464,7 @@ class admin
                 ), $variables);
 
 
-        $variables['contentTitle'] = $cck->_path_segment(1);
+        $variables['contentTitle'] = 'User Accounts';
         $db = new SQLite3($database);
 
         $userID = $cck->_path_segment(2);
@@ -1668,7 +1686,7 @@ class admin
         //var_dump($sub_menu); exit;
         $variables['menuTitle'] = 'Site Security';
         $variables['adminMenuTitle'] = 'User Security';
-        $variables['pageTitle'] = 'admin permissions';
+        $variables['pageTitle'] = 'Site Admin';
         $variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
         $variables['subNavigation'] = $cck->_module_links(
             $sub_menu[$this->module],
@@ -1691,7 +1709,7 @@ class admin
 
 
 
-        $variables['contentTitle'] = $cck->_path_segment(1);
+        $variables['contentTitle'] = 'User Permissions';
         $db = new SQLite3($database);
 
         $result = $db->query('SELECT * FROM user_permissions');
@@ -1737,6 +1755,7 @@ class admin
         $rows = array();
         $var = array();
         $output = '';
+        $msg = 'messages : ';
 
 
         $var = array();
@@ -1857,6 +1876,7 @@ class admin
         $rows = array();
         $var = array();
         $output = '';
+        $msg = 'messages : ';
 
 
         $var = array();
@@ -2218,44 +2238,88 @@ class admin
         $user_check = function ($username, $password) {
             global $cck,$ini_settings,$_SESSION;
             $user_list = array_keys($ini_settings['Users']['UserData']);
+
+            
             if (in_array($username, $user_list)) {
                 $line = "\n";
                 $line .= 'User:'. $username. ' <span style="font-weight:600; color:green;text-decoration:underline">found</span> checking password ....'."\n";
                 if ($password == $ini_settings['Users']['UserData'][$username]) {
 
                     $line .= 'Password: password ok <span style="font-weight:600;color: green;text-decoration:underline">access granted</span>';
+                    
+                     $_SESSION['UserData']['approved'] = (isset($username) ? $username : 'declined');
 
                 } else {
                     $line .= 'Could not login with password: '. $password;
                 }
                 return $line;
             } else {
-                return $user_list;
+                
+                $line = '<br><span style="border: solid red 2px; color:red;background-color:#efd2d2;padding: 2px 5px 2px 5px;"> User not in Site Admin list!!</span><hr>';
+                $line.= 'USERS WITH CREDENTIALS:'. print_r($user_list,1);
+                
+                return $line;
 
 
             }
 
         };
 
+        /* connect to user database profile via unique email address */
+        $variables['contentTitle'] = 'Login Check';
+        $db = new SQLite3($database);
+
+        $userID = $_POST['Username'];
+        if (!empty($userID)) {
+            $result = $db->query('SELECT * FROM userlist WHERE email=\''.$userID.'\'');
+            //$numRows = $result->numRows();
+        } else {
+            exit('User input error!');
+        }
+
+        while ($row = $result->fetchArray(SQLITE3_ASSOC)) 
+        {
+            
+                //$col = $result->columnName($i);
+                $_SESSION['UserData'][$userID] = '<pre style="max-width: 400px;word-wrap: break-all;">'.print_r($row,1).'</pre>';
+            
+            
+        }
+        
+        //exit('<pre>'. print_r($_POST,1). print_r($_SESSION,1).'</pre>' );
+        //SQLite3Result::numColumns();
+        for ($i = 0; $i < $result->numColumns(); $i++) {
+            $col = $result->columnName($i);
+            $columns[] = $col;
+        }
+        $table['header'] = $columns;
+        $table['rows'] = $rows;
+        //$output .= $cck->_view('table_profile_edit', $table);
+       
+
         $_SESSION['UserData']['UserName'] = isset($_POST['Username']) ? $_POST['Username'] : 'no name given';
         $_SESSION['UserData']['Password'] = isset($_POST['Password']) ? $_POST['Password'] : 'no password given';
-        $_SESSION['UserData']['OpenSession'] = isset($_POST['open_session']) ? $_POST['open_session'] : 'go to login page';
+        $_SESSION['UserData']['LoginPage'] = isset($_POST['redirect_back']) ? $_POST['redirect_back'] : $ini_settings['url']['frontpage'];
+        $_SESSION['UserData']['OpenSession'] = isset($_POST['open_session']) ? $_POST['open_session'] : 'online';
+       // $_SESSION['UserData']['Profile'] = print_r(print_r($rows,1),1);
 
-
+        
         //$msg = "<span style='color:red'>Invalid Login Details</span>";
-        $output =  '<pre>CHECK CREDENTIALS:'. print_r($user_check($_POST['Username'], $_POST['Password']), 1).
-        '<hr>POST:'.print_r($_POST, 1).'<hr>SESSION:'.print_r($_SESSION, 1).
-        '<hr>USERS:'.print_r($ini_settings['Users'], 1).
+        $output .=  '<pre>'. print_r($user_check($_POST['Username'], $_POST['Password']), 1).
+        '<hr>POST:'.print_r($_POST, 1).'<hr>SESSION PROFILE:'.print_r($_SESSION, 1).
+        '<hr>ALL USERS:'.print_r($ini_settings['Users'], 1).
 
         '</pre>';//$cck->_view('forms_admin_login', $variables);
-        $variables['CCK'] = $cck;
-        $variables['INI'] = $ini_settings;
-        $variables['content'] =  $output;
+   $variables['content'] =  '<div style="text-align : center;"><a class="btn btn-primary" role="button" href="'.$_POST['redirect_back'].'"> Go back to page</a>'.
+        '</div>'. $output;
 
         $msg .= "";
         $variables['messages'] = $msg;
         $variables['loggedInUser'] =  (isset($_SESSION['UserData']['UserName']) ? $_SESSION['UserData']['UserName']: '' );
-        print $cck->_view('page_user_login', $variables);
+        $variables['CCK'] = $cck;
+        $variables['INI'] = $ini_settings;
+        $variables['VAR'] = $variables;
+        print $cck->_view('page_admin', $variables);
 
 
     }
@@ -2263,8 +2327,12 @@ class admin
     public function logout_user()
     {
         global $cck,$ini_settings,$_SESSION;
+        //$output = print_r($_POST,1);
+        $url = (isset($POST['redirect_back']) ? $_POST['redirect_back'] : 'http://' . $_SERVER['HTTP_HOST'] . $ini_settings['url']['frontpage'] );
+        //$url .= '<pre>'.print_r($_POST,1).'</pre>';
         session_destroy();
-        exit('logged out');
+        //exit('http://' . $url);
+        header('location:'. $_POST['redirect_back'] .'');
        
     }
 
@@ -2277,6 +2345,7 @@ class admin
         $columns = array();
         $rows = array();
         $output = '';
+        $msg = 'messages : ';
 
         /// build admin navigation links that only are used by this module/method
 
@@ -2405,6 +2474,7 @@ class admin
         $columns = array();
         $rows = array();
         $output = '';
+        $msg = 'messages : ';
 
         /// build admin navigation links that only are used by this module/method
 
@@ -2534,6 +2604,8 @@ class admin
         $rows = array();
         $var = array();
         $output = '';
+        $msg = 'messages : ';
+
 
 
         $var = array();
@@ -2623,6 +2695,8 @@ class admin
         $rows = array();
         $var = array();
         $output = '';
+        $msg = 'messages : ';
+
 
         $link = 'links';
 
@@ -2713,6 +2787,8 @@ class admin
         $columns = array();
         $rows = array();
         $output = '';
+        $msg = 'messages : ';
+
 
         /// build admin navigation links that only are used by this module/method
 
@@ -2830,6 +2906,8 @@ class admin
         $columns = array();
         $rows = array();
         $output = '';
+        $msg = 'messages : ';
+
 
         /// build admin navigation links that only are used by this module/method
 
@@ -2949,6 +3027,8 @@ class admin
         $columns = array();
         $rows = array();
         $output = '';
+        $msg = 'messages : ';
+
 
         /// build admin navigation links that only are used by this module/method
 
@@ -3068,6 +3148,8 @@ class admin
         $columns = array();
         $rows = array();
         $output = '';
+        $msg = 'messages : ';
+
 
         /// build admin navigation links that only are used by this module/method
 
@@ -3308,6 +3390,8 @@ class admin
         $columns = array();
         $rows = array();
         $output = '';
+        $msg = 'messages : ';
+
 
 
         $userID = $cck->_path_segment(2);
@@ -3403,7 +3487,7 @@ class admin
         //var_dump($sub_menu); exit;
         $variables['menuTitle'] = 'Site Admin';
         $variables['pageTitle'] = 'Site Admin';
-        $variables['contentTitle'] = 'admin content';
+        $variables['contentTitle'] = 'Create Content';
         $variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
 
         //$link = 'links';
@@ -3553,6 +3637,9 @@ class admin
         $variables['CCK'] = $cck;
         $variables['INI'] = $ini_settings;
         $variables['POST'] = $_POST;
+        $msg = 'messages : ';
+        $variables['messages'] = $msg;
+
         $variables['content'] = 'create new content using <h3><i>'.$table['contentType'].'</i></h3>' . $output;
 
         print $cck->_view('page_admin', $variables);
