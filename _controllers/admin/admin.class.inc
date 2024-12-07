@@ -1291,26 +1291,32 @@ class admin
         $var = array();
 
         $var[$link][1] = array(
-                    'text' => 'Profile',
-                    'path' => 'users/user_profile/'.$userID,
+                    'text' => 'Profiles',
+                    'path' => 'admin/admin_user_profiles/'.$userID,
                     'css_id' => $this->module,
                 'css_class' => array($this->module)
                     );
         $var[$link][2] = array(
-                    'text' => 'Account',
-                    'path' => 'users/user_settings/'.$userID,
+                    'text' => 'Accounts',
+                    'path' => 'admin/admin_user_settings/'.$userID,
                     'css_id' => $this->module,
                 'css_class' => array($this->module)
                     );
+                    $var[$link][2] = array(
+                        'text' => 'Permissions',
+                        'path' => 'admin/admin_permissions/'.$userID,
+                        'css_id' => $this->module,
+                    'css_class' => array($this->module)
+                        );
         $var[$link][3] = array(
                     'text' => 'Content',
-                    'path' => 'users/user_content/'.$userID,
+                    'path' => 'admin/admin_user_content/'.$userID,
                     'css_id' => $this->module,
                 'css_class' => array($this->module)
                     );
         $var[$link][4] = array(
-                'text' => 'Inbox',
-                'path' => 'users/user_messages/' .$userID,
+                'text' => 'Inboxes',
+                'path' => 'admin/admin_user_messages/' .$userID,
                 'css_id' => $this->module,
                 'css_class' => array($this->module)
         );
@@ -1405,32 +1411,39 @@ class admin
 
 
         //$link = 'links';
-        $userID = $cck->_path_segment(2);
+        $userID = '0';
         $link = 'links';
 
         $var = array();
 
         $var[$link][1] = array(
-                    'text' => 'Profile',
-                    'path' => 'users/user_profile/'.$userID,
+                    'text' => 'Profiles',
+                    'path' => 'admin/admin_user_profiles/'.$userID,
                     'css_id' => $this->module,
                 'css_class' => array($this->module)
                     );
         $var[$link][2] = array(
-                    'text' => 'Account',
-                    'path' => 'users/user_settings/'.$userID,
+                    'text' => 'Accounts',
+                    'path' => 'admin/admin_user_settings/'.$userID,
                     'css_id' => $this->module,
                 'css_class' => array($this->module)
                     );
-        $var[$link][3] = array(
-                    'text' => 'Content',
-                    'path' => 'users/user_content/'.$userID,
-                    'css_id' => $this->module,
-                'css_class' => array($this->module)
-                    );
+                    $var[$link][3] = array(
+                        'text' => 'Permissions',
+                        'path' => 'admin/admin_permissions/'.$userID,
+                        'css_id' => $this->module,
+                    'css_class' => array($this->module)
+                        );
         $var[$link][4] = array(
-                'text' => 'Inbox',
-                'path' => 'users/user_messages/' .$userID,'css_id' => $this->module,
+                    'text' => 'Content',
+                    'path' => 'admin/admin_user_content/'.$userID,
+                    'css_id' => $this->module,
+                'css_class' => array($this->module)
+                    );
+        $var[$link][5] = array(
+                'text' => 'Inboxes',
+                'path' => 'admin/admin_user_messages/' .$userID,
+                'css_id' => $this->module,
                 'css_class' => array($this->module)
         );
 
@@ -2240,14 +2253,14 @@ class admin
             $user_list = array_keys($ini_settings['Users']['UserData']);
 
             
-            if (in_array($username, $user_list)) {
+            if (in_array($username, $user_list) and isset($_POST['Username']) and isset($_POST['Password'])) {
                 $line = "\n";
                 $line .= 'User:'. $username. ' <span style="font-weight:600; color:green;text-decoration:underline">found</span> checking password ....'."\n";
                 if ($password == $ini_settings['Users']['UserData'][$username]) {
 
                     $line .= 'Password: password ok <span style="font-weight:600;color: green;text-decoration:underline">access granted</span>';
                     
-                     $_SESSION['UserData']['approved'] = (isset($username) ? $username : 'declined');
+                    $_SESSION['UserData']['approved'] = (in_array($username, $user_list) ? $username : 'Guest');
 
                 } else {
                     $line .= 'Could not login with password: '. $password;
@@ -2255,9 +2268,9 @@ class admin
                 return $line;
             } else {
                 
-                $line = '<br><span style="border: solid red 2px; color:red;background-color:#efd2d2;padding: 2px 5px 2px 5px;"> User not in Site Admin list!!</span><hr>';
+                $line = '<div style="position:relative;height:40px;"><span id="user-warning-0" style="top:6px;position:absolute;z-index:1000;border: solid red 2px; color:red;background-color:#efd2d2;padding: 2px 5px 2px 5px;"> User not in Site Admin list!!</span></div><hr>';
                 $line.= 'USERS WITH CREDENTIALS:'. print_r($user_list,1);
-                
+                $_SESSION['UserData']['approved'] = (!in_array($username, $user_list) ? 'Guest' : $username);
                 return $line;
 
 
@@ -2269,9 +2282,9 @@ class admin
         $variables['contentTitle'] = 'Login Check';
         $db = new SQLite3($database);
 
-        $userID = $_POST['Username'];
+        $userID = isset($_POST['Username']) ? $_POST['Username'] : 'carl@dev.com';
         if (!empty($userID)) {
-            $result = $db->query('SELECT * FROM userlist WHERE email=\''.$userID.'\'');
+            $result = $db->query('SELECT id,email,alias,user_id FROM userlist WHERE email=\''.$userID.'\'');
             //$numRows = $result->numRows();
         } else {
             exit('User input error!');
@@ -2281,7 +2294,13 @@ class admin
         {
             
                 //$col = $result->columnName($i);
-                $_SESSION['UserData'][$userID] = '<pre style="max-width: 400px;word-wrap: break-all;">'.print_r($row,1).'</pre>';
+                $_SESSION['UserData']['inDatabase'] = '<pre style="max-width: 400px;word-wrap: break-all;">'.print_r($row,1).'</pre>';
+                
+                foreach($row as $key => $value)
+                {
+                    $_SESSION['UserData'][$key] = $value;
+
+                }
             
             
         }
@@ -2297,20 +2316,30 @@ class admin
         //$output .= $cck->_view('table_profile_edit', $table);
        
 
-        $_SESSION['UserData']['UserName'] = isset($_POST['Username']) ? $_POST['Username'] : 'no name given';
-        $_SESSION['UserData']['Password'] = isset($_POST['Password']) ? $_POST['Password'] : 'no password given';
+        $_SESSION['UserData']['UserName'] = isset($_POST['Username']) ? $_POST['Username'] : 'Guest';
+        $_SESSION['UserData']['Password'] = isset($_POST['Password']) ? $_POST['Password'] : 'no password';
         $_SESSION['UserData']['LoginPage'] = isset($_POST['redirect_back']) ? $_POST['redirect_back'] : $ini_settings['url']['frontpage'];
         $_SESSION['UserData']['OpenSession'] = isset($_POST['open_session']) ? $_POST['open_session'] : 'online';
        // $_SESSION['UserData']['Profile'] = print_r(print_r($rows,1),1);
 
+       if(!isset($_POST)){
+
+        $_POST['error'] = 'no form sent';
+
+       }
+
         
         //$msg = "<span style='color:red'>Invalid Login Details</span>";
-        $output .=  '<pre>'. print_r($user_check($_POST['Username'], $_POST['Password']), 1).
-        '<hr>POST:'.print_r($_POST, 1).'<hr>SESSION PROFILE:'.print_r($_SESSION, 1).
+        $user = (isset($_POST['Username']) ? $_POST['Username'] : 'carl@dev.com');
+        $pass = (isset($_POST['Password']) ? $_POST['Password'] : '123456');
+        $return = (isset($_POST['redirect_back']) ? $_POST['redirect_back'] : '123456');
+        
+        $output .=  '<pre>'. print_r($user_check($user, $pass), 1).
+        '<hr>POSTED CREDENTIALS:'.print_r($_POST, 1).'<hr>SESSION PROFILE:'.print_r($_SESSION, 1).
         '<hr>ALL USERS:'.print_r($ini_settings['Users'], 1).
 
         '</pre>';//$cck->_view('forms_admin_login', $variables);
-   $variables['content'] =  '<div style="text-align : center;"><a class="btn btn-primary" role="button" href="'.$_POST['redirect_back'].'"> Go back to page</a>'.
+   $variables['content'] =  '<div style="text-align : center;"><a class="btn btn-primary" role="button" href="'.$return.'"> Go back to page</a>'.
         '</div>'. $output;
 
         $msg .= "";

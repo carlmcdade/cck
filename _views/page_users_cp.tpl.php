@@ -6,7 +6,7 @@
 if(isset($_SESSION['UserData'])){
     $content = '<div style="" class="alert-boxes">
 <div>
-  <a title="click here for log in" id="myWish" href="javascript:;" class="btn btn-secondary">Logged in as: </a>
+  <a title="click here for log in" id="myWish" href="javascript:;" class="btn btn-secondary">Logged in as :  '. $loggedInUser .'</a>
 </div>
 <div class="alert alert-secondary" id="message-alert"><pre>'. print_r($_SESSION, 1).
 '</pre><form method="POST" name="form_log_out"><button name="user_logout" class="btn btn-secondary" type="submit" formaction="?admin/logout_user">log out</button>
@@ -89,12 +89,12 @@ $(document).ready(function() {
  
 <div style="text-align:right;">
 <div class="btn-group">        
-<?php if (isset($subNavigation)) {
+<?php if (isset($subNavigation) && !empty($subNavigation)) {
             echo $subNavigation;
         }
 ?>
 	      
-        <?php if (isset($adminNavigation)) {
+        <?php if (isset($adminNavigation) && !empty($adminNavigation)) {
             echo $adminNavigation;
         }
 ?>

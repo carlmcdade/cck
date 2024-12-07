@@ -179,9 +179,7 @@ class CCK
     public function _bootstrap($inclass = null, $foraction = null)
     {
         // required
-
         global $cck,$ini_settings;
-
         $controller = null;
         $action = null;
         $arguments = implode(',', func_get_args());
@@ -293,37 +291,6 @@ class CCK
             }
         } else {
             return 'The model file was not found.';
-        }
-    }
-    public function session_start()
-    { /* Starts the session */
-
-
-        global $cck,$ini_settings, $_SESSION;
-
-        /* Check Login form submitted */
-        if (isset($_POST['login_send'])) {
-            /* Define username and associated password array */
-            $logins = array(
-                'carl@dev.com' => '123456',
-                'username1' => 'password1',
-                'username2' => 'password2'
-            );
-
-            /* Check and assign submitted Username and Password to new variable */
-            $Username = isset($_POST['Username']) ? $_POST['Username'] : '';
-            $Password = isset($_POST['Password']) ? $_POST['Password'] : '';
-
-            /* Check Username and Password existence in defined array */
-            if (isset($logins[$Username]) && $logins[$Username] == $Password) {
-                /* Success: Set session variables and redirect to Protected page  */
-                $_SESSION['UserData']['Username'] = $logins[$Username];
-                header('"location:'.$ini_settings['site']['frontpage'].'"');
-                exit;
-            } else {
-                /*Unsuccessful attempt: Set error message */
-                $msg = "<span style='color:red'>Invalid Login Details</span>";
-            }
         }
     }
 
@@ -814,6 +781,181 @@ class CCK
         } else {
             return ;
         }
+    }
+
+    public function _login_check($is_secure = true)
+    {
+        $link = 'links';
+
+
+        global $cck,$ini_settings,$_SESSION;
+        // get all links from each class controller
+        $database = $ini_settings['databases']['user_db'];
+        $table = array();
+        $columns = array();
+        $rows = array();
+        $var = array();
+        $output = '';
+        $msg = 'messages: ';
+
+
+        $var = array();
+
+        $var[$link][1] = array(
+                    'text' => 'User Profile',
+                    'path' => 'users/user_profile',
+                    'css_id' => $this->module,
+                    'css_class' => array($this->module)
+                    );
+        $var[$link][2] = array(
+                    'text' => 'User Accounts',
+                    'path' => 'users/user_account',
+                    'css_id' => $this->module,
+                    'css_class' => array($this->module)
+                    );
+        $var[$link][3] = array(
+                    'text' => 'User Content',
+                    'path' => 'blog/blog_user',
+                    'css_id' => $this->module,
+                    'css_class' => array($this->module)
+                    );
+        $var[$link][4] = array(
+                    'text' => 'User Settings',
+                    'path' => 'users/user_settings',
+                    'css_id' => $this->module,
+                    'css_class' => array($this->module)
+        );
+
+
+
+        $sub_menu = $cck->_hooks('hook_module_links');
+        $menu = $cck->_hooks('hook_links');
+        $admin_menu = $var;
+
+
+        //var_dump($sub_menu); exit;
+        $variables['menuTitle'] = 'Site Admin';
+        $variables['adminMenuTitle'] = 'User Admin';
+        $variables['pageTitle'] = 'User Login';
+        $variables['contentTitle'] = 'user log in';
+        $variables['userBio'] = '';
+        $variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
+        $variables['subNavigation'] = $cck->_module_links(
+            $sub_menu[$this->module],
+            array(
+                'template' => 'links_sub_menu',
+                'index' => $this->module,
+                'css_id' => $this->module,
+                'css_class' => array($this->module)
+                ),
+            $variables
+        );
+
+        $variables['adminNavigation'] = $cck->_module_links($admin_menu, array(
+                'template' => 'links_user_menu',
+                'index' => $this->module,
+                'css_id' => $this->module,
+                'css_class' => array($this->module)
+                ), $variables);
+        $variables['CCK'] = $cck;
+
+        /** check for user */
+        $user_check = function ($username, $password) {
+            global $cck,$ini_settings,$_SESSION;
+            $user_list = array_keys($ini_settings['Users']['UserData']);
+
+
+            if (in_array($username, $user_list) and isset($_POST['Username']) and isset($_POST['Password'])) {
+                $line = "\n";
+                $line .= 'User:'. $username. ' <span style="font-weight:600; color:green;text-decoration:underline">found</span> checking password ....'."\n";
+                if ($password == $ini_settings['Users']['UserData'][$username]) {
+
+                    $line .= 'Password: password ok <span style="font-weight:600;color: green;text-decoration:underline">access granted</span>';
+
+                    $_SESSION['UserData']['approved'] = (in_array($username, $user_list) ? $username : 'Guest');
+
+                } else {
+                    $line .= 'Could not login with password: '. $password;
+                }
+                return $line;
+            } else {
+
+                $line = '<div style="position:relative;height:40px;"><span id="user-warning-0" style="top:6px;position:absolute;z-index:1000;border: solid red 2px; color:red;background-color:#efd2d2;padding: 2px 5px 2px 5px;"> User not in Site Admin list!!</span></div><hr>';
+                $line .= 'USERS WITH CREDENTIALS:'. print_r($user_list, 1);
+                $_SESSION['UserData']['approved'] = (!in_array($username, $user_list) ? 'Guest' : $username);
+                return $line;
+
+
+            }
+
+        };
+
+        /* connect to user database profile via unique email address */
+        $variables['contentTitle'] = 'Login Check';
+        $db = new SQLite3($database);
+
+        $userID = isset($_POST['Username']) ? $_POST['Username'] : 'carl@dev.com';
+        if (!empty($userID)) {
+            $result = $db->query('SELECT * FROM userlist WHERE email=\''.$userID.'\'');
+            //$numRows = $result->numRows();
+        } else {
+            exit('User input error!');
+        }
+
+        while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+
+            //$col = $result->columnName($i);
+            $_SESSION['UserData'][$userID] = '<pre style="max-width: 400px;word-wrap: break-all;">'.print_r($row, 1).'</pre>';
+
+
+        }
+
+        //exit('<pre>'. print_r($_POST,1). print_r($_SESSION,1).'</pre>' );
+        //SQLite3Result::numColumns();
+        for ($i = 0; $i < $result->numColumns(); $i++) {
+            $col = $result->columnName($i);
+            $columns[] = $col;
+        }
+        $table['header'] = $columns;
+        $table['rows'] = $rows;
+        //$output .= $cck->_view('table_profile_edit', $table);
+
+
+        $_SESSION['UserData']['UserName'] = isset($_POST['Username']) ? $_POST['Username'] : 'Guest';
+        $_SESSION['UserData']['Password'] = isset($_POST['Password']) ? $_POST['Password'] : 'no password';
+        $_SESSION['UserData']['LoginPage'] = isset($_POST['redirect_back']) ? $_POST['redirect_back'] : $ini_settings['url']['frontpage'];
+        $_SESSION['UserData']['OpenSession'] = isset($_POST['open_session']) ? $_POST['open_session'] : 'online';
+        // $_SESSION['UserData']['Profile'] = print_r(print_r($rows,1),1);
+
+        if (!isset($_POST)) {
+
+            $_POST['error'] = 'no form sent';
+
+        }
+
+
+        //$msg = "<span style='color:red'>Invalid Login Details</span>";
+        $user = (isset($_POST['Username']) ? $_POST['Username'] : 'carl@dev.com');
+        $pass = (isset($_POST['Password']) ? $_POST['Password'] : '123456');
+        $return = (isset($_POST['redirect_back']) ? $_POST['redirect_back'] : '123456');
+
+        $output .=  '<pre>'. print_r($user_check($user, $pass), 1).
+        '<hr>POSTED CREDENTIALS:'.print_r($_POST, 1).'<hr>SESSION PROFILE:'.print_r($_SESSION, 1).
+        '<hr>ALL USERS:'.print_r($ini_settings['Users'], 1).
+
+        '</pre>';//$cck->_view('forms_admin_login', $variables);
+        $variables['content'] =  '<div style="text-align : center;"><a class="btn btn-primary" role="button" href="'.$return.'"> Go back to page</a>'.
+             '</div>'. $output;
+
+        $msg .= "";
+        $variables['messages'] = $msg;
+        $variables['loggedInUser'] =  (isset($_SESSION['UserData']['UserName']) ? $_SESSION['UserData']['UserName'] : '');
+        $variables['CCK'] = $cck;
+        $variables['INI'] = $ini_settings;
+        $variables['VAR'] = $variables;
+        print $cck->_view('page_admin', $variables);
+
+
     }
 
 

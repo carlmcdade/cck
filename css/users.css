@@ -125,4 +125,55 @@ table {
   }
   
   /* Style the table as needed */
-  
+
+  /******** user calendar *******/
+
+a.check-events{
+	
+	
+	border-color: #1B8EFF;
+	border-width: 5px;
+	border-style:double;
+	display:block;
+	text-align:center;
+	text-decoration: none;
+	font-weight:600;
+	padding:9px 0px 9px 0px; 
+	
+  }
+a.has-events{
+
+	background-color:  #d8ebfd;
+	text-align:center;
+	padding:9px 0 9px 0;
+	margin:0;
+	text-decoration:none;
+	border:solid #1bff1b 1px;
+	display:block; 
+	width:100%; 
+	height:100%;
+  }
+a.no-events{
+	
+		background-color:  #d8ebfd;
+		text-align:center;
+		padding:9px 0 9px 0;
+		margin:0;
+		text-decoration:none;
+		border:solid #1B8EFF 1px;
+		display:block; 
+		width:100%; 
+		height:100%;
+	  }
+a.post-events{
+		
+			background-color:  #d8ebfd;
+			text-align:center;
+			padding:9px 0 9px 0;
+			margin:0;
+			text-decoration:none;
+			border:solid #1B8EFF 1px;
+			display:block; 
+			width:100%; 
+			height:100%;
+		  }

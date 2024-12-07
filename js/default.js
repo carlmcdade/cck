@@ -1,9 +1,19 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script>
-$(document).ready(function(){
-  $("button").click(function(){
-    $("p").hide();
+$(document).ready(function() {
+  $("#message-alert").hide();
+
+  $("#myWish").click(function showAlert() {
+    $("#message-alert").slideToggle(500);
+    });
+    
+  $("#close-form").click(function(){
+    $("#message-alert").slideToggle(500);
+  });
+
+  $(document).ready(function() {
+    var f = document.getElementById('user-warning-0');
+    setInterval(function() {
+        f.style.display = (f.style.display == 'none' ? '' : 'none');
+    }, 500);
+
   });
 });
-</script>
-

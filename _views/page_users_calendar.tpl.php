@@ -1,20 +1,12 @@
-<!-- template page_admin-->
+<!-- template page_users_cp -->
+
 <?php echo '<!-- <pre>'.print_r($_SESSION, 1).'</pre>-->';
 
 
 if(isset($_SESSION['UserData'])){
-    $content = '<div style="" class="alert-boxes">'. $content;
-  
-if(isset($_SESSION['UserData']['approved']) == $loggedInUser)
-{
-    $loggedInAs = $_SESSION['UserData']['UserName'];
-}else{
-    $loggedInAs = 'Guest';
-}
-
-
-$content = '<div>
-  <a title="click here for log in" id="myWish" href="javascript:;" class="btn btn-secondary">Logged in as: '.$loggedInAs.'</a>
+    $content = '<div style="" class="alert-boxes">
+<div>
+  <a title="click here for log in" id="myWish" href="javascript:;" class="btn btn-secondary">Logged in as :  '. $loggedInUser .'</a>
 </div>
 <div class="alert alert-secondary" id="message-alert"><pre>'. print_r($_SESSION, 1).
 '</pre><form method="POST" name="form_log_out"><button name="user_logout" class="btn btn-secondary" type="submit" formaction="?admin/logout_user">log out</button>
@@ -30,7 +22,7 @@ $content = '<div>
 
     $content = '<div style="" class="alert-boxes">
 <div>
-    <a title="click here for log in" id="myWish" href="javascript:;" class="btn btn-mini ">Login as Administrator</a>
+    <a title="click here for log in" id="myWish" href="javascript:;" class="btn btn-secondary ">Login here:</a>
 </div>
 <div class="alert alert-secondary" id="message-alert">'. $CCK->_view('forms_admin_login', $VAR).'<br>
   <div style="text-align: right;">
@@ -42,9 +34,7 @@ $content = '<div>
 }
 
 
-?>
-
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -60,7 +50,23 @@ $content = '<div>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">    
 <link href="https://vjs.zencdn.net/8.16.1/video-js.css" rel="stylesheet" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="js/default.js"></script>
+<script>
+
+$(document).ready(function() {
+  $("#message-alert").hide();
+
+  $("#myWish").click(function showAlert() {
+    $("#message-alert").slideToggle(500);
+    });
+    
+  
+
+  $("#close-form").click(function(){
+    $("#message-alert").slideToggle(500);
+  });
+});
+
+</script>
 </head>
 
 <body>
@@ -71,56 +77,55 @@ $content = '<div>
 <div class="col-lg-8 px-0">
 <h1><?php echo(isset($pageTitle) ? $pageTitle : ''); ?></h1>
 
+
+     
+       
 <?php if (isset($mainNavigation)) {
     echo $mainNavigation;
 }
 ?>
-
-  
+    
 <!-- /#banner -->
+ 
 <div style="text-align:right;">
-<div class="btn-group">
-<!-- sub navigation  -->
-<?php if (isset($subNavigation)) {
-    echo $subNavigation;
-}
+<div class="btn-group">        
+<?php if (isset($subNavigation) && !empty($subNavigation)) {
+            echo $subNavigation;
+        }
 ?>
-
-
-<?php if (isset($adminNavigation)) {
-    echo $adminNavigation;
-}
+	      
+        <?php if (isset($adminNavigation) && !empty($adminNavigation)) {
+            echo $adminNavigation;
+        }
 ?>
 </div></div>
-
 <?php
 
 $clearSpace = array("_", "-");
 $contentTitle = str_replace($clearSpace, " ", $contentTitle);
 $frontCheck = '?'. $_SERVER['QUERY_STRING'];
 if ($frontPage == $frontCheck || $urlSection == 'admin' || $urlSection == 'users') {
-    $content =  '<h1 class="mt-2 text-center border border-secondary border-start-0 border-end-0" style="">' .(isset($contentTitle) ? $contentTitle : '') .'</h1>' .$content;
+    $content =  '<h1 class=" mt-2 text-center border border-secondary border-start-0 border-end-0" style="">' .(isset($contentTitle) ? $contentTitle : '') .'</h1>' .$content;
 } else {
-    $content =  '<h1 class="mt-2 text-center border border-secondary border-start-0 border-end-0" style="">' .(isset($contentTitle) ? $contentTitle : '') .'</h1>' .$content;
+    $content =  '<h1 class=" mt-2 text-center border border-secondary border-start-0 border-end-0" style="">' .(isset($contentTitle) ? $contentTitle : '') .'</h1>' .$content;
 }
+    
 ?>
-<?php echo(isset($content) ? $content : ''); ?>
+    <?php echo(isset($content) ? $content: 'no content found'); ?>
+    <div style="border-top: solid #666 1px; border-bottom: solid #666 1px;" id ="contain-calendar-header" class="row">
+        <div style="text-align: center;" class="col"><h5>dates</h5></div>
+        <div style="text-align:center;" class="col"><h5>event types</h5></div>
+    </div>
+    <div style="" id ="contain-calendar" class="row">
+        <div style="" class="col"><?php echo(isset($userCalendar) ? $userCalendar: ''); ?></div>
+        <div style="max-height:400px; overflow-y: scroll;" class="col"> <?php echo(isset($contentTypes) ? $contentTypes : 'content types list'); ?></div>
+    </div>
         
     <!-- /#content -->
-<!-- footer -->
-    <?php
-
-       if ((require 'default_footer.tpl.php') == true) {
-           echo '<!-- default_footer -->';
-           //exit;
-       }
-?>
-
-          </div>
+  
+<?php require('default_footer.tpl.php'); ?>
+   </div>    
 </div> 
-<style>
-  <?php require("css/admin.css"); ?>
-</style>
-<?php //require("js/default.js");?>
+<style><?php require('css/users.css'); ?></style>
 </body>
-</html> 
+</html>
