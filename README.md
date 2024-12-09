@@ -20,13 +20,15 @@ Requirements:
     -PHP version 8
     -sqlite3
     -Bootstrap5 CSS
+    
 Features out of the box:
-    blog
-    event calendar
-    user configurable content types
-    user configurable fields
-    php templating system
-    php module system buit on Object oriented classes and methods
+
+    _blog
+    _event calendar
+    _user configurable content types
+    _user configurable fields
+    _php templating system
+    _php module system buit on Object oriented classes and methods
     
 
 Architecture:
