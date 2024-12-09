@@ -3,7 +3,7 @@
 <?php echo '<!-- <pre>'.print_r($_SESSION, 1).'</pre>-->';
 
 
-if(isset($_SESSION['UserData'])){
+if (isset($_SESSION['UserData'])) {
     $content = '<div style="" class="alert-boxes">
 <div>
   <a title="click here for log in" id="myWish" href="javascript:;" class="btn btn-secondary">Logged in as :  '. $loggedInUser .'</a>
@@ -16,7 +16,7 @@ if(isset($_SESSION['UserData'])){
 <div style="text-align: right;">
 <button title="click here to close this form" name="close_form" id="close-form" type="button" class="btn btn-secondary " data-dismiss="alert"> close form </button>
 </div>
-</div><hr>'. $content;
+</div></div><hr>'. $content;
 
 } else {
 
@@ -28,7 +28,7 @@ if(isset($_SESSION['UserData'])){
   <div style="text-align: right;">
       <button title="click here to close this form" name="close_form" id="close-form" type="button" class="btn btn-secondary " data-dismiss="alert"> close form </button>
   </div>
-</div><hr>'. $content;
+</div></div>'. $content;
 
 
 }
@@ -50,23 +50,7 @@ if(isset($_SESSION['UserData'])){
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">    
 <link href="https://vjs.zencdn.net/8.16.1/video-js.css" rel="stylesheet" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script>
-
-$(document).ready(function() {
-  $("#message-alert").hide();
-
-  $("#myWish").click(function showAlert() {
-    $("#message-alert").slideToggle(500);
-    });
-    
-  
-
-  $("#close-form").click(function(){
-    $("#message-alert").slideToggle(500);
-  });
-});
-
-</script>
+<script src="js/default.js"></script>
 </head>
 
 <body>
@@ -90,8 +74,8 @@ $(document).ready(function() {
 <div style="text-align:right;">
 <div class="btn-group">        
 <?php if (isset($subNavigation) && !empty($subNavigation)) {
-            echo $subNavigation;
-        }
+    echo $subNavigation;
+}
 ?>
 	      
         <?php if (isset($adminNavigation) && !empty($adminNavigation)) {
@@ -104,20 +88,20 @@ $(document).ready(function() {
 $clearSpace = array("_", "-");
 $contentTitle = str_replace($clearSpace, " ", $contentTitle);
 $frontCheck = '?'. $_SERVER['QUERY_STRING'];
-if ($frontPage == $frontCheck || $urlSection == 'admin' || $urlSection == 'users') {
-    $content =  '<h1 class=" mt-2 text-center border border-secondary border-start-0 border-end-0" style="">' .(isset($contentTitle) ? $contentTitle : '') .'</h1>' .$content;
+if ($frontPage == $frontCheck || $urlSection == 'admin') {
+    $content .=  '<h1 class=" mt-2 text-center border border-secondary border-start-0 border-end-0" style="">' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
 } else {
-    $content =  '<h1 class=" mt-2 text-center border border-secondary border-start-0 border-end-0" style="">' .(isset($contentTitle) ? $contentTitle : '') .'</h1>' .$content;
+    $content .=  '<h1 class=" mt-2 text-center border border-secondary border-start-0 border-end-0" style="">' .(isset($contentTitle) ? $contentTitle : '') .'</h1>';
 }
-    
+
 ?>
-    <?php echo(isset($content) ? $content: 'no content found'); ?>
+    <?php echo $content; ?>
     <div style="border-top: solid #666 1px; border-bottom: solid #666 1px;" id ="contain-calendar-header" class="row">
         <div style="text-align: center;" class="col"><h5>dates</h5></div>
         <div style="text-align:center;" class="col"><h5>event types</h5></div>
     </div>
     <div style="" id ="contain-calendar" class="row">
-        <div style="" class="col"><?php echo(isset($userCalendar) ? $userCalendar: ''); ?></div>
+        <div style="" class="col"><?php echo(isset($userCalendar) ? $userCalendar : ''); ?></div>
         <div style="max-height:400px; overflow-y: scroll;" class="col"> <?php echo(isset($contentTypes) ? $contentTypes : 'content types list'); ?></div>
     </div>
         

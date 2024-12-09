@@ -49,7 +49,7 @@ ul.dropdown-menu li a{
 }
 
 ul.dropdown-menu li a:hover{
-	color: rgb(230, 243, 255) !important;
+	color: #d8ebfd !important;
 	background-color: #1B8EFF !important;
 	border-style: solid;
 	border: 1px 0 1px 0;

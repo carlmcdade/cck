@@ -1084,9 +1084,9 @@ class users
                 elseif ($position == $weekday) {
                     $day_name = $year."_".$month."_".$monthday;
                     $day_id = $year."-".$month."-".$monthday;
-                    $event_date = (!empty($cck->_path_segment(2)) ? $cck->_path_segment(2) : '');
+                    $event_date = (!empty($cck->_query_segment(1)) ? $cck->_query_segment(1) : '');
 
-                    $check_events ='';
+                    $check_events = '';
 
                         if (!empty($event_date) and ($day_name == $event_date)) {
 
@@ -1100,7 +1100,9 @@ class users
                 
 
 
-                    $calendar .= '<td style="padding:0px;" class="table-cell"><a class="'.$check_events.'" name="'. $day_name .'" id="'.$day_id.'" " title="'. $year.'/'.$month.'/'.$monthday.'" href="?users/user_calendar/'.$day_name.'#'.$day_id.'">'.$monthday. '</a></td>'. "\n";
+                    $calendar .= '<td style="padding:0px;" class="table-cell"><a href="?users/user_calendar&event_date='.$day_name.'#'.$day_id.'" class="'.$check_events.
+                    '" name="'. $day_name .'" id="'.$day_id.'" " title="'. $year.'/'.$month.'/'.$monthday.
+                    '">'.$monthday. '</a></td>'. "\n";
                     $position++;
                     $weekday++;
                     $monthday++;
@@ -1139,18 +1141,22 @@ class users
         $count = 1;
 
         $type_forms = '';
+    
         while ($rowAdd = $resultAdd->fetchArray(SQLITE3_ASSOC)) {
             $rows = array();
             $result = $db->query('SELECT * FROM content_type_fields WHERE content_type_id ="'. $rowAdd['contenttype_id'].'" ORDER BY weight asc;');
             while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
                 $rows[] = $row;
 
+                $form['contentTypeFields'][] = $row; //content type fields are not  content form fields
+
+
             }
 
             $form['contentType'] = $rowAdd['name'];
             $form['contentTypeId'] = $rowAdd['id'];
             $form['contentUserId'] = $rowAdd['contenttype_user_id'];
-            $form['contentTypeCategories']['category-'. $count] = $rowAdd['contenttype_category_id'];
+            $form['contentTypeCategories'] = $rowAdd['contenttype_category_id'];
 
             $form['formAction'] = '?users/calendar_event_save/'. $form['contentType'];
             $form['mimeType'] = '';
@@ -1161,21 +1167,120 @@ class users
             $form['userName'] = (isset($form['userName']) ? $form['userName'] : 'owner');
             $form['contentType'] = (isset($form['contentType']) ? $form['contentType'] : '');
             $form['contentId'] = $form['contentType'].'-'.hash('crc32', $cck->_path_segment(1).time() . mt_rand()) .'-'. $form['userName'];
-            $form['contentTypeFields']['content_type_fields'] = print_r($rows, true); //content type fields are not  content form fields
-
+            
             $form['contentTime'] = date("Y-m-d H:i:s");
             $form['enumerate'] = $count;
             $type_forms .= $cck->_view('form_user_event_post', $form);
             $count = $count + 1;
         }
+
+        $eventAdd = $db->query('SELECT * FROM calendar_events');
+        while ($eventAdd = $resultAdd->fetchArray(SQLITE3_ASSOC)) {
+            $rows = array();
+            $field_result = $db->query('SELECT * FROM calendar_events');
+            while ($row = $field_result->fetchArray(SQLITE3_ASSOC)) {
+
+                $form_save_event['eventFields'] = $row; //content type fields are not  content form fields
+
+            }
+
+        } 
+        
+        for ($i = 0; $i < $field_result->numColumns(); $i++) {
+            $col = $field_result->columnName($i);
+            $columns[$col] = $col;
+        }
+        $form_event['eventFields'] = $columns; //content type fields are not  content form fields
+
+      
+
         $variables['contentTypes'] = $type_forms;
+        
+        $form_event['contentType'] = '';
+        $form_event['contentTypeId'] = '';
+        $form_event['contentUserId'] = 'content user id';
+        $form_event['contentTypeCategories']['category-'. $count] = 'categories';
+
+        $form_event['formAction'] = '?users/calendar_event_save/';
+        $form_event['mimeType'] = '';
+        $form_event['header'] = $columns;
+        $form_event['rows'] = $rows;
+
+        $form_event['contentUserId'] = '';
+        $form_event['userName'] = 'owner';
+        $form_event['contentType'] = '';
+        $form_event['contentId'] = '-'.hash('crc32', $cck->_path_segment(1).time() . mt_rand()) .'- event';
+        $form_event['contentTypeFields'][] = $rows; //content type fields are not  content form fields
+
+        $form_event['contentTime'] = date("Y-m-d H:i:s");
+        $form_event['enumerate'] = $count;
+
+        $form_event['CCK'] = $cck;
+        $form_event['INI'] = $ini_settings;
+        $form_event['VAR'] = $variables;
+        $form_event = $cck->_view('form_action_event_save', $form_event);
+        $variables['previewEvent'] = $form_event;
+
+/**************    event entry form ***************/
+
+        
+        $count = 1;
+
+        $type_forms = '';
+        $form_rows = array();
+        $form_event_rows = array();
+        $eventAddSave = $db->query('SELECT * FROM calendar_events');
+        while ($listEvent = $eventAddSave->fetchArray(SQLITE3_ASSOC)) {
+            
+            
+            $form_event_rows[] = $listEvent;
+        } 
+        $field_row_result = $db->query('SELECT * FROM calendar_events');
+            
+            while ($field_row = $field_row_result->fetchArray()) {
+
+                $form_save_event['eventFields'] = $field_row; //content type fields are not  content form fields
+                $form_rows[] = $field_row;
+                $form_save_event['eventRows'][] = $field_row;
+            }
+        for ($i = 0; $i < $field_row_result->numColumns(); $i++) {
+            $col = $field_row_result->columnName($i);
+            $columns[$col] = $col;
+        }
+        $form_save_event['eventFields'] = $columns; //content type fields are not  content form fields
+
+        $form_save_event['contentType'] = '';
+        $form_save_event['contentTypeId'] = '';
+        $form_save_event['contentUserId'] = 'content user id';
+        $form_save_event['contentTypeCategories']['category-'. $count] = 'categories';
+
+        $form_save_event['formAction'] = '?users/calendar_event_save/';
+        $form_save_event['mimeType'] = '';
+        $form_save_event['header'] = $columns;
+        $form_save_event['rows'] = $form_rows;
+        //$form_save_event['eventRows'] = $form_event_rows;
+
+        $form_save_event['contentUserId'] = '';
+        $form_save_event['userName'] = 'owner';
+        $form_save_event['contentType'] = (isset($_POST['content_type'] ) ? $_POST['content_type']: '');
+        $form_save_event['contentId'] = '-'.hash('crc32', $cck->_path_segment(1).time() . mt_rand()) .'- event';
+        $form_save_event['contentTypeFields'][] = $rows; //content type fields are not  content form fields
+
+        $form_save_event['contentTime'] = date("Y-m-d H:i:s");
+        $form_save_event['enumerate'] = $count;
+
+        $form_save_event['CCK'] = $cck;
+        $form_save_event['INI'] = $ini_settings;
+        $form_save_event['VAR'] = $variables;
+        $form_save_event = $cck->_view('form_action_event_save', $form_save_event);
+        $variables['formSaveEvent'] = $form_save_event;
+        
         //var_dump($rows);
         //SQLite3Result::numColumns();
         for ($i = 0; $i < $result->numColumns(); $i++) {
             $col = $result->columnName($i);
             $columns[$col] = $col;
         }
-
 
 
         /***************************end content types*******************/
@@ -1187,19 +1292,107 @@ class users
         $table['userCalendar'] = $calendar;
         $variables['userCalendar'] = $cck->_view('table_user_calendar', $table);
 
-
+        
         $variables['messages'] = $msg;
         $variables['loggedInUser'] =  (isset($_SESSION['UserData']['UserName']) ? $_SESSION['UserData']['UserName'] : '');
         $variables['formName'] = 'form_login_user';
         $variables['postUrl'] = '?admin/login_check';
+/***********event post form************/
+
+
+/*** end event post form */
         $variables['CCK'] = $cck;
         $variables['INI'] = $ini_settings;
         $variables['VAR'] = $variables;
-        $variables['content'] = 'content palace holder';
+        $variables['content'] = (isset($form_save_event) ? $form_save_event: 'content palace holder');
         print $cck->_view('page_users_calendar', $variables);
 
 
 
+
+    }
+
+    public function user_calendar_event()
+    {
+        $link = 'links';
+
+
+        global $cck,$ini_settings;
+        // get all links from each class controller
+        $database = $ini_settings['databases']['user_db'];
+        $table = array();
+        $columns = array();
+        $rows = array();
+        $var = array();
+        $output = '';
+        $msg = 'messages : ';
+
+
+        $var = array();
+
+        $var[$link][1] = array(
+                        'path' => 'users/user_profile',
+                        'css_id' => $this->module,
+                'css_class' => array($this->module)
+                    );
+        $var[$link][2] = array(
+                    'text' => 'User Accounts',
+                    'path' => 'users/user_account',
+                    'css_id' => $this->module,
+                'css_class' => array($this->module)
+                    );
+        $var[$link][3] = array(
+                    'text' => 'User Content',
+                    'path' => 'blog/blog_user',
+                    'css_id' => $this->module,
+                'css_class' => array($this->module)
+                    );
+        $var[$link][4] = array(
+                'text' => 'User Settings',
+                'path' => 'users/user_settings',
+                'css_id' => $this->module,
+                'css_class' => array($this->module)
+        );
+
+
+
+        $sub_menu = $cck->_hooks('hook_module_links');
+        $menu = $cck->_hooks('hook_links');
+        $admin_menu = $var;
+
+
+        //var_dump($sub_menu); exit;
+        $variables['menuTitle'] = 'Site Admin';
+        $variables['adminMenuTitle'] = 'User Admin';
+        $variables['pageTitle'] = 'User account saved';
+        $variables['contentTitle'] = 'account saved';
+        $variables['userBio'] = 'thanks for the updated information';
+        $variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
+        $variables['subNavigation'] = $cck->_module_links(
+            $sub_menu[$this->module],
+            array(
+                'template' => 'links_sub_menu',
+                'index' => $this->module,
+                'css_id' => $this->module,
+                'css_class' => array($this->module)
+                ),
+            $variables
+        );
+
+        $variables['adminNavigation'] = $cck->_module_links($admin_menu, array(
+                'template' => 'links_user_menu',
+                'index' => $this->module,
+                'css_id' => $this->module,
+                'css_class' => array($this->module)
+                ), $variables);
+        $output = '<pre>'. print_r($_POST,1). '</pre>';
+        $variables['content'] =  $output;
+        $variables['messages'] = $msg;
+        $variables['loggedInUser'] =  (isset($_SESSION['UserData']['UserName']) ? $_SESSION['UserData']['UserName'] : '');
+        $variables['CCK'] = $cck;
+        $variables['INI'] = $ini_settings;
+        $variables['VAR'] = $variables;
+        print $cck->_view('page_user_save', $variables);
 
     }
 
