@@ -182,7 +182,7 @@ class users
             $variables
         );
         $db = new SQLite3($database);
-        $userID = $cck->_path_segment(2);
+        $userID = ($cck->_path_segment(2) == 'guest' ? '10': $cck->_path_segment(2)) ;
         if (!empty($userID)) {
             $result = $db->query('SELECT * FROM userlist WHERE id='.$userID.'');
         } else {
@@ -224,7 +224,7 @@ class users
             }
         }
 
-
+        $variables['userHandle'] = ($cck->_path_segment(2) == 'guest' ? 'guest': 'guest') ;
 
         $variables['contentTitle'] = $variables['userHandle'].'\'s profile';
         $variables['content'] =  '<h3><i>Quick Edit</i></h3>' . $output;
@@ -271,6 +271,7 @@ class users
         $db = new SQLite3($database);
 
         $userID = (isset($_SESSION['UserData']['user_id']) ? $_SESSION['UserData']['user_id'] : $cck->_path_segment(2));
+        $userID = ($cck->_path_segment(2) == 'guest' ? '10': $cck->_path_segment(2)) ;
 
 
         if (!empty($userID) && $userID == $cck->_path_segment(2)) {
@@ -560,7 +561,10 @@ class users
         );
 
         $db = new SQLite3($database);
-        $userID = $cck->_path_segment(2);
+        
+        $userID = (isset($_SESSION['UserData']['user_id']) ? $_SESSION['UserData']['user_id'] : $cck->_path_segment(2));
+        $userID = ($cck->_path_segment(2) == 'guest' ? '10': $cck->_path_segment(2)) ;
+
 
         if (!empty($userID)) {
             $result = $db->query('SELECT * FROM userlist WHERE id='.$userID.'');
@@ -900,7 +904,7 @@ class users
         );
 
         $db = new SQLite3($database);
-        $userID = $cck->_path_segment(2);
+        $userID = ($cck->_path_segment(2) == 'guest' ? '10': $cck->_path_segment(2)) ;
 
         if (!empty($userID)) {
             $result = $db->query('SELECT * FROM userlist WHERE id='.$userID.'');
@@ -1027,29 +1031,30 @@ class users
         );
 
         /*****************  calendar  ******************* */
-        $check_events = $cck->_path_segment(2);
+        $check_events = '';
         $year = 2025;
         $date = new DateTime("".$year."-01-01");
         $weekday = (int)$date->format('N');
         $weekn = (int)$date->format('W');
         $day = 1;
         $month = 1;
-
+        $event_date = (isset($_SERVER['QUERY_STRING']['event_date']) ? $_SERVER['QUERY_STRING']['event_date'] : '');
         $dayLabels = array("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun");
 
+        // This variable will hold the html table of the calendar
+        $calendar = '<table id="calendar" class="table" style="border: solid #cccccc 1px;border-top: 0;">';
+        //$calendar .= "<tr><td colspan=\"7\">". $month_name .' week -'.$weekn."</td></tr><tr>\n";
         // This creates a "table head" for each month
-        $thead = '<tr><th>M</th><th>W</th>';
+        $thead = '<tr>';
         foreach ($dayLabels as $lbl) {
-            $thead .= "<th>".$lbl."</th>";
+            $thead .= "<td>".$lbl."</td>";
         }
         $thead .= '</tr>';
 
-        // This variable will hold the html table of the calendar
-        $calendar = '<table id="calendar" border="1" style="width: 550px; max-width: 100%;">';
 
         // Loop each month until 12
         for (;$month <= 12; $month++) {
-            $calendar .= $thead;
+            //$calendar .= $thead;
             $monthday = 1;
             $monthmax = cal_days_in_month(CAL_GREGORIAN, $month, $year);
 
@@ -1069,35 +1074,40 @@ class users
 
             $month_name = $month_list[$month];
             $position = 0;
+            $calendar .= '<tr><td style="color: #ffffff;background-color: #777777;" colspan="7"><h5>'. $month_name .'</h5></td></tr>'."\n";
 
             while ($monthday <= $monthmax) {
                 // Create month and week columns
                 if ($position == 0) {
                     $weekn = (int)$date->format('W');
-                    $calendar .= "<tr><th>". $month_name ."</th><th>".$weekn."</th>\n";
+                    if ($weekn == 1) {
+                        $month_name = 'January';
+                    }
+                    $calendar .= '<tr><td style="color: #000000;background-color: #eaeaea;" colspan="7">'. $month_name .' week - '.$weekn."</td></tr><tr>\n";
+                    $calendar .= $thead;
                     $position++;
                 } // Create "non-days"
                 elseif ($position < $weekday) {
-                    $calendar .= "<td class=\"nonday\"></td>\n";
+                    $calendar .= '<td style="min-width: 65px max-width:80px;" class="nonday"></td>'."\n";
                     $position++;
                 } // Create days
                 elseif ($position == $weekday) {
                     $day_name = $year."_".$month."_".$monthday;
                     $day_id = $year."-".$month."-".$monthday;
-                    $event_date = (!empty($cck->_query_segment(1)) ? $cck->_query_segment(1) : '');
+                    $event_date = (!empty($_SERVER['QUERY_STRING']['event_date']) ? $_SERVER['QUERY_STRING']['event_date'] : '');
 
                     $check_events = '';
 
-                        if (!empty($event_date) and ($day_name == $event_date)) {
+                    if (!empty($event_date) and ($day_name == $event_date)) {
 
-                            $check_events = 'check-events';
+                        $check_events = 'check-events';
 
-                        } else {
+                    } else {
 
-                            $check_events = 'no-events';
-                        }
+                        $check_events = 'no-events';
+                    }
 
-                
+
 
 
                     $calendar .= '<td style="padding:0px;" class="table-cell"><a href="?users/user_calendar&event_date='.$day_name.'#'.$day_id.'" class="'.$check_events.
@@ -1141,10 +1151,11 @@ class users
         $count = 1;
 
         $type_forms = '';
-    
+
         while ($rowAdd = $resultAdd->fetchArray(SQLITE3_ASSOC)) {
             $rows = array();
-            $result = $db->query('SELECT * FROM content_type_fields WHERE content_type_id ="'. $rowAdd['contenttype_id'].'" ORDER BY weight asc;');
+            $content_type_list[$rowAdd['content_type_name']] = $rowAdd['content_type_id'];
+            $result = $db->query('SELECT * FROM content_type_fields WHERE content_type_id ="'. $rowAdd['content_type_id'].'" ORDER BY weight asc;');
             while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
                 $rows[] = $row;
 
@@ -1153,10 +1164,10 @@ class users
 
             }
 
-            $form['contentType'] = $rowAdd['name'];
-            $form['contentTypeId'] = $rowAdd['id'];
-            $form['contentUserId'] = $rowAdd['contenttype_user_id'];
-            $form['contentTypeCategories'] = $rowAdd['contenttype_category_id'];
+            $form['contentType'] = $rowAdd['content_type_name'];
+            $form['contentTypeId'] = $rowAdd['content_type_id'];
+            $form['contentUserId'] = $rowAdd['content_type_user_id'];
+            $form['contentTypeCategories'] = $rowAdd['content_type_category_id'];
 
             $form['formAction'] = '?users/calendar_event_save/'. $form['contentType'];
             $form['mimeType'] = '';
@@ -1167,7 +1178,7 @@ class users
             $form['userName'] = (isset($form['userName']) ? $form['userName'] : 'owner');
             $form['contentType'] = (isset($form['contentType']) ? $form['contentType'] : '');
             $form['contentId'] = $form['contentType'].'-'.hash('crc32', $cck->_path_segment(1).time() . mt_rand()) .'-'. $form['userName'];
-            
+
             $form['contentTime'] = date("Y-m-d H:i:s");
             $form['enumerate'] = $count;
             $type_forms .= $cck->_view('form_user_event_post', $form);
@@ -1184,32 +1195,32 @@ class users
 
             }
 
-        } 
-        
+        }
+
         for ($i = 0; $i < $field_result->numColumns(); $i++) {
             $col = $field_result->columnName($i);
             $columns[$col] = $col;
         }
         $form_event['eventFields'] = $columns; //content type fields are not  content form fields
 
-      
+
 
         $variables['contentTypes'] = $type_forms;
+
         
-        $form_event['contentType'] = '';
-        $form_event['contentTypeId'] = '';
-        $form_event['contentUserId'] = 'content user id';
+        $form_event['contentTypeId'] =   $content_type_list[(isset($_POST['content_type']) ? $_POST['content_type'] : 'blog')];
+        $form_event['contentUserId'] = (isset($form['contentUserId']) ? $form['contentUserId'] : '0');
         $form_event['contentTypeCategories']['category-'. $count] = 'categories';
 
         $form_event['formAction'] = '?users/calendar_event_save/';
         $form_event['mimeType'] = '';
         $form_event['header'] = $columns;
         $form_event['rows'] = $rows;
-
-        $form_event['contentUserId'] = '';
         $form_event['userName'] = 'owner';
-        $form_event['contentType'] = '';
-        $form_event['contentId'] = '-'.hash('crc32', $cck->_path_segment(1).time() . mt_rand()) .'- event';
+        $form_event['contentType'] = $form['contentType'];
+        $form_event['contentId'] = $form['contentType'].'-'.hash('crc32', $cck->_path_segment(1).time() . mt_rand()) .'- event';
+        $form_event['eventId'] = $form['contentType'].'-'.hash('crc32', $cck->_path_segment(1).time() . mt_rand()) .'- event';
+
         $form_event['contentTypeFields'][] = $rows; //content type fields are not  content form fields
 
         $form_event['contentTime'] = date("Y-m-d H:i:s");
@@ -1221,9 +1232,9 @@ class users
         $form_event = $cck->_view('form_action_event_save', $form_event);
         $variables['previewEvent'] = $form_event;
 
-/**************    event entry form ***************/
+        /**************    event entry form ***************/
 
-        
+
         $count = 1;
 
         $type_forms = '';
@@ -1231,26 +1242,26 @@ class users
         $form_event_rows = array();
         $eventAddSave = $db->query('SELECT * FROM calendar_events');
         while ($listEvent = $eventAddSave->fetchArray(SQLITE3_ASSOC)) {
-            
-            
-            $form_event_rows[] = $listEvent;
-        } 
-        $field_row_result = $db->query('SELECT * FROM calendar_events');
-            
-            while ($field_row = $field_row_result->fetchArray()) {
 
-                $form_save_event['eventFields'] = $field_row; //content type fields are not  content form fields
-                $form_rows[] = $field_row;
-                $form_save_event['eventRows'][] = $field_row;
-            }
+
+            $form_event_rows[] = $listEvent;
+        }
+        $field_row_result = $db->query('SELECT * FROM calendar_events');
+
+        while ($field_row = $field_row_result->fetchArray()) {
+
+            $form_save_event['eventFields'] = $field_row; //content type fields are not  content form fields
+            $form_rows[] = $field_row;
+            $form_save_event['eventRows'][] = $field_row;
+        }
         for ($i = 0; $i < $field_row_result->numColumns(); $i++) {
             $col = $field_row_result->columnName($i);
             $columns[$col] = $col;
         }
         $form_save_event['eventFields'] = $columns; //content type fields are not  content form fields
 
-        $form_save_event['contentType'] = '';
-        $form_save_event['contentTypeId'] = '';
+        $form_save_event['contentType'] =   $form['contentType'];
+        $form_save_event['contentTypeId'] =   $content_type_list[(isset($_POST['content_type']) ? $_POST['content_type'] : 'blog')];
         $form_save_event['contentUserId'] = 'content user id';
         $form_save_event['contentTypeCategories']['category-'. $count] = 'categories';
 
@@ -1260,10 +1271,12 @@ class users
         $form_save_event['rows'] = $form_rows;
         //$form_save_event['eventRows'] = $form_event_rows;
 
-        $form_save_event['contentUserId'] = '';
+        $form_save_event['contentUserId'] = (isset($_SESSION['UserId']) ? $_SESSION['UserId'] : '0');
         $form_save_event['userName'] = 'owner';
-        $form_save_event['contentType'] = (isset($_POST['content_type'] ) ? $_POST['content_type']: '');
-        $form_save_event['contentId'] = '-'.hash('crc32', $cck->_path_segment(1).time() . mt_rand()) .'- event';
+        $form_save_event['contentType'] = (isset($_POST['content_type']) ? $_POST['content_type'] : '');
+        $form_save_event['contentId'] = (isset($_POST['content_type']) ? $_POST['content_type'] : 'blog').'-'.hash('crc32', $cck->_path_segment(1).time() . mt_rand()) .'- event';
+        $form_save_event['eventId'] = $form['contentType'].'-'.hash('crc32', $cck->_path_segment(1).time() . mt_rand()) .'- event';
+
         $form_save_event['contentTypeFields'][] = $rows; //content type fields are not  content form fields
 
         $form_save_event['contentTime'] = date("Y-m-d H:i:s");
@@ -1274,7 +1287,7 @@ class users
         $form_save_event['VAR'] = $variables;
         $form_save_event = $cck->_view('form_action_event_save', $form_save_event);
         $variables['formSaveEvent'] = $form_save_event;
-        
+
         //var_dump($rows);
         //SQLite3Result::numColumns();
         for ($i = 0; $i < $result->numColumns(); $i++) {
@@ -1289,22 +1302,24 @@ class users
         $table['CCK'] = $cck;
         $table['INI'] = $ini_settings;
         $table['VAR'] = $variables;
+
+        /************* User Calendar variable***************/
         $table['userCalendar'] = $calendar;
         $variables['userCalendar'] = $cck->_view('table_user_calendar', $table);
 
-        
+
         $variables['messages'] = $msg;
         $variables['loggedInUser'] =  (isset($_SESSION['UserData']['UserName']) ? $_SESSION['UserData']['UserName'] : '');
         $variables['formName'] = 'form_login_user';
         $variables['postUrl'] = '?admin/login_check';
-/***********event post form************/
+        /***********event post form************/
 
 
-/*** end event post form */
+        /*** end event post form */
         $variables['CCK'] = $cck;
         $variables['INI'] = $ini_settings;
         $variables['VAR'] = $variables;
-        $variables['content'] = (isset($form_save_event) ? $form_save_event: 'content palace holder');
+        $variables['content'] = (isset($form_save_event) ? $form_save_event : 'content palace holder');
         print $cck->_view('page_users_calendar', $variables);
 
 
@@ -1385,7 +1400,7 @@ class users
                 'css_id' => $this->module,
                 'css_class' => array($this->module)
                 ), $variables);
-        $output = '<pre>'. print_r($_POST,1). '</pre>';
+        $output = '<pre>'. print_r($_POST, 1). '</pre>';
         $variables['content'] =  $output;
         $variables['messages'] = $msg;
         $variables['loggedInUser'] =  (isset($_SESSION['UserData']['UserName']) ? $_SESSION['UserData']['UserName'] : '');

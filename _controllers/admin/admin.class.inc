@@ -776,28 +776,114 @@ class admin
                     );
         $admin_menu = $var;
         //$admin_menu = $cck->_hooks('hook_module_links');
+        
+          
 
         $db = new SQLite3($database);
 
 
-        $userID = $cck->_path_segment(2);
+        $typeID = $cck->_path_segment(2);
         if (!empty($typeID)) {
-            $result = $db->query('SELECT id,name,desc FROM content_types WHERE id='.$typeID.'');
+            $resultSingle = $db->query('SELECT * FROM content_types WHERE id='.$typeID.'');
         } else {
-            $result = $db->query('SELECT id,name,desc FROM content_types');
+            $result = $db->query('SELECT * FROM content_types');
         }
-
-        while ($row = $result->fetchArray()) {
+        $button_0='';
+        $button_1='';
+        $field_count = 1;
+        $contentTypeForms='';
+        $p_rows = array();
+        while ($row = $result->fetchArray(SQLITE3_BOTH)) {
             $rows[] = $row;
-        }
+            $contentTypeName[$row['content_type_id']] = $row['content_type_name'];
+            $contentTypeNames[$row['content_type_name']] = $row['content_type_name'];
+            $contentTypeIds[$row['content_type_name']] = $row['content_type_id'];
+            $resultSingle = $db->query('SELECT * FROM content_types WHERE content_type_id="'.$row['content_type_id'].'"');
+            while ($single = $resultSingle->fetchArray(SQLITE3_ASSOC)) {
+                $contentTypeInfo[$row['content_type_name']] = $single;
+                $table['contentTypeIds'] = '<pre>'.$single['content_type_id'].'-'.$single['content_type_name'].'</pre>';
+            }
+            
+            $resultFields = $db->query('SELECT * FROM content_type_fields WHERE content_type_id="'.$row['content_type_id'].'"');
+            while ($tField = $resultFields->fetchArray(SQLITE3_ASSOC)) {
+                $contentTypeFields[]= $tField;
+                $p_rows[] = $tField;
+
+                $table['contentTypePresentFields'][$row['content_type_name']][$tField['machine_id']] = $tField;
+                    
+            }
+
+        
+            
+                $button_1 .= "\n\n\t\t".'<form name="form_type_create_post_with_'.$row['content_type_name'].'" id="form-type-create-post-with-'.$row['content_type_name'].'" class="" method="post">'."\n";
+        
+                for ($i = 0; $i < $result->numColumns(); $i++) {
+                    $col = $result->columnName($i);
+                    $columns[] = $col;
+                    $button_1 .= "\n".'  <input type="hidden" name="'.$row['content_type_name'].'_fields'.'[available_fields][field_attr]['.$col.']" id="Posted-form-posted-fields-field-attr-'.$col.']" value="'.$col.'" />';
+                    //$button_1 .= '<input type="hidden" name="Posted-form[posted-fields][]"  id=""  value="" />'."\n";
+                    
+                }
+                $button_1 .= "\n".'  <input type="hidden" name="Posted_'.$row['content_type_name'].'[posted_fields][content_type]" id="Posted-form-posted-content-type-'.$col.'" value="" />';
+                $button_1 .= "\n".'  <input type="hidden" name="Posted_'.$row['content_type_name'].'[posted_fields][content_type][name]" id="Posted-form-posted-content-type-name-'.$row['content_type_name'].'" value="'.$row['content_type_name'].'" />';
+                $button_1 .= "\n".'  <input type="hidden" name="Posted_'.$row['content_type_name'].'[posted_fields][content_type][id]" id="Posted-form-posted-content-type-id-'.$row['content_type_id'].'" value="'.$row['content_type_id'].'" />';
+                $button_1 .= '<button title="" type="submit" name="create_new_' . $row['content_type_name'] . '" id="post-button-id-'. $row['content_type_id'].'" role="button"  class="btn btn-primary" formaction="?admin/content_type_post/'. $row['content_type_id'] .
+                '&content_type_name='.$row['content_type_name'].'">';
+                $button_1 .= $row['content_type_name'];
+                $button_1 .= '</button>';
+                $button_1 .= "\n".'</form>' ."\n";
+                $table['contentTypeCreate'] = $button_1;
+
+                $button_0 .= "\n\n\t\t".'<form name="form_type_create_post_with_'.$row['content_type_name'].'" id="form-type-create-post-with-'.$row['content_type_name'].'" class="" method="post">'."\n";
+        
+                for ($i = 0; $i < $result->numColumns(); $i++) {
+                    $col = $result->columnName($i);
+                    $columns[] = $col;
+                    $button_0 .= "\n".'  <input type="hidden" name="Posted_'.$row['content_type_name'].'[posted_fields][field_attr]['.$col.']" id="Posted-form-posted-fields-field-attr-'.$col.']" value="'.$col.'" />';
+                    //$button_1 .= '<input type="hidden" name="Posted-form[posted-fields][]"  id=""  value="" />'."\n";
+                    
+                }
+
+                foreach($this->content_type_list($row['content_type_id']) as $fkey => $fvalue){
+
+                    
+                    $button_0 .= "\n".'  <input type="hidden" name="Posted_'.$row['content_type_name'].'[posted_fields]['.$fkey.']" id="Posted-form-posted-content-type-'.$fkey.'" value="'.$fkey.'" />';
+                
+
+                }
+                $button_0 .= "\n".'  <input type="hidden" name="Posted_'.$row['content_type_name'].'[posted_fields][content_type]" id="Posted-form-posted-content-type-'.$col.'" value="" />';
+                $button_0 .= "\n".'  <input type="hidden" name="Posted_'.$row['content_type_name'].'[posted_fields][content_type][name]" id="Posted-form-posted-content-type-name-'.$row['content_type_name'].'" value="'.$row['content_type_name'].'" />';
+                $button_0 .= "\n".'  <input type="hidden" name="Posted_'.$row['content_type_name'].'[posted_fields][content_type][id]" id="Posted-form-posted-content-type-id-'.$row['content_type_id'].'" value="'.$row['content_type_id'].'" />';
+                $button_0 .= '<button title="" type="submit" name="create_new_' . $row['content_type_name'] . '" id="post-button-id-'. $row['content_type_id'].'" role="button"  class="btn btn-primary" formaction="?admin/content_type_edit/'. $row['content_type_id'] .
+                '&content_type_name='.$row['content_type_name'].'">';
+                $button_0 .= 'edit';
+                $button_0 .= '</button>';
+                $button_0 .= "\n".'</form>' ."\n";
+                $table['contentTypeEdit'] = $button_0;
+
+               
+            
+            
+        $field_count = $field_count + 1;
+        //$table['contentTypePresentFields'][$row['content_type_name']] = $this->content_type_list($row['content_type_id']);
+       
+}
+        
+        //$contentTypeForms = $cck->_view('form_content_type_edit', $form);
+    
+
         //SQLite3Result::numColumns();
-        for ($i = 0; $i < $result->numColumns(); $i++) {
-            $col = $result->columnName($i);
-            $columns[] = $col;
-        }
+
         $table['header'] = $columns;
         $table['rows'] = $rows;
-        $output = $cck->_view('table_content_types_admin', $table);
+        $table['contentTypeInfo'] = $contentTypeInfo;
+        $table['contentTypeNames'] = $contentTypeNames;
+        $table['contentTypeFields'] = $contentTypeFields;
+        
+        
+        $output .= $cck->_view('table_content_types_admin', $table);
+        
+        
 
         foreach ($rows as $key => $value) {
             $variables['userBio'] =  '';
@@ -825,7 +911,7 @@ class admin
                 ), $variables);
 
 
-        $variables['content'] = 'admin content types' . $output;
+        $variables['content'] = $output;
 
         $variables['CCK'] = $cck;
         $variables['INI'] = $ini_settings;
@@ -3288,6 +3374,94 @@ class admin
 
     }
 
+    function content_type_list($listID)
+    {
+
+        global $cck,$ini_settings, $_SESSION;
+        // get all links from each class controller
+        $database = $ini_settings['databases']['user_db'];
+        $table = array();
+        $columns = array();
+        $rows = array();
+        $output = '';
+        $msg = 'messages : ';
+
+
+        $db = new SQLite3($database);
+        $count = 1;
+        $button_0 = '';
+        $type_forms = '';
+
+            $result = $db->query('SELECT * FROM content_type_fields WHERE content_type_id ="'. $listID.'" ORDER BY weight asc;');
+
+            $number_of_rows = 0;//for now
+
+            while($row = $result->fetchArray()) {
+                $number_of_rows += 1;
+            }
+        if($number_of_rows < 2){
+
+            $button_0 = "\n\n\t\t".'<form name="form_field_name" id="form-field-id" class="" method="post">'."\n";
+                
+                    
+                        $button_0 .= "\n".'  <input type="hidden" name="Posted_'.'[posted_fields][content_type]" id="Posted-form-posted-content-type-" value="" />';
+                        $button_0 .= "\n".'  <input type="hidden" name="Posted_'.'[posted_fields][content_type][name]" id="Posted-form-posted-content-type-name-" value="" />';
+                        $button_0 .= "\n".'  <input type="hidden" name="Posted_'.'[posted_fields][content_type][id]" id="Posted-form-posted-content-type-id-" value="" />';
+                        $button_0 .= '<button title="" type="submit" name="add_new_field" id="" role="button"  class="btn btn-primary" formaction="?admin/content_type_edit/"'.$listID.'>';
+                        $button_0 .= 'add field';
+                        $button_0 .= '</button>';
+                        $button_0 .= "\n".'</form>' ."\n";
+                        $rows = array('message' => 'no fields found');
+
+        }else{
+                while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+                        $rows[$row['field_type'].'-'. $row['name'].'-'. $row['machine_id']] = $row;
+                        $get_name = $db->querySingle('SELECT * FROM content_types WHERE content_type_id='.$row['content_type_id'], true);
+                        //var_dump($get_name);
+                        $button_add='';
+                        $button_0 .= "\n\n\t\t".'<form name="form_field_name_'.$row['name'].'" id="form-field-id-'.$row['machine_id'].'" class="" method="post">'."\n";
+                        
+                            for ($i = 0; $i < $result->numColumns(); $i++) {
+                                $col = $result->columnName($i);
+                                $columns[] = $col;
+                                $button_0 .= "\n".'  <input type="hidden" name="'.$get_name['content_type_name'].'_fields'.'['.$row['machine_id'].'][available_fields]['.$row['machine_id'].'][field_attr]['.$col.']" id="Posted-form-posted-fields-field-attr-'.$col.']" value="'.$col.'" />';
+                                //$button_1 .= '<input type="hidden" name="Posted-form[posted-fields][]"  id=""  value="" />'."\n";
+                                
+                            }
+                        
+                        foreach($result as $list_key => $list_value) {
+                                
+                                $button_add .= "\n".'  <input type="hidden" name="'.$get_name['content_type_name'].'_fields'.'['.$list_key['machine_id'].'][type_fields]['.$row['machine_id'].'][field_attr]['.$col.']" id="Posted-form-posted-fields-field-attr-'.$col.']" value="'.$col.'" />';
+                                
+                                
+                        }
+                        $button_0 .= $button_add;
+                        $button_0 .= "\n".'  <input type="hidden" name="Posted_'.$get_name['content_type_name'].'[content_field]['.$row['machine_id'].'][machine_id]" id="Posted-form-posted-content-type-field-options-list" value="'.$row['machine_id'].'" />';
+                        $button_0 .= "\n".'  <input type="hidden" name="Posted_'.$get_name['content_type_name'].'[content_field]['.$row['machine_id'].'][html_tag]" id="Posted-form-posted-content-type-field-html-tag" value="'.$row['html_tag'].'" />';
+                        $button_0 .= "\n".'  <input type="hidden" name="Posted_'.$get_name['content_type_name'].'[content_field]['.$row['machine_id'].'][html_role]" id="Posted-form-posted-content-type-field-options-html-role" value="'.$row['html_role'].'" />';
+                        $button_0 .= "\n".'  <input type="hidden" name="Posted_'.$get_name['content_type_name'].'[content_field]['.$row['machine_id'].'][placeholder]" id="Posted-form-posted-content-type-field-placeholder" value="'.$row['placeholder'].'" />';
+                        $button_0 .= "\n".'  <input type="hidden" name="Posted_'.$get_name['content_type_name'].'[content_field]['.$row['machine_id'].'][descrption]" id="Posted-form-posted-content-type-field-description" value="'.$row['description'].'" />';
+                        $button_0 .= "\n".'  <input type="hidden" name="Posted_'.$get_name['content_type_name'].'[content_field]['.$row['machine_id'].'][label]" id="Posted-form-posted-content-type-field-label" value="'.$row['label'].'" />';
+                        $button_0 .= "\n".'  <input type="hidden" name="Posted_'.$get_name['content_type_name'].'[content_field]['.$row['machine_id'].'][value]" id="Posted-form-posted-content-type-field-value" value="'.$row['value'].'" />';
+                       
+                       
+                        $button_0 .= "\n".'  <input type="hidden" name="Posted_'.$get_name['content_type_name'].'[content_field]['.$row['machine_id'].'][field_options_id]" id="Posted-form-posted-content-type-field-options-list" value="'.$row['option_list_id'].'" />';
+                        $button_0 .= "\n".'  <input type="hidden" name="Posted_'.$get_name['content_type_name'].'[content_field]['.$row['machine_id'].'][field_type]" id="Posted-form-posted-content-type-field-type" value="'.$row['field_type'].'" />';
+                        $button_0 .= "\n".'  <input type="hidden" name="Posted_'.$get_name['content_type_name'].'[content_field]['.$row['machine_id'].'][field_name]" id="Posted-form-posted-content-type-field-name'.
+                        $row['content_type_id'].'" value="'.$get_name['content_type_name'].'" />';
+                        $button_0 .= "\n".'  <input type="hidden" name="Posted_'.$get_name['content_type_name'].'[content_field]['.$row['machine_id'].'][field_id]" id="Posted-form-posted-content-type-id-'.$row['content_type_id'].'" value="'.$row['content_type_id'].'" />';
+                        $button_0 .= '<button title="" type="submit" name="create_new_' . $get_name['content_type_name'] . '" id="post-button-id-'. $row['content_type_id'].'" role="button"  class="btn btn-primary" formaction="?admin/content_type_edit/'. $row['content_type_id'] .
+                        '&content_type_name='.$get_name['content_type_name'].'&content_type_id='.$row['content_type_id'].'">';
+                        $button_0 .= 'edit - '.$get_name['content_type_name'];
+                        $button_0 .= '</button>';
+                        $button_0 .= "\n".'</form>' ."\n";
+
+                }
+        }
+
+        return $rows;//'<pre style="max-width:380px;max-height:100px;overflow-y:scroll;">'.print_r($rows,1).'</pre><span class="btn btn-secondary">'.$number_of_rows.' - fields</span><hr>'. $button_0;
+    }
+
     public function content_type_edit()
     {
 
@@ -3302,7 +3476,7 @@ class admin
 
         $var = array();
         $link = 'link';
-        $userID = $_POST['name'];
+        $userID = (isset($_POST['name']) ? $_POST['name']: '');
 
         $var[$link][1] = array(
                     'text' => 'Profile',
@@ -3358,42 +3532,127 @@ class admin
 
         $variables['contentTitle'] = $cck->_path_segment(1);
 
+        
+            
+        /*********************list content types for calendar events**************/
+
+        $db = new SQLite3($database);
+
+        $typeID = (!empty($cck->_path_segment(2)) ? $cck->_path_segment(2) : $_POST['edit_type'] );
+
+        $resultAdd = $db->query('SELECT * FROM content_types WHERE content_type_id ="'.$typeID.'"');
+
+        $count = 1;
+
+        $type_forms = '';
+
+        while ($rowAdd = $resultAdd->fetchArray(SQLITE3_ASSOC)) {
+            $rows = array();
+            $content_type_list[$rowAdd['content_type_name']] = $rowAdd['content_type_id'];
+            $result = $db->query('SELECT * FROM content_type_fields WHERE content_type_id ="'. $rowAdd['content_type_id'].'" ORDER BY weight asc;');
+            while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+                $rows[] = $row;
+
+                $form['contentTypeFields'][] = $row; //content type fields are not  content form fields
+
+
+            }
+
+            $form['contentType'] = $rowAdd['content_type_name'];
+            $form['contentTypeId'] = $rowAdd['content_type_id'];
+            $form['contentUserId'] = $rowAdd['content_type_user_id'];
+            $form['contentTypeCategories'] = $rowAdd['content_type_category_id'];
+
+            $form['formAction'] = '?admin/content_type_field_save/'. $form['contentType'];
+            $form['mimeType'] = '';
+            $form['header'] = $columns;
+            $form['rows'] = $rows;
+
+            $form['contentUserId'] = (isset($form['contentUserId']) ? $form['contentUserId'] : '1');
+            $form['userName'] = (isset($form['userName']) ? $form['userName'] : 'owner');
+            $form['contentType'] = (isset($form['contentType']) ? $form['contentType'] : '');
+            $form['contentId'] = $form['contentType'].'-'.hash('crc32', $cck->_path_segment(1).time() . mt_rand()) .'-'. $form['userName'];
+
+            $form['contentTime'] = date("Y-m-d H:i:s");
+            $form['enumerate'] = $count;
+            $type_forms .= $cck->_view('form_content_type_edit', $form);
+            $count = $count + 1;
+        }
+
         $form_element_types = array(
 
-            'input' => 'input',
-            'textarea' => 'textarea',
-            'radio' => 'radio',
-            'select' => 'select',
-            'checkbox' => 'checkbox',
-            'date' => 'date',
-            'date-time' => 'datetime-local',
-            'email' => 'email',
-            'file' => 'file',
-            'hidden' => 'hidden',
-            'image' => 'image',
-            'month' => 'month',
-            'week' => 'week',
-            'number' => 'number',
-            'password' => 'password',
-            'range' => 'range',
-            'reset' => 'reset',
-            'search' => 'search',
-            'submit' => 'submit',
-            'text' => 'text',
-            'time' => 'time',
-            'url' => 'url',
-            'color' => 'color'
+            'text' => '<input style="" type="text" name="" id="text" style="" class="%s" value="" />',
+            'textarea' => '<textarea type="textarea" name="" id="textarea" style="" class="%s"></textarea>',
+            'radio' => '<input type="radio" name="" id="radio" style="" class="%s" value="" />',
+            'select' => '<select name="" id="select" value="" style="" class="%s"></select>',
+            'option' => '<option value="" name="" id="option" style="" class="%s"></option>',
+            'datalist' => '<datalist name="" id="datalist" class="%s" value=""></datalist>',
+            'checkbox' => '<input type="checkbox" name="" id="checkbox" style="" class="%s" value="" />',
+            'date' => '<input type="date" name="" id="date" class="%s" value="" />',
+            'date-time' => '<input type="datetime-local" name="" id="datetime-local" class="%s" value="" /> ',
+            'email' => '<input type="email" name="" id="email" class="%s" value="" /> ',
+            'file' => '<input type="file" name="" id="file" class="%s" value="" /> ',
+            'hidden' => '<input type="text" name="" id="hidden" class="%s" value="" />'."\n".'<input type="hidden" name="" id="hidden" class="" value="" />',
+            'image' => '<input type="image" name="" id="image" class="%s" value="" /> ',
+            'month' => '<input type="month" name="" id="month" class="%s" value="" /> ',
+            'week' => '<input type="week" name="" id="week" class="%s" value="" /> ',
+            'number' => '<input type="number" name="" id="number" class="%s" value="" /> ',
+            'password' => '<input type="password" name="" id="password" class="%s" value="" /> ',
+            'range' => '<input type="range" name="" id="range" class="%s" value="" />',
+            'reset' => '<button type="reset" value="" name="" id="reset" style="" class="%s" role="button">reset</button>',
+            'search' => '<input type="search" name="" id="search" style="" class="%s" value="" /> ',
+            'submit' => '<button type="submit" formaction="" value="" name="" id="" style="" class="%s" role="button">submit</button>',
+            'time' => '<input type="time" name="" id="" style="" class="%s" value="" />',
+            'url' => '<input type="url" name="" id="" style="" class="%s" value="" />',
+            'color' => '<input type="color" name="" id="" style="" class="%s" value="" />'
             );
+            $list_element_types='';
+            $element_css_classes = 'form-control';
+            foreach ($form_element_types as $name => $value) {
+                switch($name){
+                    case 'select':
+                        $element_css_classes = 'form-select';
+                        break;
+                    case 'checkbox':
+                        $element_css_classes = 'form-check-input';
+                        break;
+                    case 'range':
+                        $element_css_classes = 'form-range';
+                        break;
+                    case 'color':
+                        $element_css_classes = 'form-control form-control-color';
+                        break;
+
+                    default:
+                    $element_css_classes = 'form-control';
+                }
+                $attributes = '<table>'."\n";
+                for ($i = 0; $i < $result->numColumns(); $i++) {
+                    $col = $result->columnName($i);
+                    $attributes  .= '<tr><td style="min-width:120px;">'.$col.'</td><td><input style="" type="text" name="" id="text" style="" class="form-control" value="" /></td></tr>'."\n";
+                }
+
+                $attributes .= '</table>'."\n";
+                
+                $value = sprintf($value,$element_css_classes);
+                $list_element_types .=  '<div style="border-bottom: solid 1px #cccccc;">'."\n";
+                $list_element_types .= '<h5 style="padding:.5rem 0 .5rem 1rem;border:solid #666666 1px;background-color: #eaeaea;" class="form-label" for="'.$name.'" name="" id="">'.$name.'</h5>'."\n";
+              
+                $list_element_types .= '<div style="max-height: 400px; overflow-y: scroll; font-size:1rem;font-weight:500;" class="">'."\n";
+                $list_element_types .= '<h6 class="sticky">preview</h6>'."\n";
+                $list_element_types .= $value . '';
+                $list_element_types .= '<a class="target-attr" href="javascript:;" name="'.$form['contentType'] .'_field_'.$name.'_control" id="'.$form['contentType'] .'-field-'.$name.'-control">'."\n";
+                $list_element_types .= 'edit attributes: show</a><div id="show-attr" class="show-attr"><pre class="field-attr" id="">'. print_r($attributes,1).'</pre></div>'."\n";
+                $list_element_types .= '<div class="text-center"><a role="button" style="background-color:red;color: white;display:none;text-align: center" href="javascipt:;" id="'.$name.'" class="attr-close btn">close</a></div>'."\n";
+                $list_element_types .= '</div></div><br>'."\n";
         
-            $variables['CCK'] = $cck;
-            $variables['INI'] = $ini_settings;
-            $variables['formName'] = 'form_login_user';
-            $variables['postUrl'] = '?admin/login_check';
-            $variables['content'] =  $output;
-    
-            $msg .= "";
-            $variables['messages'] = $msg;
-            $variables['loggedInUser'] =  (isset($_SESSION['UserData']['UserName']) ? $_SESSION['UserData']['UserName']: '' );
+        
+        
+                //break;
+            }
+        $msg = "";
+        $variables['messages'] = $msg;
+        $variables['loggedInUser'] =  (isset($_SESSION['UserData']['UserName']) ? $_SESSION['UserData']['UserName']: '' );
             
         $variables['CCK'] = $cck;
         $variables['INI'] = $ini_settings;
@@ -3405,10 +3664,11 @@ class admin
         $variables['messages'] = $msg;
         $variables['loggedInUser'] =  (isset($_SESSION['UserData']['UserName']) ? $_SESSION['UserData']['UserName']: '' );
         $variables['VAR'] = $variables;
-        $variables['content'] = '<pre>'.print_r($_POST, 1). print_r($form_element_types, 1).'</pre>';
+        $variables['content'] = '<div class="row"><div style="min-width:420px;" class="col">'. $type_forms.'</div><div style="max-width:420px;" class="col"><h5 style="padding:.5rem 0 .5rem 1rem;border:solid #666666 1px;background-color: #eaeaea;">Add fields</h5><div style="max-height:400px;overflow-y:scroll;" name="'.$form['contentType'].'-fields" class="target"><pre>'.print_r($_POST, 1).'</pre>'. $list_element_types.'</div></div>';
         print $cck->_view('page_admin', $variables);
     }
 
+    
     public function content_type_save()
     {
 
@@ -3493,6 +3753,7 @@ class admin
         $output = '<p class="fs-6">' .$output.'</p>'."\n";
         $variables['CCK'] = $cck;
         $variables['INI'] = $ini_settings;
+        $variables['VAR'] = $variables;
         $variables['POST'] = $_POST;
         $variables['content'] = $output;
         print $cck->_view('page_admin', $variables);
@@ -3615,7 +3876,7 @@ class admin
 
         $typeID = $cck->_path_segment(2);
 
-        $resultAdd = $db->query('SELECT * FROM content_types WHERE type_id ="'. $typeID.'";');
+        $resultAdd = $db->query('SELECT * FROM content_types WHERE content_type_id ="'. $typeID.'";');
         $result = $db->query('SELECT * FROM content_type_fields WHERE content_type_id ="'. $typeID.'" ORDER BY weight asc;');
 
         while ($row = $result->fetchArray()) {
@@ -3625,7 +3886,7 @@ class admin
 
 
         while ($rowAdd = $resultAdd->fetchArray()) {
-            $table['contentType'] = $rowAdd['name'];
+            $table['contentType'] = $rowAdd['content_type_name'];
 
             $r[] = $rowAdd;
         }
@@ -3638,7 +3899,7 @@ class admin
         $table['header'] = $columns;
         $table['rows'] = $rows;
         $table['fieldType'] = '';
-        $table['contentType'] = (isset($table['contentType']) ? $table['contentType'] : '');
+        $table['contentTypeId'] = $typeID;
         $output = $cck->_view('table_content_add_form', $table);
 
 

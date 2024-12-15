@@ -75,7 +75,7 @@ if (!empty($rows)) {
     $output .= '<tr><td id="td-' . (isset($id) ? $id : '')  . $row['name'] . '-' .  $row['name'] .
                      '" class="table-cells"> 
 					 <button id="save" name="save" value="save" type="submit" class="btn btn-secondary"> Save</button>'."\n".'
-					 <button title="Requires Site Administrator Permissions" class="btn btn-secondary" type="submit" formaction="?admin/admin_content_field_add/'.$contentTypeId.'">Add new field</button>'."\n".'
+					 <button title="Requires Site Administrator Permissions" class="btn btn-secondary" type="submit" formaction="?admin/content_type_edit/'.$contentTypeId.'">Add new field</button>'."\n".'
 					 </td></tr>' . "\n";
 
 }
