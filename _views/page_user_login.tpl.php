@@ -24,6 +24,9 @@ if (isset($_SESSION['UserData']) and $_SESSION['UserData']['UserName'] !== 'no n
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">    
 <link href="https://vjs.zencdn.net/8.16.1/video-js.css" rel="stylesheet" />
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+<script src="js/jquery-3.7.1.min.js"></script>
+<script src="js/cck.js"></script>
+
 
  
 </head>

@@ -73,9 +73,39 @@ ul.dropdown-menu li a:hover{
 	color: rgb(230, 243, 255) !important;
 	background-color: #f55d5d!important;
 	border-style: solid !important;
-	border: 1px 0 1px 0 !important;
+	border-width: 1px 0 1px 0 !important;
 	border-color: #f55d5d !important;
 }
+
+
+ul.ui-timepicker-list{
+	background-color:#f3d7d7;
+	color: #852525;
+	list-style: none;
+	border: solid #852525 1px;
+	border-radius: .5rem;
+	padding: 0 .5rem;
+}
+
+ul.ui-timepicker-list.li{
+
+	text-align: center;
+	display:block;
+
+	
+}
+ul.ui-timepicker-list.li:hover{
+	background-color: #852525;
+	color: #f3d7d7;
+	
+}
+
+.custom-select select option {
+	position: relative;
+	top:20px;
+
+	
+  }
 
 
 /*  table headers sticky */
@@ -99,7 +129,7 @@ table {
 	position: sticky;
 	top: 0;
 	background-color: #f2f2f2; /* Set a background color for the sticky header */
-	border: 1px 0 1px 0;
+	border-width: 1px 0 1px 0;
 	border-style: solid;
 	border-color: #aaa8a8;
   }
@@ -177,4 +207,23 @@ a.post-events{
 			display:block; 
 			width:100%; 
 			height:100%;
+		  }
+.with-value{
+			background-color: #ffc2c2 !important;
+			color: #000000 !important;
+		}
+		
+.with-value{
+			border-color: #f55d5d !important;
+		}
+.sticky{
+
+			position: sticky;
+			top: 0;
+			background-color: #f2f2f2; /* Set a background color for the sticky header */
+			border-width: 1px 0 1px 0;
+			border-style: solid;
+			border-color: #aaa8a8;
+			margin:0;
+			padding:0;
 		  }

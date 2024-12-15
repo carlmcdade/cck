@@ -1,37 +1,11 @@
-<?php
+<!----- table_content_types -------><?php
+//var_dump($rows);
 
 $output = '<table class="table table-striped fs-6">';
 $output .= '<tr class="table-cells">';
 
 
 foreach ($header as $th => $column) {
-/*====== table header name override =====  */
-/*
-    
-    if($th == 2) {
-               //thi
-         continue;
-    } elseif($th == 3) {
-                //i mo
-         continue;
-    }
-    elseif($th == 4) {
-                //i mo
-         continue;
-    }
-     elseif($th == 5) {
-                //i mo
-         continue;
-    }
-    if ($th == 0) {
-        //i mo
-        $column = 'account';
-    } elseif ($th == 1) {
-        //i mo
-        $column = 'profile';
-    }
-
-*/
 
     $output .= '<td id="id-'.$th.'" name="'.$column.'" class="first-row table-cells">' .  $column . '</td>' . "\n";
 }
@@ -57,11 +31,23 @@ if (!empty($rows)) {
                     case "0":
                         $id = $row[$td];
 
-                        $row[$td] = '<a name="'.$td .'" id="'. $id . '" role="button"  class="btn btn-primary" href="?content/content_type_edit/'. $id .'">edit</a>' ;
+                        $button = '<form name="content_type_edit" id="content-type-edit" ><a type="" formaction="?admin/content_type_edit" name="'.$td .'" 
+                        id="'. $id . '" role="button"  class="btn btn-primary" href="?admin/content_type_edit/'. $id .'">edit</a>' ;
+                        $button .= '<input type="hidden" value="'.$row[1].'" name="content_type_name" id="content-type-name">' ;
+                        foreach ($header as $th => $column) {
+
+                            $button .= '<input type="hidden" value="'.$column.'" name="Posted-'.$row[1].'[posted-fields]['.$th.']" id="content-type-id" />' ;
+                        }
+                        $button .= '<input type="hidden" value="'.$id.'" name="content_type_id" id="content-type-id">' ;
+                        $button .= '</form>';
+                        $row[$td]= $button;
 
                         break;
                     case "1":
-                        $row[$td] = '<a name="' . $td . '" id="'. $id .'" role="button"  class="btn btn-primary" href="?content/content_add_post/'. $id .'">' .$row[$td]. '</a>' ;
+                        
+                        $button_1 = '<form><a name="' . $td . '" id="'. $id .'" role="button"  class="btn btn-primary" href="?content/content_add_post/'. $id .'">' .$row[$td]. '</a>' ;
+                        $button_1 .= '<input type="hidden" value="'.$id.'" name="content_type_id" id="content-type-id" /></form>' ;
+                        $row[$td] = $button_1;
                         break;
 
                     case "4":
@@ -83,3 +69,5 @@ if (!empty($rows)) {
 }
 $output .= '</table>';
 print $output;
+?>
+<!-----end table_content_types_ end ---->

@@ -3,37 +3,19 @@
 $output = '<table class="table table-striped fs-6">';
 $output .= '<tr class="table-cells">';
 
-
+$colspan = 1;
 foreach ($header as $th => $column) {
-/*====== table header name override =====  */
-/*
-    
-    if($th == 2) {
-               //thi
-         continue;
-    } elseif($th == 3) {
-                //i mo
-         continue;
-    }
-    elseif($th == 4) {
-                //i mo
-         continue;
-    }
-     elseif($th == 5) {
-                //i mo
-         continue;
-    }
-    if ($th == 0) {
-        //i mo
-        $column = 'account';
-    } elseif ($th == 1) {
-        //i mo
-        $column = 'profile';
-    }
+   
+    $show_cols = array(0,1,8); 
+    $column = str_replace('_',' ', $column); 
+    if (!in_array($th, $show_cols)) {
+        $colspan = $colspan + 1;
+        continue;
+    } else {
 
-*/
-
-    $output .= '<td id="id-'.$th.'" name="'.$column.'" class="first-row table-cells">' .  $column . '</td>' . "\n";
+        $output .= '<td colspan="'.$colspan.'" id="id-'.$th.'" name="'.$column.'" class="first-row table-cells">' .  $column . '</td>' . "\n";
+    }
+   
 }
 
 $output .= '</tr>' . "\n";
@@ -43,9 +25,12 @@ if (!empty($rows)) {
     foreach ($rows as $tr => $row) {
         $output .= '<tr id="tr-'. (isset($id) ? $id : '') . '-' . $tr . '" class="table-cells">';
         // table cells per row
-
+        $colspan = 1;
+        $show_cols = array(0,1,8); 
         foreach ($header as $td => $cell) {
-            if ($td == 0) {
+            if (!in_array($td, $show_cols)) {
+                $colspan = $colspan + 1;
+                continue;
             } else {
 
 
@@ -56,23 +41,33 @@ if (!empty($rows)) {
                 switch ($td) {
                     case "0":
                         $id = $row[$td];
-
-                        $row[$td] = '<a name="'.$td .'" id="'. $id . '" role="button"  class="btn btn-primary" href="?users/edit_user/'. $id .'">edit</a>' ;
-
+                        $button_0 = '<form>';
+                        foreach ($header as $td => $cell) {
+                            $button_0 .= '<input value="'.$cell.'" type="hidden" name="posted-fields['.$cell.']" id="" class="form-control" style="" />';
+                        }
+                        //$button_0 = '<input value="" type="hidden" name="posted-fields['.$cell.']" id="" class="form-control" style="" />';
+                        //$button_0 = '';
+                        $button_0 = '<a name="'.$td .'" id="'. $id . '" role="button"  class="btn btn-primary" formaction="?users/edit_user/'. $id .'">edit</a></form>' ;
+                        $row[$td] = $button_0;
                         break;
                     case "1":
-                        $row[$td] = '<a name="' . $td . '" id="'. $id .'" role="button"  class="btn btn-primary" href="?users/edit_profile/'. $id .'">' .$row[$td]. '</a>' ;
+                        $button_1 = '<form>';
+                        $button_1 = '';
+                        $button_1 = '';
+                        $button_1 .= '<a title="'.$row[6].'" name="' . $td . '" id="'. $id .'" role="button"  class="btn btn-primary" formaction="?users/edit_profile/'. $id .'">'.
+                        $row[3].' '.$row[4].'</a></form>' ;
+                        $row[$td] = $button_1;
                         break;
 
-                    case "4":
-                        $row[$td] = substr($row[$td], 0, 40);
+                    case "6":
+                        $row[$td] = '<a href="javascript:;" role="button" title="'.$row[$td]. '" />view</a>';
                         break;
                     default:
                         $keeper = 'keep-width';
                 }
 
 
-                $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="'.$keeper.' table-cells">' . $row[$td] . '</td>' . "\n";
+                $output .= '<td colspan="'.$colspan.'" id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="'.$keeper.' table-cells">' . $row[$td] . '</td>' . "\n";
             } else {
                 $output .= '<td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $td . '" class="'.$keeper.'. table-cells">none</td>' . "\n";
             }

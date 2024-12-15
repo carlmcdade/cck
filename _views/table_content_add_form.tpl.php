@@ -41,7 +41,7 @@ if(!empty($rows))
 	// table rows
 	foreach ($rows as $tr => $row)
 	{
-		$output .= '<tr id="tr-'. (isset($id) ? $id : '') . '-' . $tr . '" class="table-cells">';
+		//$output .= '<tr id="tr-'. (isset($id) ? $id : '') . '-' . $tr . '" class="table-cells">';
 		// table cells per row
 		$label = $row['label'];
 		$type =  $row['field_type'];
@@ -51,7 +51,7 @@ if(!empty($rows))
 			//if(isset($row[$tr]))
 			//{
 				     $output .= '<tr><td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $tr . 
-				     '" class="table-cells"> <label>'.$label.'</label> <input type="text" class="form-control" id="" name="'. $row['name'].'"></td></tr>' . "\n";
+				     '" class="table-cells"> <label>'.$label.'</label> <input value="'. print_r($_POST.'[Posted-'. $contentType.'][posted-fields]['. $row['name'].']',1).'" type="text" class="form-control" id="" name="'. $row['name'].'"></td></tr>' . "\n";
 			  
 			//}
 			//else
@@ -63,12 +63,12 @@ if(!empty($rows))
 		//break;
 	}
 	$output .= '<tr><td id="td-' . (isset($id) ? $id : '')  . $row['name'] . '-' .  $row['name'] . 
-				     '" class="table-cells"> <input name="save" value="save" type="submit" class=" primary"></td></tr>' . "\n";
+				     '" class="table-cells"> <button name="save" id="" value="save" type="submit" class="btn btn-secondary">Save</button></td></tr>' . "\n";
 		
 }
 
 
       	  
-$output .= '</table></form>';
+$output .= '</table></form>'.'<pre>'. print_r($_POST,1). '</pre>';
 print $output;
 ?>

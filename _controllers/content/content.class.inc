@@ -50,7 +50,7 @@ class content
 
 
 
-        $result = $db->query('SELECT id,name,desc FROM content_types');
+        $result = $db->query('SELECT content_type_id,content_type_name,content_type_description FROM content_types');
         while ($row = $result->fetchArray()) {
             $rows[] = $row;
         }
@@ -86,7 +86,7 @@ class content
 
 
 
-        $result = $db->query('SELECT id,name,desc FROM content_types');
+        $result = $db->query('SELECT content_type_id,content_type_name,content_type_description FROM content_types');
         while ($row = $result->fetchArray()) {
             $rows[] = $row;
         }
@@ -95,8 +95,8 @@ class content
         $link = 'links';
         foreach ($rows as $key => $value) {
             $var[$link][$key] = array(
-                'text' => $value['name'],
-                'path' => $this->module . '/content_add_post/' . $value['id'],
+                'text' => $value['content_type_name'],
+                'path' => $this->module . '/content_add_post/' . $value['content_type_id'],
                 'css_class' => array($this->module, 'module_item'),
                 'css_id' => $this->module . ''
                 );
@@ -189,6 +189,9 @@ class content
 
         while ($row = $result->fetchArray()) {
             $rows[] = $row;
+            //$table['contentType'] = $row['content_type_name'];
+            //$table['contentTypeId'] = $row['content_type_id'];
+            //$table['contentTypeTitle'] = $row['content_type_title'];
         }
         //SQLite3Result::numColumns();
         for ($i = 0; $i < $result->numColumns(); $i++) {
@@ -196,6 +199,7 @@ class content
             $columns[] = $col;
         }
         $table['header'] = array('action', 'type', 'description');
+        
         $table['rows'] = $rows;
         $output = $cck->_view('table_content_types', $table);
 
@@ -387,8 +391,8 @@ class content
         while ($rowAdd = $resultAdd->fetchArray(SQLITE3_ASSOC)) {
             $form['contentType'] = $rowAdd['name'];
             $form['contentTypeId'] = $rowAdd['id'];
-            $form['contentUserId'] = $rowAdd['contenttype_user_id'];
-            $form['contentTypeCategories']['category-'. $count] = $rowAdd['contenttype_category_id'];
+            $form['contentUserId'] = $rowAdd['content_type_user_id'];
+            $form['contentTypeCategories']['category-'. $count] = $rowAdd['content_type_category_id'];
 
             $r[] = $rowAdd;
             $count = $count+1;

@@ -1,4 +1,4 @@
-<!--form_user_content_post-->
+<!--form_content_type_edit -->
 <?php
 //echo 'form user event post';
 $output = '<form action="'.$formAction.'" method="POST">';
@@ -96,13 +96,13 @@ if (!empty($rows)) {
     }
 
     $output .= '<input value= "'. $contentTypeCategories.'" type="hidden" class="form-control" id="content-type-categories" name="content_type_categories">' . "\n";
-    $output .= '<a id="'.$contentType.'-fields-control" style="text-decoration: none;" class="" href="javascript:;">';
+    $output .= '<a id="" style="text-decoration: none;" class="" href="javascript:;">';
     $output .= '<h5 style="color: #852525; border-top: solid #852525  1px;border-bottom: solid #852525  1px;background-color: #fcdddd; padding: .5rem 0; text-align:center;">'. $contentType .'</h5>' . "\n";
     $output .= '</a>';
-    $output .= '<div id="'.$contentType.'-fields" class="">';
+    $output .= '<div  class="">';
     $output .= '<input value="'.$contentType.' - '.$contentTime.'" 
 	type="text" class="form-control" placeholder="required!" id="content-title" name="content_title">' . "\n";
-    $output .= '<h5 style="text-align:center;border-top: solid #cccccc 1px;border-bottom: solid #cccccc 1px; background-color:#f1f1f1;padding: .3rem 0; ">fields</h5>' . "\n";
+    $output .= '<h5 style="text-align:center;border-top: solid #cccccc 1px;border-bottom: solid #cccccc 1px; background-color:#f1f1f1;padding: .3rem 0; ">Present fields</h5>' . "\n";
 
     foreach ($rows as $tr => $row) {
         $label = $row['label'];
@@ -120,28 +120,31 @@ if (!empty($rows)) {
         $output .= '' . "\n";
         //break;
     }
-    $output .= '
-					 <div class="text-center" style="padding: .5rem 0 .5rem 0"><button id="save" name="save" value="save" type="submit" class="btn btn-secondary"> Save</button>'."\n".'
-					 <button title="Requires Logged in User Permissions" class="btn btn-secondary" type="submit" formaction="?users/user_calendar&action=add_event&type='.
-                     $contentType.'&event_date='.(isset($_GET['event_date']) ? $_GET['event_date'] : '').'">Add Event</button></div>'."\n".'
+    $output .= '<div class="text-center" style="padding: .5rem 0 .5rem 0;"><button id="save" name="save" value="save" type="submit" class="btn btn-secondary"> Save content type</button>'."\n".'
+					 <button id="'.$contentType.'-fields-control" formaction="?admin/content_type_post/'.$contentTypeId.'" title="show possible fields" class="btn btn-secondary" type="submit">New content</button></div>'."\n".'
 				' . "\n";
     $output .= '</div>';
 
-} else {
+} else 
+{
     //$output .= '<pre>'.print_r($_POST).'</pre>';
     //$output .= "\n". '<input value= "'.$contentId.'" type="hidden" class="form-control" id="content-id" name="content_id">' . "\n";
     $output .= '<input value= "'.$contentType.'" type="hidden" class="form-control" id="content-type" name="content_type">' . "\n";
     $output .= '<input value= "'.$contentTime.'" type="hidden" class="form-control" id="content-time" name="content_time">' . "\n";
     $output .= '<input value= "'.$contentUserId.'" type="hidden" class="form-control" id="content-user-id" name="content_user_id">' . "\n";
     $output .= '<input value= "'.$contentTypeId.'" type="hidden" class="form-control" id="content-type-id" name="content_type_id">' . "\n";
-    foreach ($contentTypeFields as $field_key => $field_name) {
-        if (isset($field_key)) {
+    if(isset($contentTypeFields) and count($contentTypeField) > 0 ){
+        foreach ($contentTypeFields as $field_key => $field_name) {
+            if (isset($field_key)) {
 
-            $output .= '<input value= "'. (isset($field_name) ? print_r($field_name, 1) : '').'" type="hidden" class="form-control" id="content-type-fields" name="content_type_fields['.(isset($field_key) ? $field_key : 'none set').'][]">' . "\n";
-            $output .= '<input value= "'. (isset($field_value) ? print_r($field_value, 1) : '').'" type="hidden" class="form-control" id="content-type-fields" name="content_type_fields['.(isset($field_key) ? $field_key : 'none set').']['.(isset($field_key) ? $field_key : 'none set').'][label][]" />' . "\n";
+                $output .= '<input value= "'. (isset($field_name) ? print_r($field_name, 1) : '').'" type="hidden" class="form-control" id="content-type-fields" name="content_type_fields['.(isset($field_key) ? $field_key : 'none set').'][]">' . "\n";
+                $output .= '<input value= "'. (isset($field_value) ? print_r($field_value, 1) : '').'" type="hidden" class="form-control" id="content-type-fields" name="content_type_fields['.(isset($field_key) ? $field_key : 'none set').']['.(isset($field_key) ? $field_key : 'none set').'][label][]" />' . "\n";
 
+            }
         }
     }
+
+
 
     $output .= '<input value= "'. $contentTypeCategories.'" type="hidden" class="form-control" id="content-type-category" name="content_type_category">' . "\n";
     $output .= '<a class="" data-toggle="collapse" href="javascript:;'.$contentType.'-fields"';
@@ -154,17 +157,14 @@ if (!empty($rows)) {
 
 
     $output .= ' 
-					 <div class="text-center" style="padding: .5rem 0 .5rem 0;"><button id="save" name="save" value="save" type="submit" class="btn btn-secondary"> Save</button>'."\n".'
-					 <button title="Requires Logged in User Permissions" class="btn btn-secondary" type="submit" formaction="?users/user_calendar&action=add'.
-                 $contentTypeId.'&event_date='.(isset($_GET['event_date']) ? $_GET['event_date'] : '').'">Add Event</button></div>'."\n".'
+					 <div class="text-center" style="padding: .5rem 0 .5rem 0;"><button id="save" name="save" value="save" type="submit" class="btn btn-secondary"> Save content type</button>'."\n".'
+					 <button id="'.$contentType.'-fields-control" href="javascript:;" title="show possible fields" class="btn btn-secondary" type="submit">Add field</button></div>'."\n".'
 				' . "\n";
     $output .= '</div>';
 
 
 
 }
-
-
 
 $output .= '</form>';
 print $output;
