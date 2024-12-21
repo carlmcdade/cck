@@ -113,3 +113,17 @@ table {
   }
   
   /* Style the table as needed */
+
+.legend .row:nth-of-type(odd) div {
+	background-color:#b5facf;
+	}
+.legend .row:nth-of-type(even) div {
+	background-color: #dcdddc;
+	}
+
+.sticky{
+		position: sticky !important;
+		top: 0 !important;
+		background-color: #ccffcc!important;
+		color: #128835 !important;
+	  }
