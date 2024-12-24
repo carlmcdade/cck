@@ -3271,6 +3271,126 @@ $admin_menu = $var;
 
     }
 
+    public function edit_type_field()
+    {
+        global $cck,$ini_settings,$_SESSION;
+        // get all links from each class controller
+        $database = $ini_settings['databases']['user_db'];
+        $table = array();
+        $columns = array();
+        $rows = array();
+        $output = '';
+        $msg = 'messages : ';
+
+
+        /// build admin navigation links that only are used by this module/method
+
+
+        //$link = 'links';
+
+        $link = 'links';
+
+        $var = array();
+
+        $var[$link][1] = array(
+                    'text' => 'Your Profile',
+                    'path' => 'users/user_profile',
+                    'css_id' => $this->module,
+                'css_class' => array($this->module)
+                    );
+        $var[$link][2] = array(
+                    'text' => 'Your Account',
+                    'path' => 'users/user_account',
+                    'css_id' => $this->module,
+                'css_class' => array($this->module)
+                    );
+        $var[$link][3] = array(
+                    'text' => 'Your Content',
+                    'path' => 'users/user_content',
+                    'css_id' => $this->module,
+                'css_class' => array($this->module)
+                    );
+        $var[$link][4] = array(
+                'text' => 'User settings',
+                'path' => 'users/user_settings',
+                'css_id' => $this->module,
+                'css_class' => array($this->module)
+        );
+        $var[$link][5] = array(
+                'text' => 'Your Inbox',
+                'path' => 'users/user_messages',
+                'css_id' => $this->module,
+                'css_class' => array($this->module)
+        );
+
+
+
+        $menu = $cck->_hooks('hook_links');
+        $sub_menu = $cck->_hooks('hook_module_links');
+        $admin_menu = $var;
+
+        //var_dump($sub_menu); exit;
+        $variables['menuTitle'] = 'Site Admin';
+        $variables['adminMenuTitle'] = 'User Admin';
+        $variables['pageTitle'] = 'Site Admin';
+        $variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
+        $variables['subNavigation'] = $cck->_module_links(
+            $sub_menu[$this->module],
+            array(
+                'template' => 'links_sub_menu',
+                'index' => $this->module,
+                'css_id' => $this->module,
+                'css_class' => array($this->module)
+                ),
+            $variables
+        );
+
+        $variables['adminNavigation'] = $cck->_module_links($admin_menu, array(
+                'template' => 'links_user_menu',
+                'index' => $this->module,
+                'css_id' => $this->module,
+                'css_class' => array($this->module)
+                ), $variables);
+
+
+        $variables['contentTitle'] = $cck->_path_segment(1);
+        $db = new SQLite3($database);
+
+        $typeID = $cck->_path_segment(2);
+        if (!empty($TypeID)) {
+            $result = $db->query('SELECT * FROM content_type_fields WHERE content_type_id="'.$typeID.'"');
+        } else {
+            $result = $db->query('SELECT * FROM content_type_fields WHERE machine_id="'.$typeID.'"');
+        }
+
+        while ($row = $result->fetchArray()) {
+            $rows[] = $row;
+        }
+        //SQLite3Result::numColumns();
+        for ($i = 0; $i < $result->numColumns(); $i++) {
+            $col = $result->columnName($i);
+            $columns[] = $col;
+        }
+        $table['header'] = $columns;
+        $table['rows'] = $rows;
+        $table['CCK'] = $cck;
+        $table['INI'] = $ini_settings;
+        $output = $cck->_view('table_content_type_field_edit', $table);
+
+        $variables['CCK'] = $cck;
+        $variables['INI'] = $ini_settings;
+        $variables['formName'] = 'form_login_user';
+        $variables['postUrl'] = '?admin/login_check';
+        $variables['content'] =  $output;
+
+        $msg .= "";
+        $variables['messages'] = $msg;
+        $variables['loggedInUser'] =  (isset($_SESSION['UserData']['UserName']) ? $_SESSION['UserData']['UserName']: '' );
+        $variables['VAR'] = $variables;
+        print $cck->_view('page_admin', $variables);
+
+    }
+
 
     public function edit_config($userID = null)
     {
@@ -3784,7 +3904,18 @@ $admin_menu = $var;
         $variables['INI'] = $ini_settings;
         $variables['formName'] = 'form_login_user';
         $variables['postUrl'] = '?admin/login_check';
-        
+        foreach($_POST as $key => $value){
+
+                switch($key){
+
+                    case 'content_body':
+
+                        $_POST['content_body']['database_value'] = serialize($_POST['content_body']);
+
+                    break;
+                }
+
+        }
 
         $msg .= "";
         $variables['messages'] = $msg;

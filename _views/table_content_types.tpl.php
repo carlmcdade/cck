@@ -7,7 +7,7 @@ $output .= '<tr class="table-cells">';
 
 foreach ($header as $th => $column) {
 
-    $output .= '<td id="id-'.$th.'" name="'.$column.'" class="first-row table-cells">' .  $column . '</td>' . "\n";
+    $output .= '<td style="width:100px;" id="id-'.$th.'" name="'.$column.'" class="first-row table-cells">' .  $column . '</td>' . "\n";
 }
 
 $output .= '</tr>' . "\n";
@@ -31,8 +31,7 @@ if (!empty($rows)) {
                     case "0":
                         $id = $row[$td];
 
-                        $button = '<form name="content_type_edit" id="content-type-edit" ><a type="" formaction="?admin/content_type_edit" name="'.$td .'" 
-                        id="'. $id . '" role="button"  class="btn btn-primary" href="?admin/content_type_edit/'. $id .'">edit</a>' ;
+                        $button = '<form name="content_type_edit" id="content-type-edit" >' ;
                         $button .= '<input type="hidden" value="'.$row[1].'" name="content_type_name" id="content-type-name">' ;
                         foreach ($header as $th => $column) {
 

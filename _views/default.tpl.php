@@ -30,18 +30,28 @@ print('<!DOCTYPE html>
 ?>
 <div class="container my-5">
 
-      <div class="col-lg-8 px-0">
+      <div class="col-lg-8 px-0 fs-5">
               
-	      <p class="fs-5">
+	      
 <?php if(isset($mainNavigation)){
 		  echo $mainNavigation;
 		}
 ?>
+<div style="text-align:right;">
+<div class="btn-group">
+<!-- sub navigation  -->
+<?php if (isset($subNavigation)) {
+    echo $subNavigation;
+}
+?>
 
-<?php if(isset($subNavigation)){
-		  echo $subNavigation;
-		}
-?></p></div></div>
+
+<?php if (isset($adminNavigation)) {
+    echo $adminNavigation;
+}
+?>
+</div></div>
+</div></div>
 <!-- /#banner -->
 
 <div class="container my-5">
