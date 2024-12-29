@@ -1,12 +1,37 @@
 <!--table_categories--><?php 
-$output = '<table class="table">';
-$output .= '<thead><tr>';
-// table header
-foreach ($header as $th => $column)
+
+$output  = '<div class="row">';
+$output  .= '<div class="col"><h5>Treeview</h5>';
+$output .= '';
+//exit($output);
+foreach($rows as $name => $item)
 {
-	$output .= '<th scope ="col">' .  $column . '</th>' . "\n";	
+    $child_rows = $rows;
+	if($item['parentId'] == 0){
+
+		$output .= '<div style=""><a href="">'.$item['name'].'</a></div>';
+		foreach($child_rows as $child_key => $child)
+		{
+			if($child['parentId'] == $item['id'])
+			{ 
+				$output .= '<div style="margin-left: 2rem;"><a href="">'.$child['name'].'</a></div>';
+			}
+		}
+
+	}else{
+
+		//$output .= '<div style="margin-left: 2rem;"><a href="">'.$item['name'].'</a></div>';
+	} 
+	
+
 }
-$output .= '</tr></thead>' . "\n";
+
+
+$output .= '</div>';
+$output  .= '<div class="col"><h5>Table View</h5><table class="table">';
+
+// table header
+
 //$output .= '<tbody><tr>' . "\n";
 if(!empty($rows))
 {
@@ -35,6 +60,6 @@ if(!empty($rows))
 	}
 
 }
-$output .= '</table>';
+$output .= '</table></div></div>';
 print $output;
 ?>

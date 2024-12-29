@@ -106,16 +106,17 @@ if ($cck->_target('is_front') == false) {
     }
 ?>     
           
-          <h4 style="" class="text-center"><?php echo(isset($userHandle) ? $userHandle : 'test'); ?></h4> 
+          <h4 style="" class="text-center"><?php echo(isset($userHandle) ? $userHandle : 'Latest Posts'); ?></h4> 
 	      <div style="border-top: 1px solid #7777;" class="container my-5">
 	      <div class="row d-inline">
 
 	      <div style="width:30%;float:right;height:600px;overflow-y: scroll;" class="col-8">
-          
-	      <?php echo(isset($content) ? $content : ''); ?>
+          <?php echo(isset($sideBar) ? $sideBar : ''); ?>
+	      
 	      </div>
-	      <div style="width:70%;float:left;" class="col-4 border border-1-secondary border-start-0 border-top-0 border-bottom-0">
-	      <?php echo(isset($sideBar) ? $sideBar : ''); ?>
+	      <div style="width:70%;float:left;height:600px;overflow-y: scroll;" class="col-4 border border-1-secondary border-start-0 border-top-0 border-bottom-0">
+
+	      <?php echo $content;   ?>end
 	      </div>
 	      </div>
 	      </div>

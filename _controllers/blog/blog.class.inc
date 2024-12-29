@@ -353,12 +353,13 @@ class blog
 
     public function blog_latest()
     {
-        global $cck, $ini_settings;
+        global $cck, $ini_settings,$_SESSION;
 
         $database = $ini_settings['databases']['user_db'];
         $table = array();
         $columns = array();
         $rows = array();
+        $output = '';
 
         // get all links from each class controller
         $menu = $cck->_hooks('hook_links');
@@ -384,8 +385,8 @@ class blog
 
         $result = $db->query('SELECT * FROM userlist');
 
-        while ($row = $result->fetchArray()) {
-            $rows[] = $row;
+        while ($u_row = $result->fetchArray()) {
+            $u_rows[] = $u_row;
         }
         //SQLite3Result::numColumns();
         for ($i = 0; $i < $result->numColumns(); $i++) {
@@ -393,115 +394,59 @@ class blog
             $columns[] = $col;
         }
         $table['header'] = $columns;
-        $table['rows'] = $rows;
-        $output = $cck->_view('table_blog_latest_sidebar', $table);
+        $table['rows'] = $u_rows;
+        $variables['sideBar'] = $cck->_view('table_blog_latest_sidebar', $table);
         //$variables['userID'] = $cck->_path_segment(2);
-        $variables['profileImage'] = 'default_user.jpeg';
-
-        // check for user id no id means site owner
-        $variables['userID'] = $cck->_path_segment(2);
-        if (empty($cck->_path_segment(2))) {
-            $variables['profileImage'] = 'default_user.jpeg';
-            $variables['userHandle'] = 'Site Members';
-            $variables['userBio'] = $cck->_view('default_content', $variables);
-
-        } else {
-
-            foreach ($rows as $key => $value) {
-
-                $variables['profileImage'] =  $value ['image'];
-                $variables['userHandle'] =  $value ['name'];
-                $variables['userBio'] = $value['bio'];
-            }
-        }
+        
 
         /* ========================== blog posts ========================== */
 
         $db = new SQLite3($database);
         $table_posts = array();
         $userID = $cck->_path_segment(2);
-        if (!empty($userID)) {
-            $result = $db->query('SELECT userlist.name,userlist.bio, userlist.image,content.* FROM userlist , content WHERE userlist.id='.$userID.' AND content.content_user_id ='. $userID);
-            //$result = $db->query('SELECT * FROM content WHERE id='.$userID.'');
+        
+        $resultContent = $db->query('SELECT * FROM content');
+        $row_count = 1;
+        $content_rows = array();
+        while ($row = $resultContent->fetchArray(SQLITE3_ASSOC)) {
+               
+                //$content_rows[$row['content_machine_id']] = $row;
+                //$col = $resultContent->columnName($row_count);
+                for ($i = 0; $i < $resultContent->numColumns(); $i++) {
+                $col_name = $resultContent->columnName($i);
+                if($col_name == 'id'){ continue; }
+                $resultFieldAttr = $db->query('SELECT * FROM content_field_attributes WHERE field_container_id="'.$col_name.'"');
+                    while($attributes = $resultFieldAttr->fetchArray(SQLITE3_ASSOC))
+                    {
+                        $field_attr[$col_name] = $attributes;
+                    }
+                }
+                $row['content_body'] = unserialize($row['content_body']);
+                $variables['row_attributes'] = $field_attr;
+                $variables['row'] = $row;
+                $output .= $cck->_view($row['content_template'].'_content_template',$variables);
 
+            
 
-        } else {
-            $result = $db->query('SELECT userlist.name, userlist.bio, userlist.image,content.* FROM userlist , content WHERE userlist.id = content.content_user_id');
-
-        }
-
-        while ($row = $result->fetchArray()) {
-            $rows[] = $row;
+            $row_count = $row_count + 1;
+           
         }
 
         //SQLite3Result::numColumns();
-        for ($i = 0; $i < $result->numColumns(); $i++) {
-            $col = $result->columnName($i);
+        for ($i = 0; $i < $resultContent->numColumns(); $i++) {
+            $col = $resultContent->columnName($i);
             $columns[] = $col;
         }
-        $table_posts['header'] = $columns;
-
-
-        $table_posts['rows'] = $rows;
-
+        
 
 
         //var_dump($rows);
-        // check for user id no id means site owner
-        $variables['userID'] = $userID;
-        if (empty($cck->_path_segment(2))) {
-            $variables['profileImage'] = 'default_user.jpeg';
-            $variables['userHandle'] = 'Latest Stories';
-            $variables['userBio'] = $cck->_view('default_content', $variables);
-            $variables['contentTitle'] = 'Members Blogs';
+        
 
-        } elseif (!empty($rows)) {
+        //$variables['sideBar'] = $cck->_view('table_blog_latest_content', $table_posts);
+        $variables['content_rows'] = $content_rows;
 
-            foreach ($rows as $key => $value) {
-
-                $variables['profileImage'] =  $value ['image'];
-                $variables['userHandle'] =  $value ['name'];
-                $variables['userBio'] = $value['bio'];
-                $variables['contentTitle'] = $value['name'] .'\'s Blog';
-            }
-        } else {
-
-            $table_posts['rows'] = array(array(
-              'content_body' => 'user has nothing in database yet',
-              'content_title' => 'No titles',
-              'name' => $userID
-              ));
-            $result = $db->query('SELECT userlist.* FROM userlist WHERE id='. $userID);
-
-            while ($row = $result->fetchArray()) {
-                $rows[] = $row;
-            }
-            foreach ($rows as $key => $value) {
-
-                $variables['profileImage'] =  $value ['image'];
-                $variables['userHandle'] =  $value ['name'];
-                $variables['userBio'] = $value['bio'];
-                $variables['contentTitle'] = $value['name'] .'\'s Blog';
-
-            }
-
-        }
-
-        $variables['sideBar'] = $cck->_view('table_blog_latest_content', $table_posts);
-
-
-        $variables['content'] =  $output;
-        /**$output .$database . '<br>::' .
-        $_SERVER['REQUEST_URI'] .' <br>::' .
-        $_SERVER['QUERY_STRING'] .' <br>::' .
-        $_SERVER['SCRIPT_FILENAME'] .' <br>::' .
-        $ini_settings['paths']['install_dir'] . '<br>::'.
-         CCK_ROOT. '<br>::' .
-         DOCROOT . '<br>::'.
-         	 $ini_settings['paths']['dev_symlink'];
-         */
-
-
+        $variables['content'] = $output;//<pre>'. print_r($content_rows,1) .'</pre>';
 
         print $cck->_view('page_blog_latest', $variables);
 

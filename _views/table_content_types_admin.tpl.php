@@ -16,7 +16,7 @@ foreach($contentTypeNames as $typeName => $value){
     $output .= '<div class="col btn-secondary border" style="text-transform: capitalize;text-align: center; padding:.3rem" max-height:450px;overflow-y: scroll;width:420px; border: solid red 1px;">';
     $output .= ' present fields</div>';
     $output .= '</div>';
-    $output .='<div class="row">';
+    $output .='<details><summary  style="position:relative;left:-12px;margin:0; padding:1rem 0 1rem 1rem;" class="bg-warning fs-5">configure</summary><div class="row">';
     /***** Left column start ****/
     $output .= '<div style="max-height:450px;overflow-y: scroll;width:420px; border-right: #eaeaea solid  1px;" class="col">';
     //$output .= '<h5 class="bg-secondary border " style="text-align: center; padding:.3rem">'.$typeName.'</h5>';
@@ -73,7 +73,7 @@ foreach($contentTypeNames as $typeName => $value){
     $output .= '<button class="btn btn-primary" role="button" type="submit" formaction="?admin/content_type_edit/'.$contentTypeInfo[$typeName]['content_type_id'].'">save all</button> ';
     $output .= '<button class="btn btn-primary" role="button" type="submit" formaction="?admin/content_type_edit/'.$contentTypeInfo[$typeName]['content_type_id'].'">add field</button> ';
     $output .= ' </div>';
-    $output .= '</div></form>';
+    $output .= '</div></form></details>';
     
 }       
 
