@@ -1,11 +1,10 @@
-<!--table_blog_latest_ content --><?php
+<!--table_blog_latest_content --><?php
 
-if(!isset($rows)){
 		
-		print 'no posts to read';
+		print '<pre>'.print_r($rows,1).'</pre>';
+		exit;
 
-}
-else{
+
 $output = '<div class="row">';
 
 
@@ -15,7 +14,7 @@ $output = '<div class="row">';
 	$counter = 0;
 	foreach ($rows as $tr => $row)
 	{
-		$more = '<a href="?content/content_view/id/'. $row['id'] . '">more</a>';
+		$more = '<a href="?content/content_view/id/'. $row['content_machine_id'] . '">more</a>';
 		$output .= '<div style="" class="">';
 		
 			if(isset($row) && !empty($row['content_title']))
@@ -38,5 +37,5 @@ $output = '<div class="row">';
 
 $output .= '</div>';
 print $output;
-}
+
 ?>

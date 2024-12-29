@@ -6,6 +6,7 @@ namespace content;
 
 use Common;
 use SQLite3;
+use PDO;
 
 /**
  * @author Carl McDade
@@ -25,6 +26,8 @@ use SQLite3;
  *
  *
  */
+
+
 
 class content
 {
@@ -103,6 +106,14 @@ class content
         }
 
         $var[$link][] = array(
+            'text' => 'Create Category',
+            'path' => $this->module . '/content_category_create',
+            'css_class' => array($this->module, 'main_item'),
+            'css_id' => $this->module
+            );
+
+
+        $var[$link][] = array(
                 'text' => 'Create Container',
                 'path' => $this->module . '/content_container_create',
                 'css_class' => array($this->module, 'main_item'),
@@ -110,6 +121,106 @@ class content
                 );
 
         return $var;
+    }
+
+    public function content_list()
+    {
+      
+            global $cck, $ini_settings,$_SESSION;
+    
+            $database = $ini_settings['databases']['user_db'];
+            $table = array();
+            $columns = array();
+            $rows = array();
+            $output = '';
+            $msg = 'messages : ';
+
+    
+            // get all links from each class controller
+            $menu = $cck->_hooks('hook_links');
+            $sub_menu = $cck->_hooks('hook_module_links');
+            //var_dump($sub_menu); exit;
+            $variables['iniSettings'] = $ini_settings;
+            $variables['menuTitle'] = 'View blog';
+            $variables['pageTitle'] = 'Recent posts';
+            $variables['contentTitle'] = $cck->_path_segment(1);
+            $variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
+            $variables['subNavigation'] = $cck->_module_links(
+                $sub_menu[$this->module],
+                array(
+                    'template' => 'links_sub_menu',
+                    'index' => $this->module,
+                    'css_id' => $this->module,
+                    'css_class' => array($this->module)
+                    ),
+                $variables
+            );
+            /*========================= bloggers ======================================*/
+            $db = new SQLite3($database);
+    
+            $result = $db->query('SELECT * FROM userlist');
+    
+            while ($u_row = $result->fetchArray()) {
+                $u_rows[] = $u_row;
+            }
+            //SQLite3Result::numColumns();
+            for ($i = 0; $i < $result->numColumns(); $i++) {
+                $col = $result->columnName($i);
+                $columns[] = $col;
+            }
+            $table['header'] = $columns;
+            $table['rows'] = $u_rows;
+            $variables['sideBar'] = $cck->_view('table_blog_latest_sidebar', $table);
+            //$variables['userID'] = $cck->_path_segment(2);
+            
+    
+            /* ========================== blog posts ========================== */
+    
+            $db = new SQLite3($database);
+            $table_posts = array();
+            $userID = $cck->_path_segment(2);
+            
+            $resultContent = $db->query('SELECT * FROM content');
+            $row_count = 0;
+            $content_rows = array();
+            while ($row = $resultContent->fetchArray(SQLITE3_ASSOC)) {
+                   $row['content_body'] = unserialize($row['content_body']);
+                    //$content_rows[$row['content_machine_id']] = $row;
+                    $col = $resultContent->columnName($row_count);
+                    $resultFieldAttr = $db->query('SELECT * FROM content_field_attributes WHERE field_container_id="'.$col.'" ');
+                    $variables['row'] = $row;
+                    $output .= $cck->_view('content_type_admin',$variables);
+    
+                
+    
+                $row_count = $row_count + 1;
+               
+            }
+    
+            //SQLite3Result::numColumns();
+            for ($i = 0; $i < $resultContent->numColumns(); $i++) {
+                $col = $resultContent->columnName($i);
+                $columns[] = $col;
+            }
+            
+    
+            $variables['CCK'] = $cck;
+            $variables['INI'] = $ini_settings;
+            $variables['formName'] = 'form_login_user';
+            $variables['postUrl'] = '?admin/login_check';
+            
+
+            $msg .= "";
+            $variables['messages'] = $msg;
+            $variables['loggedInUser'] =  (isset($_SESSION['UserData']['UserName']) ? $_SESSION['UserData']['UserName']: '' );
+            $variables['VAR'] = $variables;     
+       
+            $variables['content_rows'] = $content_rows;
+    
+            $variables['content'] = $output;//<pre>'. print_r($content_rows,1) .'</pre>';
+    
+            print $cck->_view('default', $variables);
+
     }
 
 
@@ -589,7 +700,7 @@ class content
         $variables['pageTitle'] = 'Content';
         $variables['menuTitle'] = 'Add Content';
         $variables['adminMenuTitle'] = 'Content Admin';
-        $variables['contentTitle'] = 'Content Types';
+        $variables['contentTitle'] = 'Content Create';
         $variables['dbTable'] = 'content_types';
 
 
@@ -680,69 +791,232 @@ class content
             $variables['userID'] = '';
         }
 
-        $variables['content'] = 'Content types' . $output;
+        $variables['content'] = 'Choose a content type' . $output;
 
         print $cck->_view('default', $variables);
     }
 
-    public function content_post_save()
+    public function content_read()
     {
-        global $cck,$ini_settings,$_SESSION;
+        
+    }
 
+    public function content_edit()
+    {
+        
+        global $cck,$ini_settings, $_SESSION;
+        // get all links from each class controller
         $database = $ini_settings['databases']['user_db'];
         $table = array();
         $columns = array();
         $rows = array();
+        $output = '';
+        $msg = 'messages : ';
 
+        $variables['CCK'] = $cck;
+        $variables['INI'] = $ini_settings;
+        $variables['formName'] = 'form_login_user';
+        $variables['postUrl'] = '?admin/login_check';
 
         $menu = $cck->_hooks('hook_links');
-        $variables['page_title'] = 'Saved';
+        $sub_menu = $cck->_hooks('hook_module_links');
+        $variables['seperators'] = array('|','-',';',':');
         $variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
+        
+
         $db = new SQLite3($database);
-        if (!empty($typeID)) {
-            $result = $db->query('SELECT * FROM content WHERE id='. $view_id .'');
-        } else {
-            $result = $db->query('SELECT * FROM content');
+        $conID = (isset($_GET['content_machine_id']) ? $_GET['content_machine_id'] : $_GET['content_machine_id']);
+
+        $resultContent = $db->query('SELECT * FROM content WHERE content_machine_id="'.$conID.'"');
+        while($rowContent = $resultContent->fetchArray(SQLITE3_ASSOC))
+        {
+            
+            
+            $rowContent['content_body'] = unserialize($rowContent['content_body']);
+
+            $content_rows['content_machine_id'] = $rowContent;
+
+
         }
+        $content_rows['content_database_value'] = serialize($content_rows['content_machine_id']['content_body']);
+       
+        unset($content_rows['content_machine_id']['content_body']['content_machine_id']);
+        unset($content_rows['content_machine_id']['content_body']['database_value']);
+        //$output .= '<pre>'. print_r($content_rows,1). '</pre>';
+        //$output .= '<pre>'. print_r($_POST,1). '</pre>';
+        //echo '<pre>'. print_r($_GET,1). '</pre>';
+        echo '<form name="" id="" method="post">';
+        if(is_array($content_rows['content_machine_id']['content_body'])){
+            foreach($_POST['content_body'] as $f_name => $f_value)
+            {
+                switch($f_name)
+                {
+
+                    case 'database_value':
+                        //echo "\n" . '<textarea name="content_body['.$f_name.']" id="'.$f_name.'">'. $f_value .'</textarea>'."\n";
+                    break;
+                    case 'body':
+                        $output .=  "\n" . '<br><label style="display: block;width:300px; color:#ffffff;background-color: #000000; border: solid #000000 1px;">'.$f_name.'</label>
+                        <textarea placeholder="main content of post" style="width:300px; height:300px;" name="content_body['.$f_name.']" id="'.$f_name.'"></textarea>'."\n<br>";
+                    break;
+                    default:
+                    $output .=  "\n".'<br><label style="display: block; width: 300px;color:#ffffff;background-color: #000000; border: solid #000000 1px;">'.$f_name.'</label>
+                    <input style="width:300px;" class="" type="text" name="content_body['.$f_name.']" id="" value="'.$f_name.'" />'. "<br>";
+                    break;
+                }
+
+                
+                
+            }
+        }
+        else{
+
+            foreach($_POST['content_body'] as $f_name => $f_value)
+            {
+                switch($f_name)
+                {
+
+                    case 'body':
+                        $output .=  "\n" . '<br><label style="display: block;width:300px; color:#ffffff;background-color: #000000; border: solid #000000 1px;">'.$f_name.'</label>
+                        <textarea placeholder="main content of post" style="width:300px; height:300px;" name="content_body['.$f_name.']" id="'.$f_name.'"></textarea>'."\n<br>";
+                    break;
+                    default:
+                    $output .=  "\n".'<br><label style="display: block; width: 300px;color:#ffffff;background-color: #000000; border: solid #000000 1px;">'.$f_name.'</label>
+                    <input style="width:300px;" class="" type="text" name="content_body['.$f_name.']" id="" value="'.$f_name.'" />'. "<br>";
+                    break;
+
+                }
+
+                
+                
+            }
+
+
+        }
+        //echo "\n".'<textarea style="" class="" type="text" name="database_value" id="">'.serialize($content_rows).'</textarea>'. "<br>";
+        $output .=  "\n".'<input style="" class="" type="hidden" name="content_machine_id" id="" value="'.$_GET['content_machine_id'].'" />'. "<br>";
+        $output .=  "\n".'<button style="" class="btn" type="submit" formaction="?content/content_update&content_machine_id='.$_GET['content_machine_id'].'">save</button>';
+        $output .= '</form>';
+        $variables['pageTitle'] = 'Content';
+        $variables['contentTitle'] = 'Content Update';
+        
+        $variables['content'] = $output;
+        print $cck->_view('page_blog_view', $variables);
+
+
+    }
+
+    public function content_update()
+    {
+        global $cck,$ini_settings, $_SESSION;
+        // get all links from each class controller
+        $database = $ini_settings['databases']['user_db'];
+        $table = array();
+        $columns = array();
+        $rows = array();
+        $output = '';
+        $msg = 'messages : ';
+
+
+        $db = new SQLite3($database);
+
+        $variables['CCK'] = $cck;
+        $variables['INI'] = $ini_settings;
+        $variables['formName'] = 'form_login_user';
+        $variables['postUrl'] = '?admin/login_check';
+        //var_dump($_POST);exit;
+        foreach($_POST as $key => $value){
+
+                switch($key){
+
+                    case 'content_body':
+
+                        //$_POST['database_value'] = serialize($_POST['content_body']);
+
+                    break;
+                }
+
+        }
+        $result = $db->query('SELECT * FROM content');
+        
 
         while ($row = $result->fetchArray()) {
             $rows[] = $row;
         }
         //SQLite3Result::numColumns();
         for ($i = 0; $i < $result->numColumns(); $i++) {
+            if($result->columnName($i) == 'id'){
+                continue;
+            }
             $col = $result->columnName($i);
-            $columns[] = $col;
+            $columns[$col] = $col;
+            $column_values[] = ':'.$col;
         }
-        $table['header'] = $columns;
-        $table['rows'] = $rows;
-        //$output .= $cck->_view('table_content_add', $table);
+        //exit('<pre>'.print_r($columns,1).'</pre>');
 
-        $view_content['content_body'] = $_POST;
-        //$view_content['content_json'] = json_encode($_POST, JSON_PRETTY_PRINT);
-        $view_content['content_type'] = $_POST['content_type'];
-        $view_content['content_id'] = $_POST['content_id'];
-        $view_content['content_time_created'] = $_POST['content_time'];
-        $view_content['content_published'] = false;
-        $view_content['content_type_id'] = $_POST['content_type_id'];
-        $view_content['content_category_id'] = $_POST['content_type_categories'];
-        $view_content['content_user_id'] = $_POST['content_user_id'];
-        $view_content['content_form_fields'] = array_keys($_POST);
+        try 
+        { 
+            $pdo = new PDO("sqlite:". $database); // [name].db just creates a new file
+   
+        } 
+    
+        catch (PDOException $e)
+        {
+            echo 'connection failed: '.$e->getMessage();
+        }
+    
+          
 
+        $sql = 'INSERT INTO content('.implode(',',$columns).') VALUES('.implode(',',$column_values).');';
 
-        $view_id = $cck->_path_segment(2);
+        $stmt = $pdo->prepare($sql);
+        
+        
+        //$updateStmt = $pdo->prepare($sqlUpdate);
+        $Upstmt = 'content_body = :body';
 
+        
+        
+        
 
+        $sqlUpdate = 'UPDATE content SET '.$Upstmt.' WHERE content_machine_id = "'. $_GET['content_machine_id']. '";';
+        $stat = $pdo->prepare($sqlUpdate);
+        $stat->bindValue(':body', serialize($_POST['content_body']), SQLITE3_TEXT);
+        
+        $sqlCheck = 'SELECT content WHERE content_machine_id="'.$_GET['content_machine_id'].'";';
+
+        /** execute sql for new post to database **/
+        try{
+            
+            $stat->execute();
+
+        } 
+        catch (PDOException $e)
+        {
+            echo 'update failed: '.$e->getMessage();
+        }
+        //$stmt->execute();
+        
         $output = $this->module;
         $output .= '<pre>';
-        $output .= print_r($view_content,1);
+        $output .= '<hr>'. print_r($sqlUpdate,1) . '<hr>'. print_r($sqlCheck,1);
+       
         $output .= '</pre>';
 
+        $msg .= "";
+        $variables['messages'] = $msg;
+        $variables['loggedInUser'] =  (isset($_SESSION['UserData']['UserName']) ? $_SESSION['UserData']['UserName']: '' );
+        $variables['VAR'] = $variables;
+        $variables['content'] = $output. '<pre>'.print_r($_POST, 1).'</pre>'.'<pre>'.print_r($_GET, 1).'</pre>'.'</div></div>';
+        
+
+        print $cck->_view('page_admin', $variables);
 
 
-        $variables['pageTitle'] = $view_id .' Saved';
-        $variables['contentTitle'] = $view_id .' Saved';
-        $variables['content'] =  $output;
-        print $cck->_view('page_users_content', $variables);
+    }
+
+    public function content_delete()
+    {
 
     }
 
@@ -835,7 +1109,7 @@ class content
                         $button_0 .= "\n".'<div class="bg-black border p-1 text-center fs-2 text-white">'. $type_info['content_type_name'] . '</div>';
                         //$button_0 .= '<div style="color:white;text-align:center;margin:12px 12px 12px 0px;" class="col bg-black border">'.$row['content_name'].'| -> |'.$row['content_machine_id'].'|</div>';
                                    
-                        $button_0 .= "\n\n\t\t".'<div class="row"> <div class="col border border-black border-end-0"><div class="bg-primary text-center border border-black border-top-0">content fields</div><form style="border:0px;" name="save_content" id="form-save-content" class="" method="post">'."\n";
+                        $button_0 .= "\n\n\t\t".'<div class="row"> <div class="col border border-black border-end-0"><div class="bg-primary text-center border border-black border-top-0">content fields</div><form style="border:solid1px;" name="save_content" id="form-save-content" class="" method="post">'."\n";
                         $resultFields = $db->query('SELECT * FROM content_type_fields WHERE content_type_id="'.$listID.'"');
                                     while ($tField = $resultFields->fetchArray(SQLITE3_ASSOC)) {
 
@@ -855,7 +1129,7 @@ class content
                                         $option_list = '';
                                     
 
-                                        $option_list .= "\n" .$tField['title'].'<select class="'.$tField['css_sheet'].'" style="'.$tField['css_inline'].'" type="'.$tField['field_type'].'" name="content_body['.$tField['name'].':'.$tField['label'].']" value="" >';
+                                        $option_list .= "\n" .$tField['title'].'<select class="'.$tField['css_sheet'].'" style="'.$tField['css_inline'].'" type="'.$tField['field_type'].'" name="content_body['.$tField['name'].':'.$tField['label'].':'.$tField['machine_id'].']" value="" >';
                                         
                                                 while ($fOption = $resultFieldsOptions->fetchArray(SQLITE3_ASSOC))
                                                 {
@@ -873,8 +1147,19 @@ class content
 
                                         }else{
 
-                                            $button_0 .= "\n".'<input type="text" name="content_body['.$tField['name'].':'.$tField['label'].']" value="test '.$tField['name'].'" />';
-                                            $button_0 .= "\n".'<a class="btn btn-secondary p-1" role="button" name="content_body['.$tField['name'].':'.$tField['label'].']" value="test '.$tField['name'].
+                                            switch($tField['name']){
+
+                                                case '':
+                                                    $tField['content_name'] = '';
+                                                break;
+
+
+
+                                            }
+
+                                            $button_0 .= "\n".'<input type="text" name="content_body['.$tField['name'].':'.$tField['label'].':'.$tField['machine_id'].']" value="'.$tField['name'].'" />';
+                                            /**/
+                                            $button_0 .= "\n".'<a class="btn btn-secondary p-1" role="button" name="content_body['.$tField['name'].':'.$tField['label'].':'.$tField['machine_id'].']" value="'.$tField['name'].
                                             '" href="?admin/edit_type_field/'.$tField['machine_id'].'">edit</a>';
                                             $button_0 .= "\n".'<details class="detail-box" style="padding:3px;margin-top:5px;text-align:left; background-color:#fefefe'.$tField['css_inline'].'"><summary>description</summary><p>'.$tField['description'].'</p></details>';
                                         
@@ -904,6 +1189,18 @@ class content
                                 $field_typed = 'text';
                                 $field_labeled = "\n".'<div class="col-3">'.$col.'</div>';
                                 $field_style= '';
+                                $field_style_sheet = '';
+                                $option_list = '';
+                                $details = '';
+                                $details_message = '';
+
+                                $contentFieldsInfo = $db->query('SELECT * FROM content_field_attributes');
+                                        while ($conField = $contentFieldsInfo->fetchArray(SQLITE3_ASSOC)) 
+                                        {
+                                             $content_field_info[$conField['field_container_id']] = $conField ;
+                                        }
+                                        //exit(var_dump($content_field_info));
+
 
                                 switch($col){
 
@@ -912,20 +1209,144 @@ class content
                                         $field_labeled = '';
                                     break;
                                     case 'content_user_id':
+                                        $field_label = $content_field_info[$col]['field_label'];
+                                        $field_desc = $content_field_info[$col]['field_description'];
                                         $field_value = 'guest';
                                         $field_disable = 'READONLY';
-                                        $field_style = 'border:solid 1px black;background-color: #eaeaea;';
+                                        $field_style = 'color: #124e8a;border:solid 1px black;background-color: #eaeaea;';
                                     break;
                                     case 'content_id':
+                                        $content_field_info[$col]['field_label'];
+                                        $field_desc = $content_field_info[$col]['field_description'];
                                     case 'content_machine_id':
+                                        $field_label = $content_field_info[$col ]['field_label'];
+                                        $field_desc = $content_field_info[$col]['field_description'];
                                         $field_value =  $type_info['content_type_name'].'-'.hash('crc32', $cck->_path_segment(1).time() . mt_rand()) .'-user';
                                         $field_disable = 'READONLY';
-                                        $field_style = 'border:solid 1px black;background-color: #eaeaea;';
+                                        $field_style = 'color: #124e8a;border:solid 1px black;background-color: #eaeaea;';
+                                    break;
+                                    case 'content_name':
+                                        $field_label = $content_field_info[$col]['field_label'];
+                                        $field_desc = $content_field_info[$col]['field_description'];
+                                        $field_value =  $type_info['content_type_name'].'-'.hash('crc32', $cck->_path_segment(1).time() . mt_rand()) .'-user';
+                                        $field_disable = 'READONLY';
+                                        $field_style = 'color: #124e8a;border:solid 1px black;background-color: #eaeaea;';
                                     break;
                                     case 'content_container_id':
+                                        $field_label = $content_field_info[$col]['field_label'];
+                                        $field_desc = $content_field_info[$col]['field_description'];
                                         $field_value =  'container-'.hash('crc32', $type_info['content_type_name'].time() . mt_rand()) .'-'.$type_info['content_type_name'];
                                         $field_disable = 'READONLY';
-                                        $field_style = 'border:solid 1px black;background-color: #eaeaea;';
+                                        $field_style = 'color: #124e8a;border:solid 1px black;background-color: #eaeaea;';
+                                    break;
+                                    case 'content_body':
+                                        $field_label = $content_field_info[$col]['field_label'];
+                                        $field_desc = $content_field_info[$col]['field_description'];
+                                        $field_value =  $type_info['content_type_name'] .' - content fields';
+                                        $field_disable = 'DISABLED';
+                                        $field_style = 'color: #124e8a;border:solid 2px red;background-color: #eaeaea;';
+                                    break;
+                                    case 'content_parent_id':
+                                        $field_label = $content_field_info[$col]['field_label'];
+                                        $field_desc = $content_field_info[$col]['field_description'];
+                                    case 'content_css_inline':
+                                        $field_label = $content_field_info[$col]['field_label'];
+                                        $field_desc = $content_field_info[$col]['field_description'];
+                                    case 'content_css_sheet':
+                                        $field_label = $content_field_info[$col]['field_label'];
+                                        $field_desc = $content_field_info[$col]['field_description'];
+                                    case 'content_js':
+                                        $field_label = $content_field_info[$col]['field_label'];
+                                        $field_desc = $content_field_info[$col]['field_description'];
+                                        $field_value =  '0';
+                                        $field_disable = '';
+                                        $field_style = 'color: #124e8a;border:solid 1px black;background-color: #eaeaea;';
+                                    break;
+                                    case 'content_title':
+                                        $field_label = $content_field_info[$col]['field_label'];
+                                        $field_desc = $content_field_info[$col]['field_description'];
+                                        $field_value =  ''. $type_info['content_type_name'] .' post -'. date("Y-m-d H:i:s");
+                                        $field_disable = 'REQUIRED';
+                                        $field_style = 'color: #124e8a;border:solid 2px #f31111;background-color: #cfe5f1;';
+                                        $field_style_sheet = '';
+                                        $details = 'required';
+                                        $details_message = 'This field is required a temporary title has been supplied for you';
+                                    break;
+                                    case 'content_type_id':
+                                        $field_label = $content_field_info[$col]['field_label'];
+                                        $field_desc = $content_field_info[$col]['field_description'];
+                                        $field_value =  $type_info['content_type_id'];
+                                        $field_disable = 'READONLY';
+                                        $field_style = 'color: #124e8a;border:solid 1px black;background-color: #eaeaea;';
+                                    break;
+                                    case 'content_time_created':
+                                        $field_label = $content_field_info[$col]['field_label'];
+                                        $field_desc = $content_field_info[$col]['field_description'];
+                                        $field_value = date("Y-m-d H:i:s");
+                                        $field_disable = 'READONLY';
+                                        $field_style = 'color: #124e8a;border:solid 1px black;background-color: #eaeaea;';
+                                    break;
+                                    case 'content_status':
+
+                                        $field_label = $content_field_info[$col] ['field_label'];
+                                        $field_desc = $content_field_info[$col]['field_description'];
+                                        $resultFields = $db->query('SELECT * FROM content_type_fields WHERE content_type_id="0"');
+                                        while ($tField = $resultFields->fetchArray(SQLITE3_ASSOC)) {
+
+                                            $option_list = "\n" . '<div class="col">' .$tField['title'].'</div><div class=""><select class="'.$tField['css_sheet'].'" style="color: #124e8a;'.$tField['css_inline'].'" type="'.$tField['field_type'].'" name="content_status" value="" >';
+                                        
+                                           
+                                        
+
+
+                                        $resultFieldsOptions = $db->query('SELECT * FROM content_type_field_options WHERE content_type_field_id="0"');
+                                        
+                                    
+
+                                        
+                                                while ($fOption = $resultFieldsOptions->fetchArray(SQLITE3_ASSOC))
+                                                {
+
+                                                    $option_list .= "\n".'<option value="'. $fOption['option_value'] .'" name="name-'.$fOption['option_html_name'].'-'.$fOption['option_machine_id'].'" id="id-'.$fOption['option_html_id'].'-'.$fOption['option_machine_id'].'">'. $fOption['option_label'] . '</option>';
+
+                                                }
+
+                                                
+                                            }
+
+                                        $option_list .= "\n".'</select></div>';
+                                        
+                                    break;
+                                    case 'content_category_id':
+                                        
+                                        $field_label = $content_field_info[$col]['field_label'];
+                                        $field_desc = $content_field_info[$col]['field_description'];
+                                        $resultFields = $db->query('SELECT * FROM content_type_fields WHERE content_type_id="101"');
+                                        while ($tField = $resultFields->fetchArray(SQLITE3_ASSOC)) {
+
+                                            $cat_list = "\n" . '<div class="col">' .$tField['title'].'</div><div class=""><select class="'.$tField['css_sheet'].'" style="color: #124e8a;'.$tField['css_inline'].'" type="'.$tField['field_type'].'" name="content_category_id" value="" >';
+                                        
+                                           
+                                        
+
+
+                                        $resultFieldsOptions = $db->query('SELECT * FROM categories');
+                                        
+                                    
+
+                                        
+                                                while ($fOption = $resultFieldsOptions->fetchArray(SQLITE3_ASSOC))
+                                                {
+
+                                                    $cat_list .= "\n".'<option value="'. $fOption['id'] .'" name="category-'.$fOption['name'].'">'.$fOption['name'].'</option>';
+
+                                                }
+
+                                                
+                                            }
+
+                                        $cat_list .= "\n".'</select></div>';
+                                        
                                     break;
                                 }
 
@@ -933,17 +1354,31 @@ class content
                                 
                                
                                  
-                                if($col == 'content_body'){
+                                if($col == 'content_status'){
                                    
-                                   
+                                            $button_0 .= "\n".'<div class="row" style="">'.$option_list.'</div>';
+                                            $button_0 .= '<details style="background-color: #000000; color: #ffffff;padding: 3px;"><summary>description</summary><p style="padding:3px;background-color: #ffffff;color:black;">'.$field_desc.'</p></details>';
+
+                                }elseif($col == 'id'){
+
+                                    continue;
+                                }
+
+                            elseif($col == 'content_category_id'){
+
+                                            $button_0 .= "\n".'<div class="row" style="">'.$cat_list.'</div>';
+                                            $button_0 .= '<details style="background-color: #000000; color: #ffffff;padding: 3px;"><summary>description</summary><p style="padding:3px;background-color: #ffffff;color:black;">'.$field_desc.'</p></details>';
+
+                            }
                                     
-                                } else {
+                                 else {
 
                                    
-                                        
+                                            $details = 'description';
+                                            $details_message = 'instructions on use';
                                             $button_0 .= '';
-                                            $button_0 .= "\n" .$field_labeled.'<input style="'.$field_style.'" type="'.$field_typed.'" name="'.$col.'" value="'.$field_value.'" '.$field_disable.' />';
-                                   
+                                            $button_0 .= "\n".'<label style="min-width:180px;padding:3px 6px">' .$field_label.'</label><input class="'.$field_style_sheet.'" style="'.$field_style.'" type="'.$field_typed.'" name="'.$col.'" value="'.$field_value.'" '.$field_disable.' />';
+                                            $button_0 .= '<details style="background-color: #000000; color: #ffffff;padding: 3px;"><summary>'.$details.'</summary><p style="padding:3px;background-color: #ffffff;color:black;">'.$field_desc.'</p></details>';
 
                                     
                                 }
@@ -955,75 +1390,6 @@ class content
                             
                         
 
-
-              /*  while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
-                        $rows[$row['content_machine_id'].'-'. $row['content_name'].'-'. $row['content_machine_id']] = $row;
-                        $get_name = $db->querySingle('SELECT * FROM content WHERE content_type_id='.$row['content_type_id'], true);
-                        //var_dump($get_name);
-                        $button_0 .= '<div class="col" style="margin-bottom:1rem;border-bottom:2px solid black;padding-bottom:1rem;">';
-                        $button_0 .= '<div style="color:white;text-align:center;margin:12px 12px 12px 0px;" class="col bg-black border">'.$row['content_name'].'| -> |'.$row['content_machine_id'].'|</div>';
-                                   
-                        //$button_0 .= "\n\n\t\t".'<form style="border:0px;" name="save_'.$row['content_name'].'" id="form-field-id-'.$row['content_machine_id'].'" class="" method="post">'."\n";
-                        
-                            for ($i = 0; $i < $result->numColumns(); $i++) {
-                                $col = $result->columnName($i);
-                                $columns[] = $col;
-                                $button_0 .= "\n" . '<div class="row"><div class="col">'.$col.'</div><div class="col">  <input type="text" name="'.$col.'" value="'.$row[$col].'" /></div></div>';
-                                
-                                if($col == 'content_body'){
-                                    $button_0 .= '<div class="row">';
-                                    $button_0 .= '<div style="text-align:center;margin:12px 12px 12px 0px;" class="col bg-secondary border"> Content body [type fields]</div></div>';
-                                    //$button_0 .= '<form name="save_'.$row['content_name'].'" id="" method="post">';
-                                    $resultFields = $db->query('SELECT * FROM content_type_fields WHERE content_type_id="'.$row['content_type_id'].'"');
-                                    while ($tField = $resultFields->fetchArray(SQLITE3_ASSOC)) {
-                                        $contentTypeFields[]= $tField;
-                                        $p_rows[] = $tField;
-    
-                                        $button_0 .= "\n".'<div class="row"> <div style="text-align:right;border-bottom: solid #777777 2px;padding: 2px 2px 2px 12px; margin-bottom: 0.75rem;" class="bg-primary border col">';
-                                        $button_0 .=  ''.$tField['name'].'</div>';
-                                        $button_0 .=  '<div class="col"><input type="text" name="content_body['.$tField['name'].']" value="test '.$tField['name'].'" /></div></div>';
-                               
-                                           
-                                    }
-                                    $button_0 .= '<div style="padding:5px 3px;text-align:center;margin:12px 12px 12px 0px;" class="col bg-secondary border"> <button role="button" class="btn btn-secondary" type="submit" formaction="?admin/content_save&content_id='. 
-                                    $row['content_machine_id'].'">save content body</button></div>';
-                                    $button_0 .= '';
-                                    //$button_0 .= '</div>';
-                                    $col_value = 'show the fields for this type by id';
-                                } else {
-    
-                                    $col_value = 'end of row</form>';
-                                }
-                                
-                            }
-                            
-                        
-                        
-                        $button_0 .= '<span>'.$col_value.'</span>';
-                        $button_0 .= '';
-    
-                        $button_0 .= "\n".'<label>'.$row['content_machine_id'].'</label>   <input type="text" name="Posted_'.$row['content_name'].'[content_field]['.$row['content_machine_id'].'][machine_id]" id="Posted-form-posted-content-type-field-options-list" value="'.$row['content_machine_id'].'" /><br>';
-                        $button_0 .= "\n".'<label>'.$row['content_title'].'</label>  <input type="text" name="Posted_'.$row['content_name'].'[content_field]['.$row['content_machine_id'].'][title]" id="Posted-form-posted-content-type-field-html-tag" value="'.$row['content_title'].'" /><br>';
-                        $button_0 .= "\n".'<label>'.$row['content_time_created'].'</label>   <input type="text" name="Posted_'.$row['content_name'].'[content_field]['.$row['content_machine_id'].'][created]" id="Posted-form-posted-content-type-field-options-html-role" value="'.$row['content_time_created'].'" /><br>';
-                        $button_0 .= "\n".'<label>'.$row['content_user_id'].'</label>   <input type="text" name="Posted_'.$row['content_name'].'[content_field]['.$row['content_machine_id'].'][user]" id="Posted-form-posted-content-type-field-placeholder" value="'.$row['content_user_id'].'" /><br>';
-                        $button_0 .= "\n".'<label>'.$row['content_category_id'].'</label>   <input type="text" name="Posted_'.$row['content_name'].'[content_field]['.$row['content_machine_id'].'][category]" id="Posted-form-posted-content-type-field-description" value="'.$row['content_category_id'].'" /><br>';
-                        $button_0 .= "\n".'<label>'.$row['content_published'].'</label>   <input type="text" name="Posted_'.$row['content_name'].'[content_field]['.$row['content_machine_id'].'][published]" id="Posted-form-posted-content-type-field-label" value="'.$row['content_published'].'" /><br>';
-                        $button_0 .= "\n".'<label>'.$row['content_js'].'</label>  <input type="text" name="Posted_'.$row['content_name'].'[content_field]['.$row['content_machine_id'].'][js]" id="Posted-form-posted-content-type-field-value" value="'.$row['content_js'].'" /><br>';
-                       
-                       
-                        $button_0 .= "\n".'<label>'.$row['content_id'].'</label>  <input type="text" name="Posted_'.$get_name['content_name'].'[content_field]['.$row['content_machine_id'].'][content_id]" id="Posted-form-posted-content-type-field-options-list" value="'.$row['content_id'].'" /><br>';
-                        $button_0 .= "\n".'<label>'.$row['content_type_id'].'</label>  <input type="text" name="Posted_'.$get_name['content_name'].'[content_field]['.$row['content_machine_id'].'][content_type_id]" id="Posted-form-posted-content-type-field-type" value="'.$row['content_type_id'].'" /><br>';
-                        $button_0 .= "\n".'<label>'.$row['content_name'].'</label>  <input type="text" name="Posted_'.$get_name['content_name'].'[content_field]['.$row['content_machine_id'].'][content_name]" id="Posted-form-posted-content-type-field-name'.
-                        $row['content_type_id'].'" value="'.$get_name['content_name'].'" /><br>';
-                        $button_0 .= "\n".'<label>'.$row['content_js'].'</label>  <input type="text" name="Posted_'.$get_name['content_name'].'[content_field]['.$row['content_machine_id'].'][content_id]" id="Posted-form-posted-content-id-'.$row['content_id'].'" value="'.$row['content_id'].'" /><br>';
-                        $button_0 .= '<button title="" type="submit" name="create_new_' . $row['content_name'] . '" id="post-button-id-'. $row['content_id'].'" role="button"  class="btn btn-primary" formaction="?admin/content_edit/'. $row['content_id'] .
-                        '&content_name='.$row['content_name'].'&content_id='.$row['content_machine_id'].'">';
-                        $button_0 .= 'edit - '.$row['content_machine_id'];
-                        $button_0 .= '</button>';
-                        $button_0 .= "\n".'</form></div>' ."\n";
-                        $button_0 .= '</div></div>';
-
-                }*/
         
         $button_0 .= '</div>';
         $variables['mainNavigation'] = $cck->_menu_links($menu, 'links_main_menu', $variables);
@@ -1270,19 +1636,19 @@ class content
     public function view()
     {
         global $cck, $ini_settings;
-        $view_content = $_SERVER['POST'];
+        $view_content = $_GET;
         $view_id = $cck->_path_segment(2);
         $menu = $cck->_hooks('hook_links');
         $variables['page_title'] = 'View One';
-        $variables['navigation'] = $cck->_menu_links($menu, 'links_main_menu');
+        $variables['navigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
 
-        $output = $this->module;
-        $output .= print_r($view_content, true);
+        
+        $output = print_r($view_content, true);
         $output .= print_r($view_id, true);
 
 
-        $variables['content_title'] = $id_content;
-        $variables['content'] .=  $output;
+        $variables['content_title'] = 'View Content';
+        $variables['content'] =  $output;
         print $cck->_view('default', $variables);
     }
 
@@ -1291,7 +1657,7 @@ class content
         global $cck, $ini_settings;
         $menu = $cck->_hooks('hook_links');
         $variables['page_title'] = 'View One';
-        $variables['navigation'] = $cck->_menu_links($menu, 'links_main_menu');
+        $variables['navigation'] = $cck->_menu_links($menu, 'links_main_menu',$variables);
 
         $output = '';
 

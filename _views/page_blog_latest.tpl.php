@@ -14,8 +14,8 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">    
 <link href="https://vjs.zencdn.net/8.16.1/video-js.css" rel="stylesheet" />
-
- 
+<script src="js/jquery-3.7.1.min.js"></script>
+<script src="js/cck.js"></script>
 </head>
 
 <body>
@@ -47,10 +47,10 @@
         <div class="btn-group">
 
              <?php
-             /**
-             if(isset($subNavigation)){
-       echo $subNavigation;
- }*/
+            // /**
+            // if(isset($subNavigation)){
+       //echo $subNavigation;
+ //}*/
 
 ?>
 
@@ -106,17 +106,21 @@ if ($cck->_target('is_front') == false) {
     }
 ?>     
           
-          <h4 style="" class="text-center"><?php echo(isset($userHandle) ? $userHandle : 'test'); ?></h4> 
+          <h4 style="" class="text-center"><?php echo(isset($userHandle) ? $userHandle : 'Latest Posts'); ?></h4> 
 	      <div style="border-top: 1px solid #7777;" class="container my-5">
-	      <div class="row d-inline">
+	      <div class="row">
 
-	      <div style="width:30%;float:right;height:600px;overflow-y: scroll;" class="col-8">
+	      <div style="float:right;height:600px;overflow-y: scroll;" class="col-9">
           
-	      <?php echo(isset($content) ? $content : ''); ?>
+          
+          <?php echo(isset($content) ? $content : ''); ?>
+	      
 	      </div>
-	      <div style="width:70%;float:left;" class="col-4 border border-1-secondary border-start-0 border-top-0 border-bottom-0">
-	      <?php echo(isset($sideBar) ? $sideBar : ''); ?>
+	      <div style="float:left;height:600px;overflow-y: scroll;" class="col-3 border border-1-secondary border-start-0 border-top-0 border-bottom-0">
+
+          <?php echo(isset($sideBar) ? $sideBar : ''); ?>
 	      </div>
+          
 	      </div>
 	      </div>
           
