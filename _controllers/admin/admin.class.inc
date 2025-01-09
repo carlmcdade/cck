@@ -4216,7 +4216,7 @@ $admin_menu = $var;
             'date-time' => '<input type="datetime-local" name="" id="datetime-local" class="%s" value="" /> ',
             'email' => '<input type="email" name="" id="email" class="%s" value="" /> ',
             'file' => '<input type="file" name="" id="file" class="%s" value="" /> ',
-            'hidden' => '<input type="text" name="" id="hidden" class="%s" value="" />'."\n".'<input type="hidden" name="" id="hidden" class="" value="" />',
+            'hidden' => '<input type="text" name="" id="hidden" class="%s" value="" />'."\n",
             'image' => '<input type="image" name="" id="image" class="%s" value="" /> ',
             'month' => '<input type="month" name="" id="month" class="%s" value="" /> ',
             'week' => '<input type="week" name="" id="week" class="%s" value="" /> ',
@@ -4260,8 +4260,12 @@ $admin_menu = $var;
                 
                 $value = sprintf($value,$element_css_classes);
                 $list_element_types .=  '<div style="border-bottom: solid 1px #cccccc;">'."\n";
-                $list_element_types .= '<h5 style="padding:.5rem 0 .5rem 1rem;border:solid #666666 1px;background-color: #eaeaea;" class="form-label" for="'.$name.'" name="" id="">'.$name.'</h5>'."\n";
-              
+                $list_element_types .= '<h5 style="padding:.5rem 0 .5rem 1rem;border:solid #666666 1px;background-color: #eaeaea;" class="form-label" for="'.
+                $name.'" name="" id="">'.$name.'  <form class="selected-field" action="admin/content_type_save&content_type_machine_id='.$name.'" name="add_this_field_form" id="add-this-field-form'.$name.'" method="post">'.
+                '<input  onclick="return MyFunction(this)"  name="'.$name.'" id="selected-field-element-'.$name.'" type="checkbox" value="1">'."\n";
+                $list_element_types .= '<input style="display:none;" name="add_field_'.$name.'_value" id="'.$name.'" type="hidden" value="'.htmlentities($form_element_types[$name]).'">';
+                $list_element_types .= '';
+                $list_element_types .= '</form></h5>';
                 $list_element_types .= '<div style="max-height: 400px; overflow-y: scroll; font-size:1rem;font-weight:500;" class="">'."\n";
                 $list_element_types .= '<h6 class="sticky">preview</h6>'."\n";
                 $list_element_types .= $value . '';

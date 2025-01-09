@@ -857,11 +857,11 @@ class content
                     break;
                     case 'body':
                         $output .=  "\n" . '<br><label style="display: block;width:300px; color:#ffffff;background-color: #000000; border: solid #000000 1px;">'.$f_name.'</label>
-                        <textarea placeholder="main content of post" style="width:300px; height:300px;" name="content_body['.$f_name.']" id="'.$f_name.'"></textarea>'."\n<br>";
+                        <textarea placeholder="main content of post" style="width:300px; height:300px;" name="content_body['.$f_name.']" id="'.$f_name.'">'.$f_value.'</textarea>'."\n<br>";
                     break;
                     default:
                     $output .=  "\n".'<br><label style="display: block; width: 300px;color:#ffffff;background-color: #000000; border: solid #000000 1px;">'.$f_name.'</label>
-                    <input style="width:300px;" class="" type="text" name="content_body['.$f_name.']" id="" value="'.$f_name.'" />'. "<br>";
+                    <input style="width:300px;" class="" type="text" name="content_body['.$f_name.']" id="" value="'.$f_value.'" />'. "<br>";
                     break;
                 }
 

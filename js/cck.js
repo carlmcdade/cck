@@ -61,7 +61,7 @@ $(document).ready(function() {
             $("a.attr-close").hide();//Toggles from hide to show
     });
           
-   
+ /**   
   $(document).ready(function() {
     var f = document.getElementById('user-warning-0');
     setInterval(function() {
@@ -69,7 +69,7 @@ $(document).ready(function() {
     }, 500);
 
   });
-/** 
+
   const All_Details = document.querySelectorAll('details');
 
   All_Details.forEach(deet=>{
@@ -84,6 +84,9 @@ $(document).ready(function() {
     }
   }
 */
+
+  
+
   jQuery.fn.extend({
     toggleText: function(stateOne, stateTwo) {
         return this.each(function() {

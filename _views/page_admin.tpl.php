@@ -61,6 +61,35 @@ $content = '<div>
 <link href="https://vjs.zencdn.net/8.16.1/video-js.css" rel="stylesheet" />
 <script src="js/jquery-3.7.1.min.js"></script>
 <script src="js/cck.js"></script>
+<script>
+
+function myFunctionOne() {
+    var x = document.createElement("INPUT");
+    x.setAttribute("type", "text");
+    x.setAttribute("value", "You Just added a text field ");
+    document.body.appendChild(x);
+}
+function myFunctionTwo() {
+    var y = document.createElement("INPUT");
+    y.setAttribute("type", "radio");
+    document.body.appendChild(y);
+}
+function MyFunction(chkBox) {
+    //alert("checked");
+    //alert($('input#foo').val());
+    alert(chkBox.name);
+    alert($('input[name=add_field_'+ chkBox.name +'_value]').val());
+    var x = document.createElement("INPUT");
+    x.setAttribute("type", "text");
+    x.setAttribute("value", "You Just added a text field ");
+    document.forms.namedItem("content-type").prepend(x);
+    alert('added new - ' + chkBox.name);
+    //alert($('input[type=hidden]').val());
+    //alert($(':hidden#foo').val());
+    //alert($('input:hidden[name=zyx]').val());
+} 
+
+</script>
 </head>
 
 <body>

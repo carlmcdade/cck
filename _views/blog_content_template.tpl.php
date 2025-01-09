@@ -1,5 +1,5 @@
 <!----- table_content_types -------><?php
-///var_dump($row);
+//var_dump($row);
 //exit;
 
 
@@ -9,12 +9,15 @@ if (!empty($row)) {
     // table rows
     $output = '<div style="margin-bottom:1rem; margin-top:1rem; background-color: #c3dfff;" class="border container">';
     $output .= '<div style="padding-bottom: 0.75rem;" class="row border border-black">';
-    $output .= '<div style="margin-bottom: 1rem;background-color:#f8f193;border-bottom:solid #000000 1px;" class="text-center fs-5">'.(isset($row['content_body']['title']) ? $row['content_body']['title']: '').'</div>';
-    $output .= '<div style="min-height:100px; min-width:100px;" class="col">'.
+    $output .= '<div style="margin-bottom: 1rem;background-color:#f8f193;border-bottom:solid #000000 1px;" class="text-center fs-5">'.
+    (isset($row['content_body']['title']) ? $row['content_body']['title']: ''). ' - ' . 
+    (isset($row['content_type_name']) ? $row['content_type_name']: ''). 
+    '</div>';
+    $output .= '<div style="height:100px;width:100px;overflow-y:hidden;" class="col-2">'.
                 '<image style="height:100px; width=100px;" src="images/user_profile/user_id_shared/'.(isset($row['content_body']['image']) ? $row['content_body']['image']: '').'" /></div>';
-    $output .= '<div class="col">'.(isset($row['content_body']['body']) ? substr($row['content_body']['body'],0, 120).
+    $output .= '<div class="col-10">'.(isset($row['content_body']['body']) ? substr($row['content_body']['body'],0, 120).
     '... <a style="font-size:1rem;" href="?content/view&content='.$row['content_machine_id'].'">more</a>': '').'</div>';
-    $output .= '<div class="">'.(isset($row['content_body']['date:date']) ? $row['content_body']['date']: '').'</div>';
+    $output .= '<div class="">'.(isset($row['content_body']['date']) ? $row['content_body']['date']: '').'</div>';
     
     $output .= '<div class="col">';
     $output .= '<form id="form-'.$row['content_machine_id'].'" name="form-'.$row['content_machine_id'].'" method="post">'; 
@@ -72,7 +75,6 @@ if (!empty($row)) {
 
             }
                         
-
             $output .= '<div style="margin-bottom: 0.5rem; margin-top: 0.5rem;" class="row">' . $button_1 . '</div>' . "\n";
             if(isset($row_attributes[$tr]))
             {
@@ -84,8 +86,8 @@ if (!empty($row)) {
                         $line_value = 'empty';
                     }
                     $button_attr .= '<div style="border: solid #000000 1px;margin-bottom:0.5rem;">
-                    <div style="border:solid #000000 1px;margin:0; padding:0 0 0 12px;background-color: #000000; color: #ffffff " class="">'.$line_key.
-                    '</div><div style="background-color: #ffffff;padding:0 0 0 12px;margin:0; overflow-y: scroll;" class="">'.substr($line_value,0,40).'</div></div>';
+                    <div style="border:solid #000000 1px;margin:0; padding:0 0 0 12px;background-color: #000000; color: #ffffff " class="col">'.$line_key.
+                    '</div><div style="background-color: #ffffff;padding:0 0 0 12px;margin:0; overflow-y: scroll;" class="col">'.substr($line_value,0,40).'</div></div>';
                             
                  }
                 $output .=  '<details class="p-1 border border-dark" style="background-color: #fcee76;">

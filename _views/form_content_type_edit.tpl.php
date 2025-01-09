@@ -1,7 +1,7 @@
 <!--form_content_type_edit -->
 <?php
 //echo 'form user event post';
-$output = '<form action="'.$formAction.'" method="POST">';
+$output = '<form name="content_type" id="content-type" class="" action="'.$formAction.'" method="POST">';
 $output .= '';
 
 $element_types = array(

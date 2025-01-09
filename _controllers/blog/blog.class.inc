@@ -405,7 +405,7 @@ class blog
         $table_posts = array();
         $userID = $cck->_path_segment(2);
         
-        $resultContent = $db->query('SELECT * FROM content');
+        $resultContent = $db->query('SELECT * FROM content INNER JOIN content_types ON content.content_type_id = content_types.content_type_id');
         $row_count = 1;
         $content_rows = array();
         $variables['CCK'] = $cck;
@@ -431,7 +431,9 @@ class blog
             
 
                     $row_count = $row_count + 1;
-                    $resultTypeFields = $db->query('SELECT * FROM content_type_fields WHERE content_type_id="'.$row['content_type_id'].'"');
+                    $resultTypeFields = $db->query('SELECT * FROM content_type_fields INNER JOIN 
+                    content_types ON content_type_fields.content_type_id = content_types.content_type_id WHERE 
+                    content_type_fields.content_type_id="'.$row['content_type_id'].'"');
                     while($fields = $resultTypeFields->fetchArray(SQLITE3_ASSOC))
                     {
                         $content_fields[$row['content_type_id']][$fields['name']] = $fields;

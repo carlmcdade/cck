@@ -51,7 +51,7 @@ if(!empty($rows))
 			//if(isset($row[$tr]))
 			//{
 				     $output .= '<tr><td id="td-' . (isset($id) ? $id : '')  . $tr . '-' .  $tr . 
-				     '" class="table-cells"> <label>'.$label.'</label> <input value="'. print_r($_POST.'[Posted-'. $contentType.'][posted-fields]['. $row['name'].']',1).'" type="text" class="form-control" id="" name="'. $row['name'].'"></td></tr>' . "\n";
+				     '" class="table-cells"> <label>'.$label.'</label> <input value="'. print_r($_POST['Posted-'.$contentType]['posted-fields'][$row['name']],1).'" type="text" class="form-control" id="" name="'. $row['name'].'"></td></tr>' . "\n";
 			  
 			//}
 			//else
@@ -69,6 +69,6 @@ if(!empty($rows))
 
 
       	  
-$output .= '</table></form>'.'<pre>'. print_r($_POST,1). '</pre>';
+$output .= '</table></form>';//.'<pre>'. print_r($_POST,1). '</pre>';
 print $output;
 ?>
