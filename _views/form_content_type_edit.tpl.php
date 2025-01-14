@@ -34,6 +34,7 @@ $element_types = array(
 if (!empty($rows)) {
     // table rows
     //$output .= "\n". '<input value= "'.$contentId.'" type="hidden" class="form-control" id="content-id" name="content_id">' . "\n";
+    //$output = '<form name ="content_type_fields" method="post" class="" style="">';
     $output .= '<input value= "'.$contentType.'" type="hidden" class="form-control" id="content-type" name="content_type">' . "\n";
     $output .= '<input value= "'.$contentTime.'" type="hidden" class="form-control" id="content-time" name="content_time">' . "\n";
     $output .= '<input value= "'.$contentUserId.'" type="hidden" class="form-control" id="content-user-id" name="content_user_id">' . "\n";
@@ -50,6 +51,7 @@ if (!empty($rows)) {
             //exit(print_r($field_key,1));
 
             /********  bring fileds from database coloumns to POST array********/
+            
             $output .= ' <input value="'.$contentTypeFields[$field_row]['label'].'" type="hidden" class="form-control" id="" name="content_type_'.$contentType .'[fields]['.$field_value['name'].']'. $field_value['name'].'" />' . "\n";
             $output .= ' <input value="'.$contentTypeFields[$field_row]['label'].'" type="hidden" class="form-control" id="" name="content_type_'.
             $contentType .'[fields]['.$field_value['name'].'][label]" />' . "\n";
@@ -80,6 +82,7 @@ if (!empty($rows)) {
             $output .= ' <input value="'.$contentTypeFields[$field_row]['visibility'].'" type="hidden" class="form-control" id="" name="content_type_'.
             $contentType .'[fields]['.$field_value['name'].'][visibility]" />' . "\n";
 
+            $output .= '';
 
 
 
@@ -166,5 +169,5 @@ if (!empty($rows)) {
 
 }
 
-$output .= '</form>';
+$output .= '';
 print $output;

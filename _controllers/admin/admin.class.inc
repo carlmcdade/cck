@@ -3894,7 +3894,7 @@ $admin_menu = $var;
 
                     case 'content_body':
 
-                        $_POST['content_body']['database_value'] = serialize($_POST['content_body']);
+                        $_POST['content_body'] = serialize($_POST['content_body']);
 
                     break;
                 }
@@ -3940,7 +3940,7 @@ $admin_menu = $var;
             
                 if($name == 'content_body'){
 
-                    $stmt->bindValue(':'. $name,  $_POST['content_body']['database_value']);
+                    $stmt->bindValue(':'. $name,  $_POST['content_body']);
                 }
                 else{
                     $stmt->bindValue(':'. $name, $_POST[$name]);
@@ -3959,7 +3959,7 @@ $admin_menu = $var;
             
                 if($name == 'content_body'){
 
-                    $Upstmt  .= $name . '=' .$_POST['content_body']['database_value'].' , ';
+                    $Upstmt  .= $name . '=' .$_POST['content_body'].' , ';
                 }
                 else{
                     $Upstmt  .= $name . '=' .$_POST[$name].' , ';
@@ -3987,7 +3987,7 @@ $admin_menu = $var;
         $variables['VAR'] = $variables;
         $variables['content'] = $output. '<pre>'.print_r($_POST, 1).'</pre>'.'<pre>'.print_r($_GET, 1).'</pre>'.'</div></div>';
         /** execute sql for new post to database **/
-        //$stmt->execute();
+        $stmt->execute();
         print $cck->_view('page_admin', $variables);
 
 
@@ -4264,6 +4264,8 @@ $admin_menu = $var;
                 $name.'" name="" id="">'.$name.'  <form class="selected-field" action="admin/content_type_save&content_type_machine_id='.$name.'" name="add_this_field_form" id="add-this-field-form'.$name.'" method="post">'.
                 '<input  onclick="return MyFunction(this)"  name="'.$name.'" id="selected-field-element-'.$name.'" type="checkbox" value="1">'."\n";
                 $list_element_types .= '<input style="display:none;" name="add_field_'.$name.'_value" id="'.$name.'" type="hidden" value="'.htmlentities($form_element_types[$name]).'">';
+                $list_element_types .= '<input style="display:none;" name="content_type_name" id="content-type-name" type="hidden" value="'.$form['contentType'].'">';
+                
                 $list_element_types .= '';
                 $list_element_types .= '</form></h5>';
                 $list_element_types .= '<div style="max-height: 400px; overflow-y: scroll; font-size:1rem;font-weight:500;" class="">'."\n";
@@ -4547,6 +4549,22 @@ $admin_menu = $var;
         $variables['VAR'] = $variables;
         print $cck->_view('page_admin', $variables);
 
+    }
+
+    public function content_type_field_save()
+    {
+        global $cck, $ini_settings;
+        $variables['CCK'] = $cck;
+        $variables['INI'] = $ini_settings;
+        $variables['POST'] = $_POST;
+        
+        $msg = 'messages : ';
+        $variables['messages'] = $msg;
+        $output = '';
+
+        $variables['content'] = 'ave tntent type fields <pre>' . print_r($_POST,1) . '</pre>' . $output;
+        $variables['VAR'] = $variables;
+        print $cck->_view('page_admin', $variables);
     }
 
     public function content_type_submit()

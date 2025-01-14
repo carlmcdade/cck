@@ -8,18 +8,19 @@ $output = '' . "\n";
 if (!empty($row)) {
     // table rows
     $output = '<div style="margin-bottom:1rem; margin-top:1rem; background-color: #c3dfff" class="border container">';
-    $output .= '<div style="margin-bottom:1rem" class="row border border-black">';
+    $output .= '<div style="padding-bottom: 0.75rem;" class="row border border-black">';
     $output .= '<div style="margin-bottom:1rem; background-color: #fccb45; border-bottom: solid #000000 1px;" class=" text-center fs-5">'.
-    (isset($row['content_body']['title']) ? $row['content_body']['title']: '').' - '. (isset($row['content_type_name']) ? $row['content_type_name']: '')
+    (isset($row['content_body']['link-text']) ? $row['content_body']['link-text']: '').' - '. (isset($row['content_type_name']) ? $row['content_type_name']: '')
     .'</div>';
-    $output .= '<div style="min-height:100px; min-width:100px;" class="col-2">'.
-                '<image style="height:100px; width=100px;" src="images/user_profile/user_id_shared/'.(isset($row['content_body']['image']) ? $row['content_body']['image']: '').'" /></div>';
-    $output .= '<div class="col-10">'.(isset($row['content_body']['body']) ? $row['content_body']['body']: '').'</div>';
-    $output .= '<div class="">'.(isset($row['content_body']['date']) ? $row['content_body']['date']: '').'</div>';
+    $output .= '<div style="" class="col">'.
+                '<a class="fs-5" style="text-decoration:none;" href="http://'.(isset($row['content_body']['link-path']) ? $row['content_body']['link-path']: '').'" />'.
+                (isset($row['content_body']['link-text']) ? $row['content_body']['link-text']: '').'</a></div>';
+    //$output .= '<div class="col">'.(isset($row['content_body']['body']) ? $row['content_body']['body']: '').'</div>';
+   // $output .= '<div class="">'.(isset($row['content_body']['date']) ? $row['content_body']['date']: '').'</div>';
     
     $output .= '<div class="">';
     $output .= '<form id="form-'.$row['content_machine_id'].'" name="form-'.$row['content_machine_id'].'" method="post">'; 
-    $output .= '<button style="position:relative;top:4px;float:left;margin-right: .5rem" class="btn btn-sm" type="submit" role="button" formaction="?content/content_edit&content_machine_id='.$row['content_machine_id'].'">edit</button>';
+    $output .= '<button style="position:relative;top:4px;float:left;margin:0.5rem 0.5rem .5rem 0" class="btn btn-sm" type="submit" role="button" formaction="?content/content_edit&content_machine_id='.$row['content_machine_id'].'">edit</button>';
     
     
         
@@ -34,7 +35,7 @@ if (!empty($row)) {
 
             foreach($content_fields as $field => $fieldValue){
 
-                $output .= '<input id="'.$fieldValue['machine_id'].'" type="hidden" name="content_body['.$fieldValue['name'].']" value="'.$fieldValue['name'].'" />';
+                $output .= '<input id="'.$fieldValue['machine_id'].'" type="hidden" name="content_body['.$fieldValue['link-name'].']" value="'.$fieldValue['link-name'].'" />';
         
             }
         }
@@ -57,7 +58,7 @@ if (!empty($row)) {
                 $button_1 .= '<details style="" class="bg-warning p-1"><summary class="bg-warning p-1">fields</summary>';
 
                 
-                foreach($content_fields[$row['content_type_id']] as $line_key => $line_value){
+                foreach($content_fields[$row['content_type_name']] as $line_key => $line_value){
 
                     $button_1 .= '<div style="#ffffff;border: solid #000000 1px;margin-bottom:0.5rem;">
                     <div style=" padding:0 0 0 0;background-color: #000000;color: #ffffff" class="col border-dark">'.$line_value['name'].
@@ -97,7 +98,7 @@ if (!empty($row)) {
         
     }
     $output .= '</div>';
-    $output .= '</div></details>' . "\n";
+    $output .= '</details></div>' . "\n";
 }
 
 print $output;

@@ -59,7 +59,7 @@ if (!empty($row)) {
                 $button_1 .= '<details style="margin:0;" class="bg-warning p-1"><summary class="bg-warning p-1">fields</summary>';
 
                 
-                foreach($content_fields[$row['content_type_id']] as $line_key => $line_value){
+                foreach($content_fields[$row['content_type_name']] as $line_key => $line_value){
 
                     $button_1 .= '<div style="#ffffff;border: solid #000000 1px;margin-bottom:0.5rem;">
                     <div style=" padding:0 0 0 0;background-color: #000000;color: #ffffff" class="col border-dark">'.$line_value['name'].

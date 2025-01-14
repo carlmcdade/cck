@@ -417,6 +417,11 @@ class blog
                
                 //$content_rows[$row['content_machine_id']] = $row;
                 //$col = $resultContent->columnName($row_count);
+
+                $resultContentType = $db->query('SELECT * FROM content INNER JOIN content_types ON content.content_type_id = content_types.content_type_id '.
+                'WHERE content.content_type_id="'.$row['content_type_id'].'"');
+
+        
                 for ($i = 0; $i < $resultContent->numColumns(); $i++) {
                 $col_name = $resultContent->columnName($i);
                 if($col_name == 'id'){ continue; }
@@ -433,10 +438,10 @@ class blog
                     $row_count = $row_count + 1;
                     $resultTypeFields = $db->query('SELECT * FROM content_type_fields INNER JOIN 
                     content_types ON content_type_fields.content_type_id = content_types.content_type_id WHERE 
-                    content_type_fields.content_type_id="'.$row['content_type_id'].'"');
+                    content_type_fields.content_type_id = "'.$row['content_type_id'].'"');
                     while($fields = $resultTypeFields->fetchArray(SQLITE3_ASSOC))
                     {
-                        $content_fields[$row['content_type_id']][$fields['name']] = $fields;
+                        $content_fields[$row['content_type_name']][$fields['name']] = $fields;
                     }
                     if(unserialize($row['content_body']) == '')
                     {
@@ -468,7 +473,7 @@ class blog
         $variables['content_fields'] = $content_fields;
         
 
-        $variables['content'] = $output;//<pre>'. print_r($content_rows,1) .'</pre>';
+        $variables['content'] = $output . '<!--<pre>'. print_r($content_rows,1) .'</pre>-->';
 
         print $cck->_view('page_blog_latest', $variables);
 

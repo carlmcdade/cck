@@ -63,30 +63,367 @@ $content = '<div>
 <script src="js/cck.js"></script>
 <script>
 
-function myFunctionOne() {
-    var x = document.createElement("INPUT");
-    x.setAttribute("type", "text");
-    x.setAttribute("value", "You Just added a text field ");
-    document.body.appendChild(x);
+var form = document.forms.namedItem("content_type");
+
+async function sendData() {
+  // Associate the FormData object with the form element
+  const formData = new FormData(form);
+
+  try {
+    const response = await fetch("?admin/content_type_field_save", {
+      method: "POST",
+      // Set the FormData instance as the request body
+      body: formData,
+    });
+    console.log(await response.json());
+  } catch (e) {
+    console.error(e);
+  }
 }
-function myFunctionTwo() {
-    var y = document.createElement("INPUT");
-    y.setAttribute("type", "radio");
-    document.body.appendChild(y);
+
+// Take over form submission
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  sendData();
+});
+
+function makeid(length) {
+    let result = '';
+    const d = new Date();
+    let time = d.getTime();
+
+    const characters = time +'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      counter += 1;
+    }
+    return result;
+}
+
+function addSelectOption(selectBody){
+
+      var optionName = document.getElementById(selectBody);
+      var typeName = document.getElementById('content-type-name').value;
+      var typeID = document.getElementById('content-type-id').value;
+      var typeForm = document.forms.namedItem("content-type");
+      var enumerate = "" + makeid(6);
+      
+      
+
+        var addOptionLabel = document.createElement("INPUT");
+        addOptionLabel.setAttribute("type", "text");
+        addOptionLabel.setAttribute("name", "Posted-"+ typeName +"[new_fields]["+ selectBody+"][options]["+ enumerate +"][option_label]");
+        
+        var addOptionLabelLabel = document.createElement("DIV");
+        addOptionLabelLabel.innerHTML = "Option Label";
+
+        
+        var addOptionValue = document.createElement("INPUT");
+        addOptionValue.setAttribute("type", "text");
+        addOptionValue.setAttribute("name", "Posted-"+ typeName +"[new_fields]["+ selectBody +"][options]["+enumerate+"][option_value]");
+        addOptionValue.setAttribute("id", "");
+
+        var addOptionValueLabel = document.createElement("DIV");
+        addOptionValueLabel.innerHTML = "Option Value";
+
+        // the id of the datalist or select element for options
+        var optionParent = document.createElement("INPUT");
+        optionParent.setAttribute("type", "hidden");
+        optionParent.setAttribute("name", "Posted-"+ typeName +"[new_fields]["+ selectBody+"][options]["+enumerate+"][content_type_field_id]");
+        optionParent.setAttribute("value", selectBody);
+
+        var optionMachineId = document.createElement("INPUT");
+        optionMachineId.setAttribute("type", "hidden");
+        optionMachineId.setAttribute("name", "Posted-"+ typeName +"[new_fields]["+ selectBody +"][options]["+enumerate+"][option_machine_id]");
+        optionMachineId.setAttribute("value", "option-" + enumerate );
+
+        
+        typeForm.prepend(addOptionLabel);
+        typeForm.prepend(addOptionLabelLabel);
+        typeForm.prepend(addOptionValue);
+        typeForm.prepend(addOptionValueLabel);
+        typeForm.prepend(optionParent);
+        typeForm.prepend(optionMachineId);
+        
+
+
+//alert('Option fields added to '  + selectBody);
+
+
 }
 function MyFunction(chkBox) {
     //alert("checked");
     //alert($('input#foo').val());
-    alert(chkBox.name);
-    alert($('input[name=add_field_'+ chkBox.name +'_value]').val());
-    var x = document.createElement("INPUT");
-    x.setAttribute("type", "text");
-    x.setAttribute("value", "You Just added a text field ");
+    var typeName = document.getElementById('content-type-name').value;
+    var typeID = document.getElementById('content-type-id').value;
+    var identifier = makeid(6);
+    var typeForm = document.forms.namedItem("content-type");
+    
+    //alert(chkBox.name +' -- '+ typeName);
+    //alert($('input[name=add_field_'+ chkBox.name +'_value]').val());
+
+    if(chkBox.name == "textarea")
+    {
+        var x = document.createElement("TEXTAREA");
+        x.setAttribute("type", chkBox.name);
+        x.setAttribute("name", chkBox.name + "-" + identifier);
+        x.setAttribute("id", chkBox.name + "-" + identifier);
+        var xLabel = document.createElement("DIV");
+        xLabel.innerHTML = chkBox.name;
+
+        var conFieldTypeID = document.createElement("INPUT");
+        conFieldTypeID.setAttribute("type", "hidden");        
+        conFieldTypeID.setAttribute("name", "Posted-"+ typeName +"[new_fields][" + chkBox.name + "-" + identifier+"][content_type_id]");
+        conFieldTypeID.setAttribute("value", typeID);
+        conFieldTypeID.setAttribute("type", "hidden");
+
+        var conFieldMachineID = document.createElement("INPUT");
+        conFieldMachineID.setAttribute("type", "hidden");        
+        conFieldMachineID.setAttribute("name", "Posted-"+ typeName +"[new_fields][" + chkBox.name + "-" + identifier+"][machine_id]");
+        conFieldMachineID.setAttribute("value", typeName + "-" + makeid(4) + "-" + makeid(4) );
+        conFieldMachineID.setAttribute("type", "hidden");
+
+        var field_name = document.createElement("INPUT");
+        field_name.setAttribute("type", "hidden");
+        field_name.setAttribute("name", "Posted-"+ typeName +"[new_fields][" + chkBox.name + "-" + identifier+"][field_name]");
+        field_name.setAttribute("value", typeName + identifier + "-"+ chkBox.name);
+
+        var field_label = document.createElement("INPUT");
+        field_label.setAttribute("type", "hidden");        
+        field_label.setAttribute("name", "Posted-"+ typeName +"[new_fields][" + chkBox.name + "-" + identifier+"][field_label]");
+        field_label.setAttribute("value", "field_label");
+        field_label.setAttribute("type", "hidden");
+
+        var field_type = document.createElement("INPUT");
+        field_type.setAttribute("type", "hidden");        
+        field_type.setAttribute("name", "Posted-"+ typeName +"[new_fields][" + chkBox.name + "-" + identifier+"][field_type]");
+        field_type.setAttribute("value", chkBox.name);
+        field_type.setAttribute("type", "hidden");
+
+        // clear varaibles that are not useed for this field type
+        var addOptionLabel = "";
+        var addOptionLabelLabel = "";
+        var addOptionValue = "";
+        var addOptionValueLabel = "";
+        var optionParent = "";
+        var optionMachineId = "";
+        var optionAddButton = "";
+        var newOption = "";
+        var optionText = "";
+        
+    }
+    else if(chkBox.name == "select" || chkBox.name == "datalist")
+    {
+        var x = document.createElement("SELECT");
+        x.setAttribute("type", chkBox.name);
+        x.setAttribute("name", chkBox.name + identifier);
+        x.setAttribute("id", chkBox.name + identifier);
+
+        var xLabel = document.createElement("DIV");
+        xLabel.innerHTML = chkBox.name;
+
+        var addOptionLabel = document.createElement("INPUT");
+        addOptionLabel.setAttribute("type", "text");
+        addOptionLabel.setAttribute("name", "Posted-"+ typeName +"[new_fields][" + chkBox.name + "-" + identifier+"][options]["+identifier+"][option_label]");
+        
+        var addOptionLabelLabel = document.createElement("DIV");
+        addOptionLabelLabel.innerHTML = "Option Label";
+        
+        var addOptionValue = document.createElement("INPUT");
+        addOptionValue.setAttribute("type", "text");
+        
+        addOptionValue.setAttribute("name", "Posted-"+ typeName +"[new_fields][" + chkBox.name + "-" + identifier+"][options]["+identifier+"][option_value]");
+        addOptionValue.setAttribute("id", "");
+        var addOptionValueLabel = document.createElement("DIV");
+        addOptionValueLabel.innerHTML = "Option Value";
+
+        var optionParent = document.createElement("INPUT");
+        optionParent.setAttribute("type", "hidden");
+        optionParent.setAttribute("name", "Posted-"+ typeName +"[new_fields][" + chkBox.name + "-" +identifier+"][options]["+identifier+"][content_type_field_id]");
+        optionParent.setAttribute("value", chkBox.name + "-"  +identifier);
+
+        var optionMachineId = document.createElement("INPUT");
+        optionMachineId.setAttribute("type", "hidden");
+        optionMachineId.setAttribute("name", "Posted-"+ typeName +"[new_fields][" + chkBox.name +"-"+identifier+"][options]["+identifier+"][option_machine_id]");
+        optionMachineId.setAttribute("value", "option" +  "-" + identifier );
+
+        var optionAddButton = document.createElement("INPUT");
+        optionAddButton.setAttribute("type", "button");
+        optionAddButton.setAttribute("name", "Posted-"+ typeName +"[new_fields][" + chkBox.name + "-" + identifier+"][add_button]");
+        optionAddButton.setAttribute("value", "Add more options");
+        optionAddButton.setAttribute("onclick", "addSelectOption('" + chkBox.name + "-" + identifier + "');");
+        
+
+        var newOption = document.createElement('OPTION');
+        var optionText = document.createTextNode('Option Text');
+        // set option text
+        newOption.appendChild(optionText);
+        // and option value
+        newOption.setAttribute('value','Option Value');
+
+        x.appendChild(newOption);
+        
+
+        var conFieldTypeID = document.createElement("INPUT");
+        conFieldTypeID.setAttribute("type", "hidden");        
+        conFieldTypeID.setAttribute("name", "Posted-"+ typeName +"[new_fields]["+ chkBox.name + "-" + identifier+"][content_type_id]");
+        conFieldTypeID.setAttribute("value", typeID);
+        conFieldTypeID.setAttribute("type", "hidden");
+
+        var conFieldMachineID = document.createElement("INPUT");
+        conFieldMachineID.setAttribute("type", "hidden");        
+        conFieldMachineID.setAttribute("name", "Posted-"+ typeName +"[new_fields]["+ chkBox.name + "-" + identifier+"][machine_id]");
+        conFieldMachineID.setAttribute("value", typeName + "-" + makeid(4) + "-" + makeid(4) );
+        conFieldMachineID.setAttribute("type", "hidden");
+
+        var field_name = document.createElement("INPUT");
+        field_name.setAttribute("type", "hidden");
+        field_name.setAttribute("name", "Posted-"+ typeName +"[new_fields]["+ chkBox.name + "-" + identifier+"][field_name]");
+        field_name.setAttribute("value", typeName +"-"+ identifier + "-"+ chkBox.name);
+
+        var field_label = document.createElement("INPUT");
+        field_label.setAttribute("type", "hidden");        
+        field_label.setAttribute("name", "Posted-"+ typeName +"[new_fields]["+ chkBox.name + "-" + identifier+"][field_label]");
+        field_label.setAttribute("value", "field_label");
+        field_label.setAttribute("type", "hidden");
+
+        var field_type = document.createElement("INPUT");
+        field_type.setAttribute("type", "hidden");        
+        field_type.setAttribute("name", "Posted-"+ typeName +"[new_fields]["+ chkBox.name + "-" + identifier+"][field_type]");
+        field_type.setAttribute("value", chkBox.name);
+        field_type.setAttribute("type", "hidden");
+        
+    }
+    
+    else
+    {
+        var x = document.createElement("INPUT");
+        x.setAttribute("name", chkBox.name + identifier);
+        x.setAttribute("id", chkBox.name + "-" + identifier);
+        
+
+        var conFieldMachineID = document.createElement("INPUT");
+        conFieldMachineID.setAttribute("type", "hidden");        
+        conFieldMachineID.setAttribute("name", "Posted-"+ typeName +"[new_fields]["+ chkBox.name + "-" + identifier+"][machine_id]");
+        conFieldMachineID.setAttribute("value", typeName + "-" + makeid(4)+"-"+ makeid(4) );
+        conFieldMachineID.setAttribute("type", "hidden");
+
+        var conFieldTypeID = document.createElement("INPUT");
+        conFieldTypeID.setAttribute("type", "hidden");        
+        conFieldTypeID.setAttribute("name", "Posted-"+ typeName +"[new_fields]["+ chkBox.name + "-" + identifier+"][content_type_id]");
+        conFieldTypeID.setAttribute("value", typeID);
+        conFieldTypeID.setAttribute("type", "hidden");
+
+        var field_type = document.createElement("INPUT");
+        field_type.setAttribute("type", "hidden");        
+        field_type.setAttribute("name", "Posted-"+ typeName +"[new_fields]["+ chkBox.name + "-" + identifier+"][field_type]");
+        field_type.setAttribute("value", chkBox.name);
+        field_type.setAttribute("type", "hidden");
+
+        var field_label = document.createElement("INPUT");
+        field_label.setAttribute("type", "hidden");        
+        field_label.setAttribute("name", "Posted-"+ typeName +"[new_fields]["+ chkBox.name + "-" + identifier+"][field_label]");
+        field_label.setAttribute("value", "field_label");
+        field_label.setAttribute("type", "hidden");
+
+        var field_name = document.createElement("INPUT");
+        field_name.setAttribute("type", "hidden");
+        field_name.setAttribute("name", "Posted-"+ typeName +"[new_fields]["+ chkBox.name + "-" + identifier+"][field_name]");
+        field_name.setAttribute("value", typeName + "-" + identifier + "-"+ chkBox.name);
+        field_name.setAttribute("id", chkBox.name);
+
+        var xLabel = document.createElement("DIV");
+        xLabel.innerHTML = chkBox.name;
+        x.setAttribute("type", chkBox.name);
+        if(chkBox.name == "checkbox" || chkBox.name == "radio"){
+
+          x.setAttribute("checked", true);
+          
+
+        }
+        // clear variable that are not used for this field type to stop undefined errors
+        var addOptionLabel = "";
+        var addOptionLabelLabel = "";
+        var addOptionValue = "";
+        var addOptionValueLabel = "";
+        var optionParent = "";
+        var optionMachineId = "";
+        var optionAddButton = "";
+        var newOption = "";
+        var optionText = "";
+        
+    }
+    x.setAttribute("value", "");
+    x.setAttribute("placeholder", "Save the content type to add this field");
+    
+    //x.setAttribute("id", "new-field-" + chkBox.name + "");
     document.forms.namedItem("content-type").prepend(x);
-    alert('added new - ' + chkBox.name);
-    //alert($('input[type=hidden]').val());
-    //alert($(':hidden#foo').val());
-    //alert($('input:hidden[name=zyx]').val());
+    document.forms.namedItem("content-type").prepend(xLabel);
+    
+    if (typeof conFieldMachineID !== 'undefined' || conFieldMachineID !== 'null') {
+      // variable is undefined or null
+      document.forms.namedItem("content-type").prepend(conFieldMachineID);
+    }
+  
+    if (typeof conFieldTypeID !== 'undefined' || conFieldTypeID !== 'null') {
+      // variable is undefined or null
+      document.forms.namedItem("content-type").prepend(conFieldTypeID);
+    }
+    
+    if (typeof field_name !== 'undefined' || field_name !== 'null') {
+      // variable is undefined or null
+      document.forms.namedItem("content-type").prepend(field_name);
+    }
+    if (typeof field_label !== 'undefined' || field_label !== 'null') {
+      // variable is undefined or null
+      document.forms.namedItem("content-type").prepend(field_label);
+    }
+
+    if (typeof field_type !== 'undefined' || field_type !== 'null') {
+      // variable is undefined or null
+      document.forms.namedItem("content-type").prepend(field_type);
+    }
+
+    if (typeof addOptionLabel !== 'undefined' || addOptionLabel !== 'null') {
+      // variable is undefined or null
+      document.forms.namedItem("content-type").prepend(addOptionLabel);
+    }
+
+    if (typeof addOptionLabelLabel !== 'undefined' || addOptionLabelLabel !== 'null') {
+      // variable is undefined or null
+      document.forms.namedItem("content-type").prepend(addOptionLabelLabel);
+    }
+
+    if (typeof addOptionValue !== 'undefined' || addOptionValue !== 'null') {
+      // variable is undefined or null
+      document.forms.namedItem("content-type").prepend(addOptionValue);
+    }
+    
+    if (typeof addOptionValueLabel !== 'undefined' || addOptionValueLabel !== 'null') {
+      // variable is undefined or null
+      document.forms.namedItem("content-type").prepend(addOptionValueLabel);
+    }
+    
+    if (typeof optionParent !== 'undefined' || optionParent !== 'null') {
+      // variable is undefined or null
+      document.forms.namedItem("content-type").prepend(optionParent);
+    }
+    
+    if (typeof optionMachineId !== 'undefined' || optionMachineId !== 'null') {
+      // variable is undefined or null
+      document.forms.namedItem("content-type").prepend(optionMachineId);
+    }
+    if (typeof optionAddButton !== 'undefined' || optionAddButton !== 'null') {
+      // variable is undefined or null
+      document.forms.namedItem("content-type").prepend(optionAddButton);
+    }
+    
+    
+    
+    
+    
 } 
 
 </script>

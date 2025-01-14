@@ -827,7 +827,7 @@ class content
         $db = new SQLite3($database);
         $conID = (isset($_GET['content_machine_id']) ? $_GET['content_machine_id'] : $_GET['content_machine_id']);
 
-        $resultContent = $db->query('SELECT * FROM content WHERE content_machine_id="'.$conID.'"');
+        $resultContent = $db->query('SELECT * FROM content JOIN content_types ON content.content_type_id=content_types.content_type_id WHERE content.content_machine_id="'.$conID.'"');
         while($rowContent = $resultContent->fetchArray(SQLITE3_ASSOC))
         {
             
@@ -835,6 +835,7 @@ class content
             $rowContent['content_body'] = unserialize($rowContent['content_body']);
 
             $content_rows['content_machine_id'] = $rowContent;
+            
 
 
         }
@@ -847,7 +848,13 @@ class content
         //echo '<pre>'. print_r($_GET,1). '</pre>';
         echo '<form name="" id="" method="post">';
         if(is_array($content_rows['content_machine_id']['content_body'])){
-            foreach($_POST['content_body'] as $f_name => $f_value)
+            $resultTypeFields = $db->query('SELECT * FROM content_type_fields WHERE 
+                    content_type_id = "'.$content_rows['content_machine_id']['content_type_id'].'"');
+                    while($fields = $resultTypeFields->fetchArray(SQLITE3_ASSOC))
+                    {
+                        $content_fields[$content_rows['content_machine_id']['content_type_name']][$fields['name']] = $fields;
+                    }
+            foreach($content_fields[$content_rows['content_machine_id']['content_type_name']] as $f_name => $f_value)
             {
                 switch($f_name)
                 {
@@ -857,21 +864,31 @@ class content
                     break;
                     case 'body':
                         $output .=  "\n" . '<br><label style="display: block;width:300px; color:#ffffff;background-color: #000000; border: solid #000000 1px;">'.$f_name.'</label>
-                        <textarea placeholder="main content of post" style="width:300px; height:300px;" name="content_body['.$f_name.']" id="'.$f_name.'">'.$f_value.'</textarea>'."\n<br>";
+                        <textarea placeholder="main content of post" style="width:300px; height:300px;" name="content_body['.$f_name.']" id="'.$f_name.'">'.$_POST['content_body'][$f_name].'</textarea>'."\n<br>";
                     break;
                     default:
-                    $output .=  "\n".'<br><label style="display: block; width: 300px;color:#ffffff;background-color: #000000; border: solid #000000 1px;">'.$f_name.'</label>
-                    <input style="width:300px;" class="" type="text" name="content_body['.$f_name.']" id="" value="'.$f_value.'" />'. "<br>";
+                    $output .=  "\n".'<br><label style="display: block; width: 300px;color:#ffffff;background-color: #000000; border: solid #000000 1px;">'.$f_value['label'].'</label>
+                    <'.$f_value['html_tag'].' style="width:300px;" class="" type="'.
+                    $f_value['field_type'].'" placeholder="'.$f_value['placeholder'].'" name="content_body['.$f_name.']" id="" value="'.
+                    $_POST['content_body'][$f_name].'" />'. "<br>".'<!--<pre>'.print_r($_POST,1)."</pre>-->";
                     break;
                 }
 
                 
                 
             }
+            
         }
         else{
 
-            foreach($_POST['content_body'] as $f_name => $f_value)
+            $resultTypeFields = $db->query('SELECT * FROM content_type_fields WHERE 
+                    content_type_id = "'.$content_rows['content_machine_id']['content_type_id'].'"');
+                    while($fields = $resultTypeFields->fetchArray(SQLITE3_ASSOC))
+                    {
+                        $content_fields[$content_rows['content_machine_id']['content_type_name']][$fields['name']] = $fields;
+                    }
+
+            foreach($content_fields[$content_rows['content_machine_id']['content_type_name']] as $f_name => $f_value)
             {
                 switch($f_name)
                 {
@@ -900,7 +917,7 @@ class content
         $variables['pageTitle'] = 'Content';
         $variables['contentTitle'] = 'Content Update';
         
-        $variables['content'] = $output;
+        $variables['content'] = $output .'<!--<pre>'.print_r($_POST,1).'</pre>-->';//.'<pre>'.print_r($content_fields,1).'</pre>';
         print $cck->_view('page_blog_view', $variables);
 
 
@@ -999,7 +1016,7 @@ class content
         
         $output = $this->module;
         $output .= '<pre>';
-        $output .= '<hr>'. print_r($sqlUpdate,1) . '<hr>'. print_r($sqlCheck,1);
+        $output .= print_r($_POST,1). '<hr>'. print_r($sqlUpdate,1) . '<hr>'. print_r($sqlCheck,1);
        
         $output .= '</pre>';
 
